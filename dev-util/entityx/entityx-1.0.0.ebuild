@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Adrian Grigo <agrigo2001@yahoo.com.au>
+# Copyright 2016 Adrian Grigo <agrigo2001@yahoo.com.au>
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
