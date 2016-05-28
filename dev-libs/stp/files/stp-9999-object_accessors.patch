@@ -1,0 +1,299 @@
+diff -Naur stp-master/include/STP/Core/Layer.hpp stp-9999/include/STP/Core/Layer.hpp
+--- stp-master/include/STP/Core/Layer.hpp	2016-05-27 13:55:59.213630638 +0930
++++ stp-9999/include/STP/Core/Layer.hpp	2016-05-27 14:05:45.028592794 +0930
+@@ -65,6 +65,7 @@
+     /// \param height  The height of the layer in tiles
+     /// \param opacity Float value between 0.0 to 1.0
+     /// \param visible The visibility of the layer
++    /// \param orientation The orientation of the layer
+     ///
+     ////////////////////////////////////////////////////////////
+     Layer(const std::string& name, unsigned int width,
+@@ -128,7 +129,7 @@
+     ////////////////////////////////////////////////////////////
+     friend class Parser;
+ 
+-	void AddTile(unsigned int gid, sf::IntRect tile_rect, tmx::TileSet* tileset = nullptr);
++    void AddTile(unsigned int gid, sf::IntRect tile_rect, tmx::TileSet* tileset = nullptr);
+     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+ 
+     std::vector<tmx::Layer::Tile> tiles_;
+@@ -141,23 +142,24 @@
+ ////////////////////////////////////////////////////////////
+ class STP_API Layer::Tile : public sf::Drawable {
+  public:
+-	////////////////////////////////////////////////////////////
+-	/// \brief Default constructor
+-	///
+-	/// Constructs an empty tile with no values.
+-	///
+-	////////////////////////////////////////////////////////////
+-	Tile();
+-
+-	////////////////////////////////////////////////////////////
+-	/// \brief Constructor that receives the gid, tile_rect and a pointer to the tileset
+-	///
++    ////////////////////////////////////////////////////////////
++    /// \brief Default constructor
++    ///
++    /// Constructs an empty tile with no values.
++    ///
++    ////////////////////////////////////////////////////////////
++    Tile();
++
++    ////////////////////////////////////////////////////////////
++    /// \brief Constructor that receives the gid, tile_rect, orientation and a pointer to the tileset
++    ///
+     /// \param gid       The global id of the tmx::TileSet::Tile attached.
+-    /// \param tile_rect The global bounds of the tile.
++    /// \param tile_rect The global bounds of the tile
++    /// \param orientation The orientation of the layer.
+     /// \param tileset   A pointer to a tmx::TileSet to get the texture.
+-	///
+-	////////////////////////////////////////////////////////////
+-	Tile(unsigned int gid, sf::IntRect tile_rect, std::string orientation,
++    ///
++    ////////////////////////////////////////////////////////////
++    Tile(unsigned int gid, sf::IntRect tile_rect, std::string orientation,
+ 	     tmx::TileSet* tileset = nullptr);
+ 
+     ////////////////////////////////////////////////////////////
+diff -Naur stp-master/include/STP/Core/ObjectGroup.hpp stp-9999/include/STP/Core/ObjectGroup.hpp
+--- stp-master/include/STP/Core/ObjectGroup.hpp	2016-05-27 13:55:59.213630638 +0930
++++ stp-9999/include/STP/Core/ObjectGroup.hpp	2016-05-27 13:56:44.064627741 +0930
+@@ -32,6 +32,7 @@
+ ////////////////////////////////////////////////////////////
+ #include <string>
+ #include <vector>
++#include <memory>
+ #include <unordered_map>
+ 
+ #include "SFML/Graphics/VertexArray.hpp"
+@@ -84,10 +85,20 @@
+     ////////////////////////////////////////////////////////////
+     /// \brief Add a new Object to the object group
+     ///
+-    /// \param newobject Object to be added
++    /// \param newobject Pointer to object to be added
+     ///
+     ////////////////////////////////////////////////////////////
+-    void AddObject(tmx::ObjectGroup::Object newobject);
++    void AddObject(tmx::ObjectGroup::Object* newobject);
++
++    ////////////////////////////////////////////////////////////
++    /// \brief Return the object given a name
++    ///
++    /// \param object_name The name of the object
++    ///
++    /// \return Reference to a tmx::ObjectGroup::Object
++    ///
++    ////////////////////////////////////////////////////////////
++    tmx::ObjectGroup::Object& GetObject(const std::string& object_name);
+ 
+     ////////////////////////////////////////////////////////////
+     /// \brief Change the color of the object group, does not affect the opacity
+@@ -109,7 +120,8 @@
+     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+ 
+  private:
+-    std::vector<tmx::ObjectGroup::Object> objects_;
++    std::unordered_map<std::string, tmx::ObjectGroup::Object*> objects_hash_;
++    std::vector<std::unique_ptr<tmx::ObjectGroup::Object>> objects_;
+ };
+ 
+ ////////////////////////////////////////////////////////////
+@@ -149,6 +161,30 @@
+     ////////////////////////////////////////////////////////////
+     void SetColor(const sf::Color& color);
+ 
++    ////////////////////////////////////////////////////////////
++    /// \brief Return the name of the object
++    ///
++    /// \return Reference to a const string
++    ///
++    ////////////////////////////////////////////////////////////
++    const std::string& GetName(void) const;
++
++    ////////////////////////////////////////////////////////////
++    /// \brief Return the x coordinate of the object in pixels
++    ///
++    /// \return unsigned int value
++    ///
++    ////////////////////////////////////////////////////////////
++    unsigned int GetX(void) const;
++
++    ////////////////////////////////////////////////////////////
++    /// \brief Return the y coordinate of the object in pixels
++    ///
++    /// \return unsigned int value
++    ///
++    ////////////////////////////////////////////////////////////
++    unsigned int GetY(void) const;
++
+  private:
+     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+ 
+diff -Naur stp-master/include/STP/Core/TileMap.hpp stp-9999/include/STP/Core/TileMap.hpp
+--- stp-master/include/STP/Core/TileMap.hpp	2016-05-27 13:55:59.213630638 +0930
++++ stp-9999/include/STP/Core/TileMap.hpp	2016-05-27 14:05:20.559594375 +0930
+@@ -120,8 +120,6 @@
+     /// \param show true, displays it\n
+     ///             false, hides it
+     ///
+-    /// \return Reference to a tmx::ImageLayer
+-    ///
+     ////////////////////////////////////////////////////////////
+     void ShowObjects(bool show = true);
+ 
+@@ -156,7 +154,7 @@
+     ///
+     ////////////////////////////////////////////////////////////
+     unsigned int GetTileHeight() const;
+-    
++
+     ////////////////////////////////////////////////////////////
+     /// \brief Return the orientation of the map
+     ///
+diff -Naur stp-master/include/STP/Core/TileSet.hpp stp-9999/include/STP/Core/TileSet.hpp
+--- stp-master/include/STP/Core/TileSet.hpp	2016-05-27 13:55:59.214630638 +0930
++++ stp-9999/include/STP/Core/TileSet.hpp	2016-05-27 14:03:47.960600357 +0930
+@@ -80,7 +80,7 @@
+     /// \brief Get the tile given a local id.
+     ///
+     /// \param id The local id of the tile
+-    /// 
++    ///
+     /// \exception std::out_of_range If the local id is not within the range of the tileset.
+     ///
+     /// \return Reference to the Tile.
+@@ -88,7 +88,7 @@
+     ////////////////////////////////////////////////////////////
+     tmx::TileSet::Tile& GetTile(unsigned int id);
+ 
+-    //////////////////////////////////////////////////////////// 
++    ////////////////////////////////////////////////////////////
+     /// \brief Returns a sf::IntRect with the position of the
+     ///        tile texture in the attached image
+     ///
+diff -Naur stp-master/src/STP/Core/ObjectGroup.cpp stp-9999/src/STP/Core/ObjectGroup.cpp
+--- stp-master/src/STP/Core/ObjectGroup.cpp	2016-05-27 13:55:59.214630638 +0930
++++ stp-9999/src/STP/Core/ObjectGroup.cpp	2016-05-27 13:56:44.065627741 +0930
+@@ -48,15 +48,20 @@
+     color_.a = static_cast<unsigned char>(255 * opacity);
+ }
+ 
+-void ObjectGroup::AddObject(tmx::ObjectGroup::Object newobject) {
+-    newobject.SetColor(color_);
+-    objects_.push_back(newobject);
++void ObjectGroup::AddObject(tmx::ObjectGroup::Object* newobject) {
++    newobject->SetColor(color_);
++    objects_.push_back(std::unique_ptr<tmx::ObjectGroup::Object>(newobject));
++    objects_hash_[newobject->GetName()] = newobject;
++}
++
++tmx::ObjectGroup::Object& ObjectGroup::GetObject(const std::string& object_name) {
++    return *objects_hash_[object_name];
+ }
+ 
+ void ObjectGroup::SetOpacity(float opacity) {
+     color_.a = static_cast<unsigned char>(255 * opacity);
+     for (auto& object : objects_) {
+-        object.SetColor(color_);
++        object->SetColor(color_);
+     }
+ }
+ 
+@@ -65,14 +70,14 @@
+     color_.g = color.g;
+     color_.b = color.b;
+     for (auto& object : objects_) {
+-        object.SetColor(color_);
++        object->SetColor(color_);
+     }
+ }
+ 
+ void ObjectGroup::draw(sf::RenderTarget& target, sf::RenderStates /* states */) const {
+     if (visible) {
+         for (unsigned int i = 0; i < objects_.size(); ++i)
+-            target.draw(objects_[i]);
++            target.draw(*objects_[i]);
+     }
+ }
+ 
+@@ -152,6 +157,18 @@
+     }
+ }
+ 
++const std::string& ObjectGroup::Object::GetName(void) const {
++    return name_;
++}
++
++unsigned int ObjectGroup::Object::GetX(void) const {
++    return x_;
++}
++
++unsigned int ObjectGroup::Object::GetY(void) const {
++    return y_;
++}
++
+ void ObjectGroup::Object::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+     if (visible) {
+         if (tile_) {
+diff -Naur stp-master/src/STP/Core/Parser.cpp stp-9999/src/STP/Core/Parser.cpp
+--- stp-master/src/STP/Core/Parser.cpp	2016-05-27 13:55:59.214630638 +0930
++++ stp-9999/src/STP/Core/Parser.cpp	2016-05-27 13:56:44.065627741 +0930
+@@ -394,25 +394,25 @@
+ 
+             tmx::TileSet::Tile* tile = &tilemap->GetTileSet(gid)->GetTile(id);
+ 
+-            tmx::ObjectGroup::Object newobject(object_name, object_type, object_x, object_y,
++            tmx::ObjectGroup::Object* newobject = new tmx::ObjectGroup::Object(object_name, object_type, object_x, object_y,
+                                                object_width, object_height, object_rotation,
+                                                object_visible, tmx::Tile, "", tile);
+-            Parser::ParseProperties(object_node, &newobject);
++            Parser::ParseProperties(object_node, newobject);
+             object_group->AddObject(newobject);
+         } else if (object_width && object_height) {
+             if (object_node.child("ellipse")) {
+                 // Ellipse Object
+-                tmx::ObjectGroup::Object newobject(object_name, object_type, object_x, object_y,
++                tmx::ObjectGroup::Object* newobject = new tmx::ObjectGroup::Object(object_name, object_type, object_x, object_y,
+                                                    object_width, object_height, object_rotation,
+                                                    object_visible, tmx::Ellipse);
+-                Parser::ParseProperties(object_node, &newobject);
++                Parser::ParseProperties(object_node, newobject);
+                 object_group->AddObject(newobject);
+             } else {
+                 // Rectangle Object
+-                tmx::ObjectGroup::Object newobject(object_name, object_type, object_x, object_y,
++                tmx::ObjectGroup::Object* newobject = new tmx::ObjectGroup::Object(object_name, object_type, object_x, object_y,
+                                                    object_width, object_height, object_rotation,
+                                                    object_visible, tmx::Rectangle);
+-                Parser::ParseProperties(object_node, &newobject);
++                Parser::ParseProperties(object_node, newobject);
+                 object_group->AddObject(newobject);
+             }
+         } else {
+@@ -421,18 +421,18 @@
+             if (polygon_node) {
+                 // Polygon Object
+                 std::string vertices_points = polygon_node.attribute("points").as_string();
+-                tmx::ObjectGroup::Object newobject(object_name, object_type, object_x, object_y,
++                tmx::ObjectGroup::Object* newobject = new tmx::ObjectGroup::Object(object_name, object_type, object_x, object_y,
+                                                    object_width, object_height, object_rotation,
+                                                    object_visible, tmx::Polygon, vertices_points);
+-                Parser::ParseProperties(object_node, &newobject);
++                Parser::ParseProperties(object_node, newobject);
+                 object_group->AddObject(newobject);
+             } else if (polyline_node) {
+                 // Polyline Object
+                 std::string vertices_points = polyline_node.attribute("points").as_string();
+-                tmx::ObjectGroup::Object newobject(object_name, object_type, object_x, object_y,
++                tmx::ObjectGroup::Object* newobject = new tmx::ObjectGroup::Object(object_name, object_type, object_x, object_y,
+                                                    object_width, object_height, object_rotation,
+                                                    object_visible, tmx::Polyline, vertices_points);
+-                Parser::ParseProperties(object_node, &newobject);
++                Parser::ParseProperties(object_node, newobject);
+                 object_group->AddObject(newobject);
+             }
+         }

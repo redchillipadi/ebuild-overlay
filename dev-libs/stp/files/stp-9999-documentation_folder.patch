@@ -1,0 +1,10 @@
+diff -Naur STP/doc/CMakeLists.txt New/doc/CMakeLists.txt
+--- STP/doc/CMakeLists.txt	2016-05-27 16:01:07.957145566 +0930
++++ New/doc/CMakeLists.txt	2016-05-27 16:00:45.146147039 +0930
+@@ -30,5 +30,5 @@
+ 
+ # Set the install rule
+ install(DIRECTORY ${DOXYGEN_OUTPUT_DIR}/html
+-        DESTINATION doc/STP
++        DESTINATION share/doc/STP
+         COMPONENT doc)
