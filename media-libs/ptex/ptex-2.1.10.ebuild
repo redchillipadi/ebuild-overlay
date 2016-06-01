@@ -15,3 +15,11 @@ DEPEND=">=dev-util/cmake-2.8
 	sys-libs/zlib
 	app-doc/doxygen"
 KEHWORDS="~amd64 ~x86"
+
+src_configure() {
+	local mycmakeargs=(
+		=DCMAKE_INSTALL_DOCDIR:PATH=DATAROOTDIR/doc/${P}/html
+	)
+
+	cmake-utils_src_configure
+}
