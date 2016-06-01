@@ -15,3 +15,8 @@ DEPEND=">=dev-util/cmake-2.8
 	sys-libs/zlib
 	app-doc/doxygen"
 KEHWORDS="~amd64 ~x86"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${PN}-2.1.10-install-version-header.patch
+	cmake-utils_src_prepare
+}
