@@ -10,9 +10,3 @@ Installs the fast, type-safe c++ entity component system from https://github.com
 
 # sci-physics/box2d
 Installs the Box2d physics library from https://github.com/erincatto/Box2D
-
-# media-libs/ptex
-Installs the Per-Face Texture Mapping for Production Rendering library from https://github.com/wdas/ptex
-
-# media-libs/opensubdiv
-Installs the Open-Source Subdivision Surface library from https://github.com/PixarAnimationStudios/OpenSubdiv
