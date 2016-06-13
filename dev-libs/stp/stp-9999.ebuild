@@ -1,8 +1,8 @@
-# Copyright 1999-2016 Adrian Grigo <agrigo2001@yahoo.com.au>
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 inherit eutils cmake-utils git-r3
 
 DESCRIPTION="An extension library for SFML2 designed to read the Tiled map format"
@@ -16,21 +16,20 @@ DEPEND="app-arch/unzip
 	sys-libs/zlib
 	dev-libs/pugixml
 	doc? ( app-doc/doxygen )"
-KEHWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~x86"
 RESTRICT="test"
 
-src_prepare() {
-  epatch "${FILESDIR}/${P}-object_accessors.patch"
-  epatch "${FILESDIR}/${P}-documentation_folder.patch"
-  cmake-utils_src_prepare
-}
+PATCHES=(
+	"${FILESDIR}"/${P}-object_accessors.patch
+	"${FILESDIR}"/${P}-documentation_folder.patch
+)
 
 src_configure() {
-  mycmakeargs=(
-    "-DUSE_SHARED_PUGIXML:BOOL=ON"
-    "-DUSE_SHARED_ZLIB:BOOL=ON"
-    `cmake-utils_use doc STP_BUILD_DOC`
-  )
+	mycmakeargs=(
+		-DUSE_SHARED_PUGIXML:BOOL=ON
+		-DUSE_SHARED_ZLIB:BOOL=ON
+		-DSTP_BUILD_DOC=$(usex doc ON OFF)
+	)
 
-  cmake-utils_src_configure
+	cmake-utils_src_configure
 }

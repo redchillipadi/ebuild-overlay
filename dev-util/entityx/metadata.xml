@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer restrict="&gt;=dev-util/entityx-1.0.0" type="person">
+		<email>agrigo2001@yahoo.com.au</email>
+		<name>Adrian Grigo</name>
+		<description>Proxy maintainer</description>
+	</maintainer>
+
+	<longdescription>
+		A fast, type-safe entity component system for C++.
+	</longdescription>
+</pkgmetadata>

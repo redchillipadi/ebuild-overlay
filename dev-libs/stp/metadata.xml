@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer restrict="&gt;=dev-libs/stp-9999" type="person">
+		<email>agrigo2001@yahoo.com.au</email>
+		<name>Adrian Grigo</name>
+		<description>Proxy maintainer</description>
+	</maintainer>
+
+	<longdescription>
+		An extension library for SFML2 designed to read the Tiled map format
+	</longdescription>
+
+	<use>
+		<flag name="doc">
+			Build and install the documentation.
+		</flag>
+	</use>
+</pkgmetadata>
