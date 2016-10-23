@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=
+Name=Unity
+Exec=/usr/bin/unity-editor
+Icon=unity-editor-icon
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;
+MimeType=x-scheme-handler/com.unity3d.kharma;

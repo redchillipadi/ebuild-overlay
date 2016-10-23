@@ -10,3 +10,6 @@ Installs the fast, type-safe c++ entity component system from https://github.com
 
 # sci-physics/box2d
 Installs the Box2d physics library from https://github.com/erincatto/Box2D
+
+# games-engines/unity3d
+Installs the Unity3d game development platform (forked from maxik-overlay)
