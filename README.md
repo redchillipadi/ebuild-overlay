@@ -2,6 +2,9 @@
 
 Contains various ebuilds I have created to install packages in Gentoo
 
+# dev-libs/sfgui
+Installs the SFML GUI library from http://sfgui.sfml-dev.de
+
 # dev-libs/stp
 Installs the STP SFML TMX file parser from https://edoren.github.io/STP
 
