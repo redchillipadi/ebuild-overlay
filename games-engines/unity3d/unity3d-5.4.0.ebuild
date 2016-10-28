@@ -83,7 +83,7 @@ src_install() {
 	fperms +x /opt/Unity/Editor/Unity
 	fperms +x /opt/Unity/Editor/UnityHelper
 	fperms +x /opt/Unity/Editor/Data/Mono/bin/mono
-	fperms +x /opt/Unity/Editor/Data/Tools/FSBTool
+	fperms +x /opt/Unity/Editor/Data/Tools/FSBTool/FSBTool
 	fperms +x /opt/Unity/Editor/Data/Tools/UnityShaderCompiler
 	fperms +x /opt/Unity/MonoDevelop/bin/monodevelop
 
