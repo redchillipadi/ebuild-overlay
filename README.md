@@ -21,9 +21,13 @@ After installation some of the file permissions are not set correctly.
 Once I have found them all I will add them to the ebuild.
 
 For now run:
+
 chmod 4755 /opt/Unity/Editor/chrome-sandbox
+
 chmod +x /opt/Unity/Editor/Data/Mono/bin/mono
+
 chmod +x /opt/Unity/Editor/Data/Tools/FSBTool
+
 chmod +x /opt/Unity/MonoDevelop/bin/monodevelop
 
 # dev-dotnet/xsp
