@@ -26,7 +26,7 @@ chmod 4755 /opt/Unity/Editor/chrome-sandbox
 
 chmod +x /opt/Unity/Editor/Data/Mono/bin/mono
 
-chmod +x /opt/Unity/Editor/Data/Tools/FSBTool
+chmod +x /opt/Unity/Editor/Data/Tools/FSBTool/FSBTool
 
 chmod +x /opt/Unity/Editor/Data/Tools/UnityShaderCompiler
 
