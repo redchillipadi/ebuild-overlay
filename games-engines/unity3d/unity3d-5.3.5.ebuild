@@ -14,7 +14,7 @@ HOMEPAGE="https://unity3d.com"
 SRC_URI="http://download.unity3d.com/download_unity/linux/unity-editor-installer-${PV_F}+${BUILDTAG}.sh -> ${P}+${BUILDTAG}.sh"
 
 LICENSE="custom"
-SLOT="5.3"
+SLOT="0"
 KEYWORDS="-* ~amd64 amd64" # Package is x86_64-only
 RESTRICT="strip mirror"
 RDEPEND="ffmpeg? ( media-video/ffmpeg )
