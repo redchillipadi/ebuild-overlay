@@ -22,6 +22,7 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-fix-gmcs-references.patch"
+	epatch "${FILESDIR}/${P}-fix-library-path.patch"
 }
 src_configure() {
 	export MCS=/usr/bin/mcs

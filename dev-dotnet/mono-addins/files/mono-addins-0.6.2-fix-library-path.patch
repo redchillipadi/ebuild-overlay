@@ -1,0 +1,32 @@
+diff -Naur a/Mono.Addins.MSBuild/Makefile.am b/Mono.Addins.MSBuild/Makefile.am
+--- a/Mono.Addins.MSBuild/Makefile.am	2016-10-28 13:37:32.406848482 +1100
++++ b/Mono.Addins.MSBuild/Makefile.am	2016-10-28 13:38:43.563843887 +1100
+@@ -27,9 +27,9 @@
+ 	./Mono.Addins.targets
+ 
+ REFERENCES =  \
+-	-r:Microsoft.Build.Framework \
+-	-r:Microsoft.Build.Utilities \
+-	-r:System
++	-r:/usr/lib64/mono/4.0-api/Microsoft.Build.Framework \
++	-r:/usr/lib64/mono/4.0-api/Microsoft.Build.Utilities.v4.0 \
++	-r:/usr/lib64/mono/4.0-api/System
+ 
+ DLL_REFERENCES = 
+ 
+diff -Naur a/Mono.Addins.MSBuild/Makefile.in b/Mono.Addins.MSBuild/Makefile.in
+--- a/Mono.Addins.MSBuild/Makefile.in	2016-10-28 13:37:32.407848482 +1100
++++ b/Mono.Addins.MSBuild/Makefile.in	2016-10-28 13:39:29.414840926 +1100
+@@ -169,9 +169,9 @@
+ 	./Mono.Addins.targets
+ 
+ REFERENCES = \
+-	-r:Microsoft.Build.Framework \
+-	-r:Microsoft.Build.Utilities \
+-	-r:System
++	-r:/usr/lib64/mono/4.0-api/Microsoft.Build.Framework \
++	-r:/usr/lib64/mono/4.0-api/Microsoft.Build.Utilities.v4.0 \
++	-r:/usr/lib64/mono/4.0-api/System
+ 
+ DLL_REFERENCES = 
+ xbuilddir = $(libdir)/mono/xbuild
