@@ -17,6 +17,15 @@ Installs the Box2d physics library from https://github.com/erincatto/Box2D
 # games-engines/unity3d
 Installs the Unity3d game development platform (forked from maxik-overlay)
 
+After installation some of the file permissions are not set correctly.
+Once I have found them all I will add them to the ebuild.
+
+For now run:
+chmod 4755 /opt/Unity/Editor/chrome-sandbox
+chmod +x /opt/Unity/Editor/Data/Mono/bin/mono
+chmod +x /opt/Unity/Editor/Data/Tools/FSBTool
+chmod +x /opt/Unity/MonoDevelop/bin/monodevelop
+
 # dev-dotnet/xsp
 Fixes for xsp to compile with mcs rather than gmcs and find libraries (now under /usr/libXX/mono/X.X-api/)
 
