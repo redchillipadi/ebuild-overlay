@@ -28,6 +28,8 @@ chmod +x /opt/Unity/Editor/Data/Mono/bin/mono
 
 chmod +x /opt/Unity/Editor/Data/Tools/FSBTool
 
+chmod +x /opt/Unity/Editor/Data/Tools/UnityShaderCompiler
+
 chmod +x /opt/Unity/MonoDevelop/bin/monodevelop
 
 # dev-dotnet/xsp
