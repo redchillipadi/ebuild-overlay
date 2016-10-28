@@ -1,0 +1,24 @@
+diff -Naur a/configure b/configure
+--- a/configure	2016-10-28 10:05:35.503669715 +1100
++++ b/configure	2016-10-28 10:05:48.663668865 +1100
+@@ -3238,7 +3238,9 @@
+ $as_echo_n "checking for Mono 2.0 GAC for $asm.dll... " >&6; }
+ 		if test \
+ 			-e "$($PKG_CONFIG --variable=libdir mono)/mono/2.0/$asm.dll" -o \
+-			-e "$($PKG_CONFIG --variable=prefix mono)/lib/mono/2.0/$asm.dll"; \
++			-e "$($PKG_CONFIG --variable=prefix mono)/lib/mono/2.0/$asm.dll" -o \
++			-e "$($PKG_CONFIG --variable=libdir mono)/mono/2.0-api/$asm.dll" -o \
++			-e "$($PKG_CONFIG --variable=prefix mono)/lib/mono/2.0-api/$asm.dll"; \
+ 			then \
+ 			{ $as_echo "$as_me:$LINENO: result: found" >&5
+ $as_echo "found" >&6; }
+@@ -3266,7 +3268,8 @@
+ $as_echo_n "checking for Mono 4.0 GAC for $asm.dll... " >&6; }
+ 		if test \
+ 			-e "$($PKG_CONFIG --variable=libdir mono)/mono/4.0/$asm.dll" -o \
+-			-e "$($PKG_CONFIG --variable=prefix mono)/lib/mono/4.0/$asm.dll"; \
++			-e "$($PKG_CONFIG --variable=prefix mono)/lib/mono/4.0/$asm.dll" -o \
++			-e "$($PKG_CONFIG --variable=prefix mono)/lib/mono/4.0-api/$asm.dll"; \
+ 			then \
+ 			{ $as_echo "$as_me:$LINENO: result: found" >&5
+ $as_echo "found" >&6; }
