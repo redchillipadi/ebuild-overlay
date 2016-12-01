@@ -89,6 +89,7 @@ src_install() {
 
 	# TODO: Why is this changed to 4711 once installed?
 	fperms 4755 /opt/Unity/Editor/chrome-sandbox
+	elog "Set chrome-sandbox to suid"
 }
 
 pkg_preinst() {
