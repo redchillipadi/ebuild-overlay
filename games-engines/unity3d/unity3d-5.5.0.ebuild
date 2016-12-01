@@ -36,7 +36,7 @@ RDEPEND="ffmpeg? ( media-video/ffmpeg )
 DEPEND="${RDEPEND}
 	sys-apps/fakeroot"
 
-S="${WORKDIR}/unity-editor-${PV_F}"
+S="${WORKDIR}/unity-editor-5.5.0xf3Linux"
 FILES="${S}/Files"
 
 src_unpack() {
