@@ -31,8 +31,9 @@ RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	media-libs/libpng
 	x11-libs/libXtst
 	dev-libs/libpqxx
+	dev-dotnet/mono-addins
+	dev-dotnet/gconf-sharp
 	net-libs/nodejs[npm]"
-#	dev-util/monodevelop
 
 DEPEND="${RDEPEND}
 	sys-apps/fakeroot"
