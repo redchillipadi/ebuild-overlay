@@ -92,6 +92,8 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
+        chmod 4755 /opt/Unity/Editor/chrome-sandbox
+
 	gnome2_icon_cache_update
 	ewarn "Please note that Unity3D requires closed-source"
 	ewarn "graphics drivers to be used for now, as it makes"
