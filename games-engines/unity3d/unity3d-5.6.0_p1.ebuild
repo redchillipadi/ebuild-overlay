@@ -31,6 +31,8 @@ RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	media-libs/libpng
 	x11-libs/libXtst
 	dev-libs/libpqxx
+	dev-lang/mono
+	dev-dotnet/gnome-sharp
 	net-libs/nodejs[npm]"
 
 DEPEND="${RDEPEND}
