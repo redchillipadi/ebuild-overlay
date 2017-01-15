@@ -16,14 +16,3 @@ Installs the Box2d physics library from https://github.com/erincatto/Box2D
 
 # games-engines/unity3d
 Installs the Unity3d game development platform (forked from maxik-overlay)
-
-# dev-dotnet/xsp
-Fixes for xsp to compile with mcs rather than gmcs and find libraries (now under /usr/libXX/mono/X.X-api/)
-
-dev-dotnet/monodevelop (soon to be removed from the tree) has a similar problem but can be installed using
-
-MCS=/usr/bin/mcs emerge monodevelop
-
-# dev-dotnet/mono-addins
-Fixes for mono-addins-0.6.2 to compile with mcs rather than gmcs and find references (hardcoded to /usr/lib/mono/4.0-api/)
-The Gentoo testing package 1.0-r1 compiles successfully without this patch but blocks on dev-dotnet/XXXX-sharp. Once these are resolved then my patch will no longer be required.
