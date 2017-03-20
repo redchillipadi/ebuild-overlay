@@ -89,6 +89,8 @@ src_install() {
 	fperms +x /opt/Unity/Editor/Data/Tools/UnityShaderCompiler
 	fperms +x /opt/Unity/MonoDevelop/bin/monodevelop
 	fperms +x /opt/Unity/Editor/Data/MonoBleedingEdge/bin/mono
+	fperms +x /opt/Unity/Editor/Data/Tools/nodejs/npm
+	fperms +x /opt/Unity/Editor/Data/Tools/nodejs/node
 
 
 	# TODO: Why is this changed to 4711 once installed?
