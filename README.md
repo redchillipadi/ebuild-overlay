@@ -19,3 +19,6 @@ Installs the Unity3d game development platform (forked from maxik-overlay)
 
 # dev-games/ogremeshy
 Installs ogremeshy utility to view Ogre meshes
+
+# dev-lang/fasm
+Install the Flat Assembler (self-assembling)
