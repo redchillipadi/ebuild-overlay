@@ -33,7 +33,7 @@ src_install() {
 
 pkg_postinst() {
   enewgroup nicehash
-  enewuser nicehash -1 /bin/false /dev/null video
+  enewuser nicehash -1 -1 /dev/null video
   elog
   elog "Remember to configure the server and bitcoin address"
   elog "as appropriate in /etc/init.d/nicehash"
