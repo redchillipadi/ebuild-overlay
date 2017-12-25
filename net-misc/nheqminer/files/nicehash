@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description='Start/stop nicehash equihash miner in daemon mode'
+
+pidfile="/var/run/nicehash.pid"
+command="/usr/bin/nheqminer"
+command_args="-l equihash.usa.nicehash.com:3357 -u 33GfR9cLNKHJ37mX2zeN4omXFJvkChsWDF.worker1 -t 0 -e 2 -cd 0 -cb 1 -ct 1"
+
+depend() {
+	need net
+}
+
+start() {
+	ebegin "Starting Nicehash Equihash Miner"
+	start-stop-daemon --start --user nicehash \
+	--name nheqminer --pidfile ${pidfile} --background --make-pidfile \
+	--exec ${command} -- ${command_args}
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Nicehash Equihash Miner"
+	start-stop-daemon --stop --user adrian \
+	--name nheqminer --pidfile ${pidfile}
+	eend $?
+}
