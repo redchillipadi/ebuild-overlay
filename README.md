@@ -22,3 +22,6 @@ Installs ogremeshy utility to view Ogre meshes
 
 # dev-lang/fasm
 Install the Flat Assembler (self-assembling)
+
+# net-misc/nheqminer
+Install the Nice Hash Equiminer
