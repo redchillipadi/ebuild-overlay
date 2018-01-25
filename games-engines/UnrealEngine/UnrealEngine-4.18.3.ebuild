@@ -30,3 +30,15 @@ src_configure() {
 	./Setup.sh
 	./GenerateProjectFiles.sh
 }
+
+src_compile() {
+	emake UE4Editor-Linux-Debug || die "emake failed"
+}
+
+src_install() {
+	insinto /opt/UnrealEngine
+	doins -r ${S}/Engine
+	doins -r ${S}/FeaturePacks
+	doins -r ${S}/Samples
+	doins -r ${S}/Templates
+}

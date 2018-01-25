@@ -20,6 +20,9 @@ Installs the fast, type-safe c++ entity component system from https://github.com
 # games-engines/unity3d
 Installs the Unity3d game development platform (forked from maxik-overlay)
 
+# games-engines/UnrealEngine
+Installs the UnrealEngine 4 game development suite
+
 # net-misc/nheqminer
 Install the Nice Hash Equiminer
 
