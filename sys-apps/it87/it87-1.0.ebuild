@@ -5,6 +5,10 @@ EAPI=6
 
 inherit git-r3 linux-mod
 
+DESCRIPTION="Linux Driver for ITE LPC chips"
+HOMEPAGE="https://github.com/groeck/it87"
+LICENSE=GPL-2
+
 EGIT_REPO_URI="https://github.com/groeck/it87.git"
 EGIT_COMMIT="v1.0"
 
