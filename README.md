@@ -26,3 +26,5 @@ Install the Nice Hash Equiminer
 # sci-physics/box2d
 Installs the Box2d physics library from https://github.com/erincatto/Box2D
 
+# sys-apps/it87
+Installs kernel module to monitor system temperatures and voltages on AMD Ryzen systems. Most Ryzen boards require this module, some require nct6775.
