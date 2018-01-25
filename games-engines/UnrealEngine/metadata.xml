@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="project">
+    <email>agrigo2001@yahoo.com.au</email>
+    <name>Adrian Grigo</name>
+  </maintainer>
+  <longdescription>
+    Unreal Engine 4 is a suite of integrated tools for game developers to design and build games, simulations and visualizations.
+  </longdescription>
+</pkgmetadata>
