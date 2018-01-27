@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Unreal Engine 4
+Comment=
+Exec=./Engine/Binaries/Linux/UE4Editor
+Icon=/usr/share/pixmaps/UE4Editor.png
+Path=/opt/UnrealEngine
+Terminal=false
+StartupNotify=false
+Categories=Development;IDE;
