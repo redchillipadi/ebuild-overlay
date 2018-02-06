@@ -23,6 +23,9 @@ Installs the Unity3d game development platform (forked from maxik-overlay)
 # games-engines/UnrealEngine
 Installs the UnrealEngine 4 game development suite
 
+# net-misc/ccminer
+Install the CUDA Miner Project from tpruvot
+
 # net-misc/nheqminer
 Install the Nice Hash Equiminer
 
