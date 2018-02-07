@@ -16,6 +16,7 @@ RESTRICT="test"
 DEPEND="dev-libs/boost[static-libs]
 	dev-lang/fasm
 	>=dev-util/nvidia-cuda-toolkit-8.0
+	<dev-util/nvidia-cuda-toolkit-9.0
 "
 
 src_compile() {
