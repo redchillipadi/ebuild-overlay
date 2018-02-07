@@ -22,7 +22,7 @@ start() {
 
 stop() {
 	ebegin "Stopping Nicehash Equihash Miner"
-	start-stop-daemon --stop --user adrian \
+	start-stop-daemon --stop --user nicehash \
 	--name nheqminer --pidfile ${pidfile}
 	eend $?
 }
