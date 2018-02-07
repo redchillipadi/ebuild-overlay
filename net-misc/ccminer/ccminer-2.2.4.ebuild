@@ -37,3 +37,21 @@ src_configure() {
 		--with-nvml=libnvidia-ml.so \
 		 --with-cuda=/opt/cuda
 }
+
+src_install() {
+  dobin ${S}/ccminer
+  doinitd ${FILESDIR}/ccminer
+}
+
+pkg_postinst() {
+  enewgroup nicehash
+  enewuser nicehash -1 -1 /dev/null video
+  elog
+  elog "Remember to configure the algorithm, server and bitcoin address"
+  elog "as appropriate in /etc/init.d/ccminer"
+  elog
+  elog "To automatically start the daemon on boot run"
+  elog "# rc-update add ccminer default"
+  elog
+}
+

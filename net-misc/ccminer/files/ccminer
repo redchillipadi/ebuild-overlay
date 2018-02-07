@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description='Start/stop ccminer miner in daemon mode'
+
+pidfile="/var/run/ccminer.pid"
+command="/usr/bin/ccminer"
+command_args="--algo=lyra2v2 --url=stratum+tcp://lyra2rev2.usa.nicehash.com:3347 -u 33GfR9cLNKHJ37mX2zeN4omXFJvkChsWDF"
+
+depend() {
+	need net
+}
+
+start() {
+	ebegin "Starting ccminer"
+	start-stop-daemon --start --user nicehash \
+	--name ccminer --pidfile ${pidfile} --background --make-pidfile \
+	--exec ${command} -- ${command_args}
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping ccminer"
+	start-stop-daemon --stop --user nicehash \
+	--name ccminer --pidfile ${pidfile}
+	eend $?
+}
