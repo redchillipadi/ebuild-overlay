@@ -1,0 +1,12 @@
+diff -Naur a/Engine/Config/Linux/LinuxEngine.ini b/Engine/Config/Linux/LinuxEngine.ini
+--- a/Engine/Config/Linux/LinuxEngine.ini	2018-02-01 23:36:03.528936856 +1100
++++ b/Engine/Config/Linux/LinuxEngine.ini	2018-02-01 23:36:28.965603645 +1100
+@@ -17,7 +17,7 @@
+ r.setres=1280x720
+ 
+ [/Script/SourceCodeAccess.SourceCodeAccessSettings]
+-PreferredAccessor=NullSourceCodeAccessor
++PreferredAccessor=QtCreatorSourceCodeAccessor
+ 
+ [TextureStreaming]
+ ; PoolSizeVRAMPercentage is how much percentage of GPU Dedicated VRAM should be used as a TexturePool cache for streaming textures (0 - unlimited streaming)

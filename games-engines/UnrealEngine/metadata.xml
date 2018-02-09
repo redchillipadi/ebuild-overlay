@@ -8,4 +8,7 @@
   <longdescription>
     Unreal Engine 4 is a suite of integrated tools for game developers to design and build games, simulations and visualizations.
   </longdescription>
+  <use>
+    <flag name="qtcreator">Edit C++ source with qt-creator</flag>
+  </use>
 </pkgmetadata>

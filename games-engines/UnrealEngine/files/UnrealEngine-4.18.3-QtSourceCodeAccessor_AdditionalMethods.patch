@@ -1,0 +1,91 @@
+diff -Naur a/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.cpp b/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.cpp
+--- a/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.cpp	2018-02-09 10:38:30.713027947 +1100
++++ b/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.cpp	2018-02-09 10:51:19.323059538 +1100
+@@ -41,6 +41,31 @@
+         || FPaths::FileExists(TEXT("/usr/bin/clang-4.0"));
+ }
+ 
++bool FQtCreatorSourceCodeAccessor::DoesSolutionExist() const
++{
++        FString FullPath;
++        FString FilenamePart;
++        FString ExtensionPart;
++        if(FDesktopPlatformModule::Get()->GetSolutionPath(FullPath)) {
++                if ( FPaths::FileExists( FullPath ) )
++                {
++                        FString ProjectFolder;
++                        FPaths::Split(FullPath, ProjectFolder, FilenamePart, ExtensionPart);
++                        FString Filename = FilenamePart + FString(TEXT(".pro"));
++                        FString CodeSolutionFile = FPaths::Combine(*ProjectFolder, *Filename);
++
++                        // Add this to handle spaces in path names.
++                        const FString NewFullPath = FString::Printf(TEXT("\"%s\""), *CodeSolutionFile);
++
++			if ( FPaths::FileExists( NewFullPath ) )
++			{
++				return true;
++			}
++		}
++	}
++	return false;
++}
++
+ FName FQtCreatorSourceCodeAccessor::GetFName() const
+ {
+         return FName("QtCreatorSourceCodeAccessor");
+@@ -92,6 +117,39 @@
+         return false;
+ }
+ 
++bool FQtCreatorSourceCodeAccessor::OpenSolutionAtPath(const FString& InSolutionPath)
++{
++	FString FilenamePart;
++	FString ExtensionPart;
++	if ( FPaths::FileExists( InSolutionPath ) )
++	{
++		FString ProjectFolder;
++		FPaths::Split(InSolutionPath, ProjectFolder, FilenamePart, ExtensionPart);
++		FString Filename = FilenamePart + FString(TEXT(".pro"));
++		FString CodeSolutionFile = FPaths::Combine(*ProjectFolder, *Filename);
++		FString Editor = FString(TEXT("/usr/bin/qtcreator"));
++		FString Args = FString(TEXT("-client "));
++
++		// Add this to handle spaces in path names.
++		const FString NewFullPath = FString::Printf(TEXT("\"%s\""), *CodeSolutionFile);
++
++		Args.Append(NewFullPath);
++		if(FLinuxPlatformProcess::CreateProc(*Editor,
++                                                     *Args,
++                                                     true,
++                                                     true,
++                                                     false,
++                                                     nullptr,
++                                                     0,
++                                                     nullptr,
++                                                     nullptr).IsValid())
++		{
++			return true;
++		}
++ 	}
++	return false;
++}
++
+ bool FQtCreatorSourceCodeAccessor::OpenFileAtLine(const FString& FullPath, int32 LineNumber, int32 ColumnNumber)
+ {
+         FString Editor = FString(TEXT("/usr/bin/qtcreator"));
+diff -Naur a/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.h b/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.h
+--- a/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.h	2018-02-09 10:38:30.713027947 +1100
++++ b/Engine/Plugins/Developer/QtCreatorSourceCodeAccess/Source/QtCreatorSourceCodeAccess/Private/QtCreatorSourceCodeAccessor.h	2018-02-09 10:40:19.573032421 +1100
+@@ -29,10 +29,12 @@
+ 	/** ISourceCodeAccessor implementation */
+     virtual void RefreshAvailability() override { }
+ 	virtual bool CanAccessSourceCode() const override;
++	virtual bool DoesSolutionExist() const override;
+ 	virtual FName GetFName() const override;
+ 	virtual FText GetNameText() const override;
+ 	virtual FText GetDescriptionText() const override;
+ 	virtual bool OpenSolution() override;
++	virtual bool OpenSolutionAtPath(const FString& InSolutionPath) override;
+ 	virtual bool OpenFileAtLine(const FString& FullPath, int32 LineNumber, int32 ColumnNumber = 0) override;
+ 	virtual bool OpenSourceFiles(const TArray<FString>& AbsoluteSourcePaths) override;
+ 	virtual bool AddSourceFiles(const TArray<FString>& AbsoluteSourcePaths, const TArray<FString>& AvailableModules) override;
