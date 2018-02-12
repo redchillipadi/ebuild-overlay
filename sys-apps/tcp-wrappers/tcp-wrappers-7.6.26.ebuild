@@ -11,7 +11,7 @@ MY_P="${PN//-/_}_${MY_PV}"
 DESCRIPTION="TCP Wrappers"
 HOMEPAGE="ftp://ftp.porcupine.org/pub/security/index.html"
 SRC_URI="ftp://ftp.porcupine.org/pub/security/${MY_P}.tar.gz
-	mirror://debian/pool/main/t/${PN}/${PN}_${MY_PV}.q-${DEB_PV}.debian.tar.gz"
+	mirror://debian/pool/main/t/${PN}/${PN}_${MY_PV}.q-${DEB_PV}.debian.tar.xz"
 
 LICENSE="tcp_wrappers_license"
 SLOT="0"
