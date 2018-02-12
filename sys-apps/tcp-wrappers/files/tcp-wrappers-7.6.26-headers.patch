@@ -38,14 +38,13 @@ diff -Naur a/hosts_access.c b/hosts_access.c
  #include <sys/types.h>
  #ifdef INT32_T
      typedef uint32_t u_int32_t;
-@@ -44,8 +45,8 @@
+@@ -44,8 +45,7 @@
  #include <netdb.h>
  #endif
  
 -extern char *fgets();
 -extern int errno;
 +static int match_pattern_ylo(const char *s, const char *pattern);
-+int cidr_mask_addr(char *str);
  
  #ifndef	INADDR_NONE
  #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
