@@ -29,7 +29,7 @@ S=${WORKDIR}/${MY_P}
 src_prepare() {
 	EPATCH_OPTS="-p1" \
 	epatch $(sed -e 's:^:../debian/patches/:' ../debian/patches/series)
-	epatch "${FILESDIR}"/${PN}-7.6-headers.patch
+	epatch "${FILESDIR}"/${PN}-7.6.26-headers.patch
 	epatch "${FILESDIR}"/${PN}-7.6-redhat-bug11881.patch
 
 	multilib_copy_sources

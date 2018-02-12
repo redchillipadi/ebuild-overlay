@@ -1,0 +1,290 @@
+diff -Naur a/clean_exit.c b/clean_exit.c
+--- a/clean_exit.c	2018-02-12 23:46:32.883053182 +1100
++++ b/clean_exit.c	2018-02-12 23:53:28.933065750 +1100
+@@ -14,7 +14,8 @@
+ 
+ #include <stdio.h>
+ 
+-extern void exit();
++#include <unistd.h>
++#include <stdlib.h>
+ 
+ #include "tcpd.h"
+ 
+diff -Naur a/fix_options.c b/fix_options.c
+--- a/fix_options.c	2018-02-12 23:47:27.579721502 +1100
++++ b/fix_options.c	2018-02-12 23:58:53.029742204 +1100
+@@ -29,13 +29,15 @@
+ 
+ /* fix_options - get rid of IP-level socket options */
+ 
++void
+ fix_options(request)
+ struct request_info *request;
+ {
+ #ifdef IP_OPTIONS
+     unsigned char optbuf[BUFFER_SIZE / 3], *cp;
+     char    lbuf[BUFFER_SIZE], *lp;
+-    int     optsize = sizeof(optbuf), ipproto;
++    socklen_t optsize = sizeof(optbuf);
++    int ipproto;
+     struct protoent *ip;
+     int     fd = request->fd;
+     unsigned int opt;
+diff -Naur a/hosts_access.c b/hosts_access.c
+--- a/hosts_access.c	2018-02-12 23:46:43.133053492 +1100
++++ b/hosts_access.c	2018-02-12 23:54:29.316400906 +1100
+@@ -23,6 +23,7 @@
+ 
+ /* System libraries. */
+ 
++#include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/param.h>
+ #include <netinet/in.h>
+@@ -34,8 +35,8 @@
+ #include <setjmp.h>
+ #include <string.h>
+ 
+-extern char *fgets();
+-extern int errno;
++static int match_pattern_ylo(const char *s, const char *pattern);
++int cidr_mask_addr(char *str);
+ 
+ #ifndef	INADDR_NONE
+ #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
+diff -Naur a/inetcf.c b/inetcf.c
+--- a/inetcf.c	2018-02-12 23:46:50.366387045 +1100
++++ b/inetcf.c	2018-02-12 23:55:07.149735383 +1100
+@@ -9,15 +9,14 @@
+ static char sccsid[] = "@(#) inetcf.c 1.7 97/02/12 02:13:23";
+ #endif
+ 
++#include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <stdio.h>
+ #include <errno.h>
+ #include <string.h>
+ 
+-extern int errno;
+-extern void exit();
+-
++#include "scaffold.h"
+ #include "tcpd.h"
+ #include "inetcf.h"
+ 
+diff -Naur a/misc.c b/misc.c
+--- a/misc.c	2018-02-12 23:47:23.386388042 +1100
++++ b/misc.c	2018-02-12 23:58:01.709740655 +1100
+@@ -14,11 +14,10 @@
+ #include <arpa/inet.h>
+ #include <stdio.h>
+ #include <string.h>
++#include <stdlib.h>
+ 
+ #include "tcpd.h"
+ 
+-extern char *fgets();
+-
+ #ifndef	INADDR_NONE
+ #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
+ #endif
+diff -Naur a/options.c b/options.c
+--- a/options.c	2018-02-12 23:45:58.683052151 +1100
++++ b/options.c	2018-02-12 23:49:32.549725277 +1100
+@@ -34,6 +34,8 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
++#include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/param.h>
+ #include <sys/socket.h>
+diff -Naur a/percent_x.c b/percent_x.c
+--- a/percent_x.c	2018-02-12 23:46:57.799720602 +1100
++++ b/percent_x.c	2018-02-12 23:55:35.299736233 +1100
+@@ -16,12 +16,12 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
++#include <stdlib.h>
+ #include <stdio.h>
+ #include <syslog.h>
+ #include <string.h>
+ 
+-extern void exit();
+-
+ /* Local stuff. */
+ 
+ #include "tcpd.h"
+diff -Naur a/rfc931.c b/rfc931.c
+--- a/rfc931.c	2018-02-12 23:47:05.233054160 +1100
++++ b/rfc931.c	2018-02-12 23:55:53.923070128 +1100
+@@ -15,6 +15,7 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
+ #include <stdio.h>
+ #include <syslog.h>
+ #include <sys/types.h>
+diff -Naur a/safe_finger.c b/safe_finger.c
+--- a/safe_finger.c	2018-02-12 23:46:04.886385671 +1100
++++ b/safe_finger.c	2018-02-12 23:50:34.043060467 +1100
+@@ -20,6 +20,11 @@
+ 
+ /* System libraries */
+ 
++#include <unistd.h>
++#include <fcntl.h>
++#include <stdlib.h>
++#include <sys/wait.h>
++#include <grp.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <signal.h>
+@@ -27,7 +32,7 @@
+ #include <ctype.h>
+ #include <pwd.h>
+ 
+-extern void exit();
++int pipe_stdin(char **argv);
+ 
+ /* Local stuff */
+ 
+diff -Naur a/scaffold.c b/scaffold.c
+--- a/scaffold.c	2018-02-12 23:46:11.033052523 +1100
++++ b/scaffold.c	2018-02-12 23:51:29.266395469 +1100
+@@ -10,6 +10,7 @@
+ 
+ /* System libraries. */
+ 
++#include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/socket.h>
+diff -Naur a/shell_cmd.c b/shell_cmd.c
+--- a/shell_cmd.c	2018-02-12 23:46:17.746386059 +1100
++++ b/shell_cmd.c	2018-02-12 23:52:07.349729952 +1100
+@@ -14,6 +14,10 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
++#include <stdlib.h>
++#include <fcntl.h>
++#include <sys/wait.h>
+ #include <sys/types.h>
+ #include <sys/param.h>
+ #include <signal.h>
+@@ -21,8 +25,6 @@
+ #include <syslog.h>
+ #include <string.h>
+ 
+-extern void exit();
+-
+ /* Local stuff. */
+ 
+ #include "tcpd.h"
+diff -Naur a/socket.c b/socket.c
+--- a/socket.c	2018-02-12 23:47:31.893054965 +1100
++++ b/socket.c	2018-02-13 00:00:12.263077932 +1100
+@@ -76,7 +76,7 @@
+ {
+     static struct sockaddr_in client;
+     static struct sockaddr_in server;
+-    int     len;
++    socklen_t len;
+     char    buf[BUFSIZ];
+     int     fd = request->fd;
+ 
+@@ -224,7 +224,7 @@
+ {
+     char    buf[BUFSIZ];
+     struct sockaddr_in sin;
+-    int     size = sizeof(sin);
++    socklen_t size = sizeof(sin);
+ 
+     /*
+      * Eat up the not-yet received datagram. Some systems insist on a
+diff -Naur a/tcpd.c b/tcpd.c
+--- a/tcpd.c	2018-02-12 23:47:09.593054292 +1100
++++ b/tcpd.c	2018-02-12 23:56:42.716404935 +1100
+@@ -16,6 +16,7 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/param.h>
+ #include <sys/stat.h>
+@@ -38,6 +39,8 @@
+ #include "patchlevel.h"
+ #include "tcpd.h"
+ 
++void fix_options(struct request_info *request);
++
+ int     allow_severity = SEVERITY;	/* run-time adjustable */
+ int     deny_severity = LOG_WARNING;	/* ditto */
+ 
+diff -Naur a/tcpdchk.c b/tcpdchk.c
+--- a/tcpdchk.c	2018-02-12 23:46:25.353052956 +1100
++++ b/tcpdchk.c	2018-02-12 23:53:00.326398218 +1100
+@@ -20,6 +20,8 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
++#include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <netinet/in.h>
+@@ -31,10 +33,7 @@
+ #include <netdb.h>
+ #include <string.h>
+ 
+-extern int errno;
+-extern void exit();
+-extern int optind;
+-extern char *optarg;
++int cidr_mask_addr(char *str);
+ 
+ #ifndef INADDR_NONE
+ #define INADDR_NONE     (-1)		/* XXX should be 0xffffffff */
+diff -Naur a/tcpdmatch.c b/tcpdmatch.c
+--- a/tcpdmatch.c	2018-02-12 23:47:13.576387746 +1100
++++ b/tcpdmatch.c	2018-02-12 23:57:17.896405998 +1100
+@@ -19,6 +19,8 @@
+ 
+ /* System libraries. */
+ 
++#include <unistd.h>
++#include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/socket.h>
+@@ -30,10 +32,6 @@
+ #include <setjmp.h>
+ #include <string.h>
+ 
+-extern void exit();
+-extern int optind;
+-extern char *optarg;
+-
+ #ifndef	INADDR_NONE
+ #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
+ #endif
+diff -Naur a/update.c b/update.c
+--- a/update.c	2018-02-12 23:47:19.066387913 +1100
++++ b/update.c	2018-02-12 23:57:31.436406407 +1100
+@@ -19,6 +19,7 @@
+ 
+ /* System libraries */
+ 
++#include <unistd.h>
+ #include <stdio.h>
+ #include <syslog.h>
+ #include <string.h>
