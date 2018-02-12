@@ -22,6 +22,7 @@ Installs the Unity3d game development platform (forked from maxik-overlay)
 
 # games-engines/UnrealEngine
 Installs the UnrealEngine 4 game development suite
+(Work in progress)
 
 # net-misc/ccminer
 Install the CUDA Miner Project from tpruvot
@@ -34,3 +35,6 @@ Installs the Box2d physics library from https://github.com/erincatto/Box2D
 
 # sys-apps/it87
 Installs kernel module to monitor system temperatures and voltages on AMD Ryzen systems. Most Ryzen boards require this module, some require nct6775.
+
+# sys-apps/tcp-wrappers
+Upgraded to 2.6.q-26 as version in portage does not have source available
