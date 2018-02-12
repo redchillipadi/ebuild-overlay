@@ -14,20 +14,16 @@ diff -Naur a/clean_exit.c b/clean_exit.c
 diff -Naur a/fix_options.c b/fix_options.c
 --- a/fix_options.c	2018-02-12 23:47:27.579721502 +1100
 +++ b/fix_options.c	2018-02-12 23:58:53.029742204 +1100
-@@ -29,13 +29,15 @@
- 
- /* fix_options - get rid of IP-level socket options */
- 
-+void
- fix_options(request)
- struct request_info *request;
- {
+@@ -29,12 +29,8 @@
  #ifdef IP_OPTIONS
      unsigned char optbuf[BUFFER_SIZE / 3], *cp;
      char    lbuf[BUFFER_SIZE], *lp;
--    int     optsize = sizeof(optbuf), ipproto;
-+    socklen_t optsize = sizeof(optbuf);
-+    int ipproto;
+-#ifdef __GLIBC__
+     socklen_t optsize = sizeof(optbuf);
+     int ipproto;
+-#else
+-#    int    optsize = sizeof(optbuf), ipproto;
+-#endif
      struct protoent *ip;
      int     fd = request->fd;
      unsigned int opt;
