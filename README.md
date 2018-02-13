@@ -24,6 +24,9 @@ Installs the Unity3d game development platform (forked from maxik-overlay)
 Installs the UnrealEngine 4 game development suite
 (Work in progress)
 
+# media-tv/kodi-raspberrypi
+Update of Kodi for raspberry pi (from sabayon-distro overlay)
+
 # net-misc/ccminer
 Install the CUDA Miner Project from tpruvot
 
