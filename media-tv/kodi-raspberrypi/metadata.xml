@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="project">
+    <email>agrigo2001@yahoo.com.au</email>
+    <name>Adrian Grigo</name>
+  </maintainer>
+  <use>
+    <flag name="airplay">Support airplay devices with <pkg>app-pda/libplist</pkg></flag>
+    <flag name="bluray">Support bluray format</flag>
+    <flag name="cec">Support CEC devices</flag>
+    <flag name="gles">Use OpenGL for Embedded Systems (GLES)</flag>
+    <flag name="libusb">Support USB devices</flag>
+    <flag name="midi">Add midi support</flag>
+    <flag name="nfs">Support Network File System (nfs)</flag>
+    <flag name="projectm">Cross platform music visualization</flag>
+    <flag name="sftp">Support SSH File Transfer Protocol</flag>
+    <flag name="texturepacker">Use texturepacker</flag>
+    <flag name="webserver">Build webserver support</flag>
+    <flag name="xslt">Use xslt</flag>
+  </use>
+  <longdescription>
+     Kodi is a free and open source media player.
+  </longdescription>
+</pkgmetadata>
