@@ -16,4 +16,7 @@ RESTRICT="test"
 DEPEND="media-libs/libsfml
 	virtual/opengl
 "
-
+PATCHES=(
+	"${FILESDIR}/sfgui-0.3.2-widgets-dos2unix.patch"
+	"${FILESDIR}/sfgui-0.3.2-listbox.patch"
+)
