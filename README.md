@@ -8,6 +8,9 @@ Installs ogremeshy utility to view Ogre meshes
 # dev-lang/fasm
 Install the Flat Assembler (self-assembling)
 
+# dev-libs/libcec-raspberrypi
+Install libcec for raspberry pi (from sabayon-distro overlay)
+
 # dev-libs/sfgui
 Installs the SFML GUI library from http://sfgui.sfml-dev.de
 
