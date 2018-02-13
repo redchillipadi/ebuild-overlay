@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -42,7 +42,7 @@ HOMEPAGE="http://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay airtunes +alsa avahi bluetooth bluray caps +cec dbus debug dvd gles opengl java libressl libusb lirc midi mysql +nfs profile -projectm pulseaudio +samba ssl sftp test +texturepacker udev udisks upnp upower +usb vaapi vdpau webserver -X xslt zeroconf"
+IUSE="airplay +alsa avahi bluetooth bluray caps +cec dbus debug dvd gles opengl java libressl libusb lirc midi mysql +nfs profile -projectm pulseaudio +samba ssl sftp test +texturepacker udev udisks upnp upower +usb vaapi vdpau webserver -X xslt zeroconf"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
 	|| ( gles opengl )
@@ -252,9 +252,8 @@ src_configure() {
 	# Requiring java is asine #434662
 	[[ ${PV} != 9999 ]] && export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
 
-
 	econf \
-		--docdir=${EPREFIX}/usr/share/doc/${PF} \
+		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
 		--disable-gl \
 		--enable-gles \
 		--disable-yasm \
@@ -298,18 +297,18 @@ src_install() {
 
 	# Replace bundled fonts with system ones.
 	rm "${ED%/}"/usr/share/kodi/addons/skin.estouchy/fonts/NotoSans-Regular.ttf || die
-	dosym /usr/share/fonts/noto/NotoSans-Regular.ttf \
+	dosym ../../../../fonts/noto/NotoSans-Regular.ttf \
 		usr/share/kodi/addons/skin.estouchy/fonts/NotoSans-Regular.ttf
 
 	local f
 	for f in NotoMono-Regular.ttf NotoSans-Bold.ttf NotoSans-Regular.ttf ; do
 		rm "${ED%/}"/usr/share/kodi/addons/skin.estuary/fonts/"${f}" || die
-		dosym /usr/share/fonts/noto/"${f}" \
+		dosym ../../../../fonts/noto/"${f}" \
 			usr/share/kodi/addons/skin.estuary/fonts/"${f}"
 	done
 
 	rm "${ED%/}"/usr/share/kodi/addons/skin.estuary/fonts/Roboto-Thin.ttf || die
-	dosym /usr/share/fonts/roboto/Roboto-Thin.ttf \
+	dosym ../../../../fonts/roboto/Roboto-Thin.ttf \
 		usr/share/kodi/addons/skin.estuary/fonts/Roboto-Thin.ttf
 
 	python_domodule tools/EventClients/lib/python/xbmcclient.py
@@ -321,4 +320,3 @@ src_install() {
 	newins "${FILESDIR}/chvt.sudoers" chvt
 
 }
-
