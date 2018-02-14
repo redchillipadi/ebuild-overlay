@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="project">
+    <email>agrigo2001@yahoo.com.au</email>
+    <name>Adrian Grigo</name>
+  </maintainer>
+  <longdescription>
+    Platform support library used by libCEC and binary add-ons for Kodi
+  </longdescription>
+</pkgmetadata>
+

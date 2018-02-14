@@ -11,6 +11,9 @@ Install the Flat Assembler (self-assembling)
 # dev-libs/libcec-raspberrypi
 Install libcec for raspberry pi (from sabayon-distro overlay)
 
+# dev-libs/libp8-platform
+Support library for libcec and Kodi add-ons
+
 # dev-libs/sfgui
 Installs the SFML GUI library from http://sfgui.sfml-dev.de
 
