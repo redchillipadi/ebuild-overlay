@@ -250,8 +250,8 @@ src_configure() {
 	# Requiring java is asine #434662
 	[[ ${PV} != 9999 ]] && export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
 
-	export CPPFLAGS="${CPPFLAGS} -I/opt/vc/include"
-	export LDFLAGS="${LDFLAGS} -l/opt/vc/lib"
+	export CXXFLAGS="${CXXFLAGS} -I/opt/vc/include"
+	export LDFLAGS="${LDFLAGS} -L/opt/vc/lib"
 
 	econf \
 		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
