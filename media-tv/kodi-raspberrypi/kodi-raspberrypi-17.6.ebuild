@@ -250,30 +250,26 @@ src_configure() {
 	# Requiring java is asine #434662
 	[[ ${PV} != 9999 ]] && export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
 
+	export CPPFLAGS="${CPPFLAGS} -I/opt/vc/include"
+	export LDFLAGS="${LDFLAGS} -l/opt/vc/lib"
+
 	econf \
 		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
 		--disable-gl \
 		--enable-gles \
-		--disable-yasm \
 		--with-platform=raspberry-pi \
-		--disable-sdl \
 		--enable-optimizations \
 		--disable-x11 \
-		--disable-goom \
-		--disable-xrandr \
 		--disable-mid \
 		--enable-nfs \
 		--disable-profiling \
-		--enable-rsxs \
 		--disable-debug \
 		--disable-vaapi \
 		--disable-vdpau \
 		--disable-avahi \
 		--enable-libcec \
 		--disable-pulse \
-		--disable-projectm \
 		--disable-optical-drive \
-		--disable-vtbdecoder \
 		--enable-alsa \
 		--enable-player=omxplayer
 }
