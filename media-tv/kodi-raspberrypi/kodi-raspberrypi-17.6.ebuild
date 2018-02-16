@@ -182,7 +182,6 @@ src_prepare() {
 	touch "${S}"/xbmc/cores/AudioEngine/AEDefines_override.h || die
 
 	# some dirs ship generated autotools, some dont
-	multijob_init
 	local d dirs=(
 		tools/depends/native/TexturePacker/src/configure
 		$(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f)
@@ -191,10 +190,9 @@ src_prepare() {
 		[[ -e ${d} ]] && continue
 		pushd ${d/%configure/.} >/dev/null || die
 		AT_NOELIBTOOLIZE="yes" AT_TOPLEVEL_EAUTORECONF="yes" \
-		multijob_child_init eautoreconf
+		eautoreconf
 		popd >/dev/null
 	done
-	multijob_finish
 	elibtoolize
 
 	# Cross-compiler support
