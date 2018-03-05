@@ -58,8 +58,8 @@ pkg-nofetch() {
 }
 
 src_prepare() {
+	# Patch qtcreator source code accessor for update to 4.18.3
 	if use qtcreator; then
-		eapply "${FILESDIR}/${P}-qtcreator.patch"
 		eapply "${FILESDIR}/${P}-QtSourceCodeAccessor_AdditionalMethods.patch"
 	fi
 
@@ -81,6 +81,10 @@ src_compile() {
 }
 
 src_install() {
+	if use qtcreator; then
+		sed -i 's/^PreferredAccessor=.*/PreferredAccessor=QtCreatorSourceCodeAccessor/' "${S}/Engine/Config/Linux/LinuxEngine.ini"
+	fi
+
 	insinto /opt/UnrealEngine
 	doins -r "${S}"/Engine
 	doins -r "${S}"/FeaturePacks
