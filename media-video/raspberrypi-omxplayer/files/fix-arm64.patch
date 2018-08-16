@@ -1,0 +1,14 @@
+diff --git a/OMXAudio.cpp b/OMXAudio.cpp
+index d22b0c7..641fca8 100644
+--- a/OMXAudio.cpp
++++ b/OMXAudio.cpp
+@@ -585,7 +585,8 @@ bool COMXAudio::Initialize(OMXClock *clock, const OMXAudioConfig &config, uint64
+     }
+ 
+     omx_buffer->nOffset = 0;
+-    omx_buffer->nFilledLen  = std::min(sizeof(m_wave_header), omx_buffer->nAllocLen);
++    omx_buffer->nFilledLen  = std::min(sizeof(m_wave_header),
++	static_cast<std::size_t>(omx_buffer->nAllocLen));
+ 
+     memset((unsigned char *)omx_buffer->pBuffer, 0x0, omx_buffer->nAllocLen);
+     memcpy((unsigned char *)omx_buffer->pBuffer, &m_wave_header, omx_buffer->nFilledLen);
