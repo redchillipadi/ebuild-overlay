@@ -1,0 +1,13 @@
+diff -Naur a/m4/xbmc_arch.m4 b/m4/xbmc_arch.m4
+--- a/m4/xbmc_arch.m4	2018-08-16 13:28:41.852265690 +0800
++++ b/m4/xbmc_arch.m4	2018-08-16 13:29:36.797265669 +0800
+@@ -26,6 +26,9 @@
+   arm*-*-linux-gnu*|arm*-*-linux-uclibc*)
+      AC_SUBST(NATIVE_ARCH_DEFINES, "-DTARGET_POSIX -DTARGET_LINUX -D_LINUX")
+      ;;
++  aarch64*-*-linux-gnu*|aarch64*-*-linux-uclibc*)
++     AC_SUBST(NATIVE_ARCH_DEFINES, "-DTARGET_POSIX -DTARGET_LINUX -D_LINUX")
++     ;;
+   *)
+      AC_MSG_ERROR(unsupported native build platform: $build)
+ esac

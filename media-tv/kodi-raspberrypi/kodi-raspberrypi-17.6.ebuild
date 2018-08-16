@@ -42,7 +42,7 @@ HOMEPAGE="http://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay +alsa avahi bluetooth bluray caps +cec dbus debug dvd gles opengl java libressl libusb lirc midi mysql +nfs profile -projectm pulseaudio +samba ssl sftp test +texturepacker udev udisks upnp upower +usb vaapi vdpau webserver -X xslt zeroconf"
+IUSE="airplay +alsa avahi bluetooth bluray caps +cec dbus debug dvd gles opengl java libressl libusb lirc midi +mysql +nfs profile -projectm pulseaudio +samba ssl sftp test +texturepacker udev udisks upnp upower +usb vaapi vdpau webserver -X xslt zeroconf"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
 	|| ( gles opengl )
@@ -178,6 +178,7 @@ src_unpack() {
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
 	epatch "${FILESDIR}"/${PN}-9999-texturepacker.patch
+	epatch "${FILESDIR}"/${PN}-17.6-support-aarch64.patch
 	# https://github.com/xbmc/xbmc/pull/11400/commits/db26dd8f619d76cf459b87c2e003e3cd33b96b79
 	touch "${S}"/xbmc/cores/AudioEngine/AEDefines_override.h || die
 

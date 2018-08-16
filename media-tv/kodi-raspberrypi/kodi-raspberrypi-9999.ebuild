@@ -20,7 +20,7 @@ SRC_URI="https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_COMMIT}.tar.gz ->
 	https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_COMMIT}.tar.gz -> libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz"
 case ${PV} in
 9999)
-	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
+	EGIT_REPO_URI="https://github.com/xbmc/xbmc.git"
 	inherit git-r3
 	;;
 *|*_p*)
@@ -176,50 +176,50 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
-	epatch "${FILESDIR}"/${PN}-9999-texturepacker.patch
+	#epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
+	#epatch "${FILESDIR}"/${PN}-9999-texturepacker.patch
 	# https://github.com/xbmc/xbmc/pull/11400/commits/db26dd8f619d76cf459b87c2e003e3cd33b96b79
 	touch "${S}"/xbmc/cores/AudioEngine/AEDefines_override.h || die
 
 	# some dirs ship generated autotools, some dont
-	local d dirs=(
-		tools/depends/native/TexturePacker/src/configure
-		$(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f)
-	)
-	for d in "${dirs[@]}" ; do
-		[[ -e ${d} ]] && continue
-		pushd ${d/%configure/.} >/dev/null || die
-		AT_NOELIBTOOLIZE="yes" AT_TOPLEVEL_EAUTORECONF="yes" \
-		eautoreconf
-		popd >/dev/null
-	done
-	elibtoolize
+	#local d dirs=(
+		#tools/depends/native/TexturePacker/src/configure
+		#$(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f)
+	#)
+	#for d in "${dirs[@]}" ; do
+	#	[[ -e ${d} ]] && continue
+	#	pushd ${d/%configure/.} >/dev/null || die
+	#	AT_NOELIBTOOLIZE="yes" AT_TOPLEVEL_EAUTORECONF="yes" \
+	#	eautoreconf
+	#	popd >/dev/null
+	#done
+	#elibtoolize
 
 	# Cross-compiler support
 	# We need JsonSchemaBuilder and TexturePacker binaries for the host system
 	# Later we need libsquish for the target system
-	if tc-is-cross-compiler ; then
-		mkdir "${WORKDIR}"/${CBUILD} || die
-		pushd "${WORKDIR}"/${CBUILD} >/dev/null || die
-		einfo "Building host tools"
-		cp -a "${S}"/{tools,xbmc} ./ || die
-		local tool tools=( JsonSchemaBuilder )
-		use texturepacker && tools+=( TexturePacker )
-		for tool in "${tools[@]}" ; do
-			tc-env_build emake -C tools/depends/native/$tool
-			mkdir "${S}"/tools/depends/native/$tool/bin || die
-			ln -s "${WORKDIR}"/${CBUILD}/tools/depends/native/$tool/bin/$tool \
-				"${S}"/tools/depends/native/$tool/bin/$tool || die
-		done
-		popd >/dev/null || die
-
-		emake -f codegenerator.mk
-		# Binary kodi.bin links against libsquish,
-		# so we need libsquish compiled for the target system
-		emake -C tools/depends/native/libsquish-native/ CXX=$(tc-getCXX)
-	elif [[ ${PV} == 9999 ]] || use java ; then #558798
-		tc-env_build emake -f codegenerator.mk
-	fi
+#	if tc-is-cross-compiler ; then
+#		mkdir "${WORKDIR}"/${CBUILD} || die
+#		pushd "${WORKDIR}"/${CBUILD} >/dev/null || die
+#		einfo "Building host tools"
+#		cp -a "${S}"/{tools,xbmc} ./ || die
+#		local tool tools=( JsonSchemaBuilder )
+#		use texturepacker && tools+=( TexturePacker )
+#		for tool in "${tools[@]}" ; do
+#			tc-env_build emake -C tools/depends/native/$tool
+#			mkdir "${S}"/tools/depends/native/$tool/bin || die
+#			ln -s "${WORKDIR}"/${CBUILD}/tools/depends/native/$tool/bin/$tool \
+#				"${S}"/tools/depends/native/$tool/bin/$tool || die
+#		done
+#		popd >/dev/null || die
+#
+#		emake -f codegenerator.mk
+#		# Binary kodi.bin links against libsquish,
+#		# so we need libsquish compiled for the target system
+#		emake -C tools/depends/native/libsquish-native/ CXX=$(tc-getCXX)
+#	elif [[ ${PV} == 9999 ]] || use java ; then #558798
+##		tc-env_build emake -f codegenerator.mk
+#	fi
 
 	# Disable internal func checks as our USE/DEPEND
 	# stuff handles this just fine already #408395
@@ -230,9 +230,9 @@ src_prepare() {
 	export HAVE_GIT=no GIT_REV=${EGIT_VERSION:-exported}
 
 	# avoid long delays when powerkit isn't running #348580
-	sed -i \
-		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
-		xbmc/linux/*.cpp || die
+#	sed -i \
+#		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
+#		xbmc/linux/*.cpp || die
 
 	epatch_user #293109
 
