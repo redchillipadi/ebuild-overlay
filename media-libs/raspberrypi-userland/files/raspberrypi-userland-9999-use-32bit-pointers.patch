@@ -1,0 +1,54 @@
+diff -Naur a/interface/khronos/include/EGL/egl.h b/interface/khronos/include/EGL/egl.h
+--- a/interface/khronos/include/EGL/egl.h	2018-08-02 13:46:38.142050593 +1000
++++ b/interface/khronos/include/EGL/egl.h	2018-08-02 13:47:27.039050575 +1000
+@@ -43,11 +43,11 @@
+ /* EGLint is defined in eglplatform.h */
+ typedef unsigned int EGLBoolean;
+ typedef unsigned int EGLenum;
+-typedef void *EGLConfig;
+-typedef void *EGLContext;
+-typedef void *EGLDisplay;
+-typedef void *EGLSurface;
+-typedef void *EGLClientBuffer;
++typedef uint32_t EGLConfig;
++typedef uint32_t EGLContext;
++typedef uint32_t EGLDisplay;
++typedef uint32_t EGLSurface;
++typedef uint32_t EGLClientBuffer;
+ 
+ /* EGL Versioning */
+ #define EGL_VERSION_1_0			1
+diff -Naur a/interface/khronos/include/EGL/eglplatform.h b/interface/khronos/include/EGL/eglplatform.h
+--- a/interface/khronos/include/EGL/eglplatform.h	2018-08-02 13:47:50.392050566 +1000
++++ b/interface/khronos/include/EGL/eglplatform.h	2018-08-02 13:48:51.198050543 +1000
+@@ -100,9 +100,9 @@
+ 
+ #else
+ 
+-typedef void *EGLNativeDisplayType;
+-typedef void *EGLNativePixmapType;
+-typedef void *EGLNativeWindowType;
++typedef uint32_t EGLNativeDisplayType;
++typedef uint32_t EGLNativePixmapType;
++typedef uint32_t EGLNativeWindowType;
+ #endif
+ 
+ #ifndef EGL_SERVER_SMALLINT
+diff -Naur a/interface/khronos/include/KHR/khrplatform.h b/interface/khronos/include/KHR/khrplatform.h
+--- a/interface/khronos/include/KHR/khrplatform.h	2018-08-02 13:49:29.294050528 +1000
++++ b/interface/khronos/include/KHR/khrplatform.h	2018-08-02 13:55:10.552050398 +1000
+@@ -246,10 +246,10 @@
+ typedef signed   long long int khronos_ssize_t;
+ typedef unsigned long long int khronos_usize_t;
+ #else
+-typedef signed   long  int     khronos_intptr_t;
+-typedef unsigned long  int     khronos_uintptr_t;
+-typedef signed   long  int     khronos_ssize_t;
+-typedef unsigned long  int     khronos_usize_t;
++typedef int32_t     khronos_intptr_t;
++typedef uint32_t     khronos_uintptr_t;
++typedef int32_t     khronos_ssize_t;
++typedef uint32_t     khronos_usize_t;
+ #endif
+ 
+ #if KHRONOS_SUPPORT_FLOAT

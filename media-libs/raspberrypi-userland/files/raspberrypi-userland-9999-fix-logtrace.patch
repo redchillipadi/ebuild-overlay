@@ -1,0 +1,32 @@
+diff -Naur a/interface/mmal/vc/mmal_vc_client.c b/interface/mmal/vc/mmal_vc_client.c
+--- a/interface/mmal/vc/mmal_vc_client.c	2018-08-02 16:01:25.489047508 +1000
++++ b/interface/mmal/vc/mmal_vc_client.c	2018-08-02 16:02:53.624047475 +1000
+@@ -55,8 +55,8 @@
+ {
+    VCOS_SEMAPHORE_T sem;
+    unsigned inuse;
+-   void *dest;                   /**< Where to write reply */
+-   size_t destlen;               /**< Max length for reply */
++   uint32_t dest;                   /**< Where to write reply */
++   uint32_t destlen;               /**< Max length for reply */
+ } MMAL_WAITER_T;
+ 
+ /** We have an array of waiters and allocate them to waiting
+@@ -626,7 +626,7 @@
+    VCHIQ_ELEMENT_T elems[] = {{msg_header, size}};
+    MMAL_BOOL_T using_bulk_transfer = (data_size != 0);
+ 
+-   LOG_TRACE("len %d", data_size);
++   LOG_TRACE("len %ld", data_size);
+    vcos_assert(size >= sizeof(mmal_worker_msg_header));
+ 
+    if (!client->inited)
+@@ -654,7 +654,7 @@
+ 
+    if (using_bulk_transfer)
+    {
+-      LOG_TRACE("bulk transmit: %p, %i", data, data_size);
++      LOG_TRACE("bulk transmit: %p, %li", data, data_size);
+ 
+       data_size = (data_size + 3) & ~3;
+       vst = vchiq_queue_bulk_transmit(client->service, data, data_size, msg_header);

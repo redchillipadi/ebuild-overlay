@@ -1,0 +1,479 @@
+diff --git a/host_applications/linux/libs/sm/user-vcsm.c b/host_applications/linux/libs/sm/user-vcsm.c
+index e424129..e02dcd6 100644
+--- a/host_applications/linux/libs/sm/user-vcsm.c
++++ b/host_applications/linux/libs/sm/user-vcsm.c
+@@ -601,7 +601,7 @@ unsigned int vcsm_vc_hdl_from_ptr( void *usr_ptr )
+    memset( &map, 0, sizeof(map) );
+ 
+    map.pid  = getpid();
+-   map.addr = (unsigned int) usr_ptr;
++   map.addr = (uintptr_t) usr_ptr;
+ 
+    rc = ioctl( vcsm_handle,
+                VMCS_SM_IOCTL_MAP_VC_HDL_FR_ADDR,
+@@ -799,7 +799,7 @@ void *vcsm_usr_address( unsigned int handle )
+                       map.handle,
+                       map.addr );
+ 
+-      return (void*)map.addr;
++      return (void*)(uintptr_t)map.addr;
+    }
+ }
+ 
+@@ -827,7 +827,7 @@ unsigned int vcsm_usr_handle( void *usr_ptr )
+    memset( &map, 0, sizeof(map) );
+    
+    map.pid = getpid();
+-   map.addr = (unsigned int) usr_ptr;
++   map.addr = (uintptr_t) usr_ptr;
+ 
+    rc = ioctl( vcsm_handle,
+                VMCS_SM_IOCTL_MAP_USR_HDL,
+@@ -936,14 +936,14 @@ void *vcsm_lock( unsigned int handle )
+       goto out;
+    }
+ 
+-   usr_ptr = (void *) lock_unlock.addr;
++   usr_ptr = (void *)(uintptr_t)lock_unlock.addr;
+ 
+    /* If applicable, invalidate the cache now.
+    */
+    if ( usr_ptr && sz.size )
+    {
+       cache.handle = sz.handle;
+-      cache.addr   = (unsigned int) usr_ptr;
++      cache.addr   = (uintptr_t) usr_ptr;
+       cache.size   = sz.size;
+ 
+       rc = ioctl( vcsm_handle,
+@@ -1098,7 +1098,7 @@ void *vcsm_lock_cache( unsigned int handle,
+    */
+    if ( chk.addr && chk.size )
+    {
+-      munmap( (void *)chk.addr, chk.size );
++      munmap( (void *)(uintptr_t)chk.addr, chk.size );
+ 
+       vcos_log_trace( "[%s]: [%d]: ioctl unmap hdl: %x",
+                       __func__,
+@@ -1179,7 +1179,7 @@ void *vcsm_lock_cache( unsigned int handle,
+    if ( usr_ptr && cache.size )
+    {
+       cache.handle = chk.handle;
+-      cache.addr   = (unsigned int) usr_ptr;
++      cache.addr   = (uintptr_t) usr_ptr;
+ 
+       rc = ioctl( vcsm_handle,
+                   VMCS_SM_IOCTL_MEM_INVALID,
+@@ -1264,7 +1264,7 @@ int vcsm_unlock_ptr_sp( void *usr_ptr, int cache_no_flush )
+    /* Retrieve the handle of the memory we want to lock.
+    */
+    map.pid = getpid();
+-   map.addr = (unsigned int) usr_ptr;
++   map.addr = (uintptr_t) usr_ptr;
+ 
+    rc = ioctl( vcsm_handle,
+                VMCS_SM_IOCTL_MAP_USR_HDL,
+diff --git a/host_applications/vmcs/test_apps/mmalcam/mmalcam.c b/host_applications/vmcs/test_apps/mmalcam/mmalcam.c
+index 294349e..0b13668 100644
+--- a/host_applications/vmcs/test_apps/mmalcam/mmalcam.c
++++ b/host_applications/vmcs/test_apps/mmalcam/mmalcam.c
+@@ -136,7 +136,7 @@ static void *test_mmal_camcorder(void *id)
+    value = test_mmal_start_camcorder(&stop, behaviour);
+ 
+    LOG_TRACE("Thread terminating, result %d", value);
+-   return (void *)value;
++   return (void *)(uintptr_t)value;
+ }
+ 
+ /*****************************************************************************/
+diff --git a/interface/khronos/CMakeLists.txt b/interface/khronos/CMakeLists.txt
+index 9ad615b..bdd9104 100644
+--- a/interface/khronos/CMakeLists.txt
++++ b/interface/khronos/CMakeLists.txt
+@@ -52,7 +52,6 @@ set(CLIENT_SOURCE
+    common/khrn_client_pointermap.c
+    common/khrn_client_vector.c
+    common/khrn_int_hash.c
+-   common/khrn_int_hash_asm.s
+    common/khrn_client_cache.c)
+ 
+ add_library(EGL ${SHARED} ${EGL_SOURCE})
+diff --git a/interface/khronos/common/khrn_client_check_types.h b/interface/khronos/common/khrn_client_check_types.h
+index aec389b..a74e30b 100644
+--- a/interface/khronos/common/khrn_client_check_types.h
++++ b/interface/khronos/common/khrn_client_check_types.h
+@@ -41,14 +41,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ vcos_static_assert(sizeof(EGLint) == 4);
+ vcos_static_assert(sizeof(EGLBoolean) == 4);
+ vcos_static_assert(sizeof(EGLenum) == 4);
+-vcos_static_assert(sizeof(EGLConfig) == 4);
+-vcos_static_assert(sizeof(EGLContext) == 4);
+-vcos_static_assert(sizeof(EGLDisplay) == 4);
+-vcos_static_assert(sizeof(EGLSurface) == 4);
+-vcos_static_assert(sizeof(EGLClientBuffer) == 4);
+-vcos_static_assert(sizeof(NativeDisplayType) == 4);
+-vcos_static_assert(sizeof(NativePixmapType) == 4);
+-vcos_static_assert(sizeof(NativeWindowType) == 4);
++vcos_static_assert(sizeof(EGLConfig) == 8);
++vcos_static_assert(sizeof(EGLContext) == 8);
++vcos_static_assert(sizeof(EGLDisplay) == 8);
++vcos_static_assert(sizeof(EGLSurface) == 8);
++vcos_static_assert(sizeof(EGLClientBuffer) == 8);
++vcos_static_assert(sizeof(NativeDisplayType) == 8);
++vcos_static_assert(sizeof(NativePixmapType) == 8);
++vcos_static_assert(sizeof(NativeWindowType) == 8);
+ 
+ /*
+    gl types
+@@ -68,8 +68,8 @@ vcos_static_assert(sizeof(GLfloat) == 4);
+ vcos_static_assert(sizeof(GLclampf) == 4);
+ vcos_static_assert(sizeof(GLfixed) == 4);
+ vcos_static_assert(sizeof(GLclampx) == 4);
+-vcos_static_assert(sizeof(GLintptr) == 4);
+-vcos_static_assert(sizeof(GLsizeiptr) == 4);
++vcos_static_assert(sizeof(GLintptr) == 8);
++vcos_static_assert(sizeof(GLsizeiptr) == 8);
+ 
+ /*
+    vg types
+diff --git a/interface/khronos/common/khrn_int_hash.c b/interface/khronos/common/khrn_int_hash.c
+index cdaa4f1..2ff7ea1 100644
+--- a/interface/khronos/common/khrn_int_hash.c
++++ b/interface/khronos/common/khrn_int_hash.c
+@@ -66,7 +66,6 @@ on 1 byte), but shoehorning those bytes into integers efficiently is messy.
+ # define HASH_LITTLE_ENDIAN 1
+ # define HASH_BIG_ENDIAN 0
+ 
+-#ifndef __arm__  // Use the version in khrn_int_hash_asm.s instead
+ /*
+ --------------------------------------------------------------------
+  This works on all machines.  To be useful, it requires
+@@ -113,8 +112,6 @@ uint32_t        initval)         /* the previous hash, or an arbitrary value */
+   return c;
+ }
+ 
+-#endif
+-
+ /*
+ -------------------------------------------------------------------------------
+ khrn_hashlittle() -- hash a variable-length key into a 32-bit value
+diff --git a/interface/mmal/client/brcmjpeg/brcmjpeg.c b/interface/mmal/client/brcmjpeg/brcmjpeg.c
+index 1fc4220..eaaa22c 100644
+--- a/interface/mmal/client/brcmjpeg/brcmjpeg.c
++++ b/interface/mmal/client/brcmjpeg/brcmjpeg.c
+@@ -473,7 +473,7 @@ static BRCMJPEG_STATUS_T brcmjpeg_encode(BRCMJPEG_T *ctx,
+       {
+          if (je->input_handle)
+          {
+-            in->data = (uint8_t *)je->input_handle;
++            in->data = (uint8_t *)(uintptr_t)je->input_handle;
+             in->length = in->alloc_size = je->input_size;
+          }
+          else
+@@ -632,7 +632,7 @@ static BRCMJPEG_STATUS_T brcmjpeg_decode(BRCMJPEG_T *ctx,
+          {
+             if (jd->output_handle)
+             {
+-               out->data = (uint8_t*)jd->output_handle;
++               out->data = (uint8_t *)(uintptr_t)jd->output_handle;
+                out->alloc_size = jd->output_alloc_size;
+             }
+             status = mmal_port_send_buffer(port_out, out);
+diff --git a/interface/mmal/client/brcmjpeg/brcmjpeg_test.c b/interface/mmal/client/brcmjpeg/brcmjpeg_test.c
+index 9e249b6..dd9d5bf 100644
+--- a/interface/mmal/client/brcmjpeg/brcmjpeg_test.c
++++ b/interface/mmal/client/brcmjpeg/brcmjpeg_test.c
+@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+ #include "brcmjpeg.h"
++#include <inttypes.h>
+ #include <sys/time.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -183,7 +184,7 @@ int main(int argc, char **argv)
+                 break;
+             }
+ 
+-            fprintf(stderr, "decoded %ix%i(%ix%i), %i bytes in %lldus\n",
++            fprintf(stderr, "decoded %ix%i(%ix%i), %i bytes in %" PRIdPTR "us\n",
+                     dec_request.width, dec_request.height,
+                     dec_request.buffer_width, dec_request.buffer_height,
+                     dec_request.input_size, stop - start);
+@@ -203,7 +204,7 @@ int main(int argc, char **argv)
+                 break;
+             }
+ 
+-            fprintf(stderr, "encoded %ix%i(%ix%i), %i bytes in %lldus\n",
++            fprintf(stderr, "encoded %ix%i(%ix%i), %i bytes in %" PRIdPTR "us\n",
+                     enc_request.width, enc_request.height,
+                     enc_request.buffer_width, enc_request.buffer_height,
+                     enc_request.output_size, stop - start);
+@@ -217,9 +218,9 @@ int main(int argc, char **argv)
+         fclose(file_out);
+         fclose(file_in);
+ 
+-        fprintf(stderr, "decode times %lldus (%lldus per run)\n",
++        fprintf(stderr, "decode times %" PRIdPTR "us (%" PRIdPTR "us per run)\n",
+                 time_dec, time_dec / count);
+-        fprintf(stderr, "encode times %lldus (%lldus per run)\n",
++        fprintf(stderr, "encode times %" PRIdPTR "us (%" PRIdPTR "us per run)\n",
+                 time_enc, time_enc / count);
+     }
+ 
+diff --git a/interface/mmal/components/spdif.c b/interface/mmal/components/spdif.c
+index d5747ee..46a583a 100644
+--- a/interface/mmal/components/spdif.c
++++ b/interface/mmal/components/spdif.c
+@@ -25,6 +25,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
++#include <inttypes.h>
++
+ #include "mmal.h"
+ #include "core/mmal_component_private.h"
+ #include "core/mmal_port_private.h"
+@@ -189,7 +191,7 @@ static MMAL_BOOL_T spdif_do_processing(MMAL_COMPONENT_T *component)
+       goto end;
+    }
+ 
+-   LOG_DEBUG("frame: %lld, size %i", in->pts, in->length);
++   LOG_DEBUG("frame: %" PRIdPTR ", size %i", in->pts, in->length);
+    mmal_buffer_header_mem_lock(out);
+    mmal_buffer_header_mem_lock(in);
+    in_data = in->data + in->offset;
+diff --git a/interface/mmal/core/mmal_port_clock.c b/interface/mmal/core/mmal_port_clock.c
+index 1eb7d10..be96aa8 100644
+--- a/interface/mmal/core/mmal_port_clock.c
++++ b/interface/mmal/core/mmal_port_clock.c
+@@ -25,6 +25,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
++#include <inttypes.h>
++
+ #include "mmal_clock.h"
+ #include "mmal_logging.h"
+ #include "core/mmal_clock_private.h"
+@@ -102,7 +104,7 @@ static MMAL_STATUS_T mmal_port_clock_process_buffer(MMAL_PORT_T *port, MMAL_BUFF
+ 
+    if (buffer->length != sizeof(MMAL_CLOCK_EVENT_T))
+    {
+-      LOG_ERROR("invalid buffer length %d expected %d",
++      LOG_ERROR("invalid buffer length %d expected %" PRIdPTR,
+                 buffer->length, sizeof(MMAL_CLOCK_EVENT_T));
+       return MMAL_EINVAL;
+    }
+diff --git a/interface/mmal/vc/mmal_vc_api.c b/interface/mmal/vc/mmal_vc_api.c
+index 87718d0..40c21b5 100644
+--- a/interface/mmal/vc/mmal_vc_api.c
++++ b/interface/mmal/vc/mmal_vc_api.c
+@@ -25,6 +25,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
++#include <inttypes.h>
++
+ #include "interface/mmal/mmal_logging.h"
+ #include "interface/mmal/mmal.h"
+ #include "mmal_vc_api.h"
+@@ -1114,7 +1116,7 @@ static MMAL_STATUS_T mmal_vc_port_parameter_set(MMAL_PORT_T *port, const MMAL_PA
+ 
+    if(param->size > MMAL_WORKER_PORT_PARAMETER_SET_MAX)
+    {
+-      LOG_ERROR("parameter too large (%u > %u)", param->size, MMAL_WORKER_PORT_PARAMETER_SET_MAX);
++      LOG_ERROR("parameter too large (%u > %" PRIuPTR ")", param->size, MMAL_WORKER_PORT_PARAMETER_SET_MAX);
+       return MMAL_ENOSPC;
+    }
+ 
+@@ -1173,7 +1175,7 @@ static MMAL_STATUS_T mmal_vc_port_parameter_get(MMAL_PORT_T *port, MMAL_PARAMETE
+ 
+    if(param->size > MMAL_WORKER_PORT_PARAMETER_GET_MAX)
+    {
+-      LOG_ERROR("parameter too large (%u > %u) id %u", param->size,
++      LOG_ERROR("parameter too large (%u > %" PRIuPTR ") id %u", param->size,
+             MMAL_WORKER_PORT_PARAMETER_GET_MAX, param->id);
+       return MMAL_ENOMEM;
+    }
+@@ -1244,7 +1246,7 @@ static uint8_t *mmal_vc_port_payload_alloc(MMAL_PORT_T *port, uint32_t payload_s
+    {
+       MMAL_OPAQUE_IMAGE_HANDLE_T h = mmal_vc_opaque_alloc_desc(port->name);
+       can_deref = MMAL_FALSE;
+-      ret = (void*)h;
++      ret = (void*)(uintptr_t)h;
+       if (!ret)
+       {
+          LOG_ERROR("%s: failed to allocate %d bytes opaque memory",
+@@ -1293,7 +1295,7 @@ static void mmal_vc_port_payload_free(MMAL_PORT_T *port, uint8_t *payload)
+    if (module->opaque_allocs)
+    {
+       module->opaque_allocs--;
+-      mmal_vc_opaque_release((MMAL_OPAQUE_IMAGE_HANDLE_T)payload);
++      mmal_vc_opaque_release((uintptr_t)payload);
+       return;
+    }
+ 
+diff --git a/interface/mmal/vc/mmal_vc_client.c b/interface/mmal/vc/mmal_vc_client.c
+index db64dc6..7a73384 100644
+--- a/interface/mmal/vc/mmal_vc_client.c
++++ b/interface/mmal/vc/mmal_vc_client.c
+@@ -25,6 +25,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
++#include <inttypes.h>
+ 
+ #include "mmal.h"
+ #include "mmal_vc_msgs.h"
+@@ -626,7 +627,7 @@ MMAL_STATUS_T mmal_vc_send_message(MMAL_CLIENT_T *client,
+    VCHIQ_ELEMENT_T elems[] = {{msg_header, size}};
+    MMAL_BOOL_T using_bulk_transfer = (data_size != 0);
+ 
+-   LOG_TRACE("len %d", data_size);
++   LOG_TRACE("len %" PRIdPTR, data_size);
+    vcos_assert(size >= sizeof(mmal_worker_msg_header));
+ 
+    if (!client->inited)
+@@ -654,7 +655,7 @@ MMAL_STATUS_T mmal_vc_send_message(MMAL_CLIENT_T *client,
+ 
+    if (using_bulk_transfer)
+    {
+-      LOG_TRACE("bulk transmit: %p, %i", data, data_size);
++      LOG_TRACE("bulk transmit: %p, %" PRIdPTR, data, data_size);
+ 
+       data_size = (data_size + 3) & ~3;
+       vst = vchiq_queue_bulk_transmit(client->service, data, data_size, msg_header);
+diff --git a/interface/mmal/vc/mmal_vc_diag.c b/interface/mmal/vc/mmal_vc_diag.c
+index e9712af..8471b9e 100644
+--- a/interface/mmal/vc/mmal_vc_diag.c
++++ b/interface/mmal/vc/mmal_vc_diag.c
+@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include "interface/mmal/mmal.h"
+ #include "interface/mmal/util/mmal_util.h"
+ #include "mmal_vc_api.h"
++#include <inttypes.h>
+ #include <stdio.h>
+ #include <stddef.h>
+ #include <sys/time.h>
+@@ -379,13 +380,13 @@ static int do_eventlog(int argc, const char **argv)
+    }
+    if (log.size != sizeof(log))
+    {
+-      fprintf(stderr,"MMAL Log size mismatch (got %d, expected %d)\n",
++      fprintf(stderr,"MMAL Log size mismatch (got %d, expected %" PRIdPTR ")\n",
+               log.size, sizeof(log));
+       goto fail;
+    }
+    if (log.elemsize != sizeof(MMAL_DBG_ENTRY_T))
+    {
+-      fprintf(stderr,"MMAL log element size mismatch (got %d, expected %d)\n",
++      fprintf(stderr,"MMAL log element size mismatch (got %d, expected %" PRIdPTR ")\n",
+               log.elemsize, sizeof(MMAL_DBG_ENTRY_T));
+       goto fail;
+    }
+diff --git a/interface/mmal/vc/mmal_vc_msgs.h b/interface/mmal/vc/mmal_vc_msgs.h
+index 343922b..f9a327c 100644
+--- a/interface/mmal/vc/mmal_vc_msgs.h
++++ b/interface/mmal/vc/mmal_vc_msgs.h
+@@ -58,7 +58,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ /** A MMAL_CONTROL_SERVICE_T gets space for a single message. This
+   * is the space allocated for these messages.
+   */
+-#define MMAL_WORKER_MSG_LEN  28
++#define MMAL_WORKER_MSG_LEN  32
+ 
+ /** Maximum size of the format extradata.
+  * FIXME: should probably be made bigger and maybe be passed separately from the info.
+diff --git a/interface/mmal/vc/mmal_vc_shm.c b/interface/mmal/vc/mmal_vc_shm.c
+index e22a53a..b2e7e9e 100644
+--- a/interface/mmal/vc/mmal_vc_shm.c
++++ b/interface/mmal/vc/mmal_vc_shm.c
+@@ -176,8 +176,8 @@ uint8_t *mmal_vc_shm_alloc(uint32_t size)
+    vcsm_unlock_hdl(vcsm_handle);
+ 
+    payload_elem->mem = mem;
+-   payload_elem->handle = (void *)vcsm_handle;
+-   payload_elem->vc_handle = (void *)vc_handle;
++   payload_elem->handle = (void *)(uintptr_t)vcsm_handle;
++   payload_elem->vc_handle = (void *)(uintptr_t)vc_handle;
+ #else /* ENABLE_MMAL_VCSM */
+    MMAL_PARAM_UNUSED(size);
+    mmal_vc_payload_list_release(payload_elem);
+@@ -193,7 +193,7 @@ MMAL_STATUS_T mmal_vc_shm_free(uint8_t *mem)
+    if (payload_elem)
+    {
+ #ifdef ENABLE_MMAL_VCSM
+-      vcsm_free((unsigned int)payload_elem->handle);
++      vcsm_free((uintptr_t)payload_elem->handle);
+ #endif /* ENABLE_MMAL_VCSM */
+       mmal_vc_payload_list_release(payload_elem);
+       return MMAL_SUCCESS;
+@@ -212,7 +212,7 @@ uint8_t *mmal_vc_shm_lock(uint8_t *mem, uint32_t workaround)
+    if (elem) {
+       mem = elem->mem;
+ #ifdef ENABLE_MMAL_VCSM
+-      void *p = vcsm_lock((unsigned int)elem->handle);
++      void *p = vcsm_lock((uintptr_t)elem->handle);
+       if (!p)
+          assert(0);
+ #endif /* ENABLE_MMAL_VCSM */
+diff --git a/interface/vchiq_arm/vchiq_lib.c b/interface/vchiq_arm/vchiq_lib.c
+index 133d5ca..19a79a7 100755
+--- a/interface/vchiq_arm/vchiq_lib.c
++++ b/interface/vchiq_arm/vchiq_lib.c
+@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ #include <unistd.h>
+ #include <fcntl.h>
++#include <inttypes.h>
+ #include <sys/ioctl.h>
+ #include <stdio.h>
+ 
+@@ -398,7 +399,7 @@ void
+ vchiq_release_message(VCHIQ_SERVICE_HANDLE_T handle,
+    VCHIQ_HEADER_T *header)
+ {
+-   vcos_log_trace( "%s handle=%08x, header=%x", __func__, (uint32_t)handle, (uint32_t)header );
++   vcos_log_trace( "%s handle=%08x, header=%" PRIxPTR, __func__, (uint32_t)handle, (uintptr_t)header );
+ 
+    free_msgbuf(header);
+ }
+@@ -1548,9 +1549,9 @@ completion_thread(void *arg)
+          VCHIQ_SERVICE_T *service = (VCHIQ_SERVICE_T *)completion->service_userdata;
+          if (service->base.callback)
+          {
+-            vcos_log_trace( "callback(%x, %x, %x(%x,%x), %x)",
+-               completion->reason, (uint32_t)completion->header,
+-               (uint32_t)&service->base, (uint32_t)service->lib_handle, (uint32_t)service->base.userdata, (uint32_t)completion->bulk_userdata );
++            vcos_log_trace( "callback(%x, %" PRIxPTR ", %" PRIxPTR "(%x,%" PRIxPTR  "), %" PRIxPTR ")",
++               completion->reason, (uintptr_t)completion->header,
++               (uintptr_t)&service->base, (uint32_t)service->lib_handle, (uintptr_t)service->base.userdata, (uintptr_t)completion->bulk_userdata );
+             service->base.callback(completion->reason, completion->header,
+                service->lib_handle, completion->bulk_userdata);
+          }
+diff --git a/interface/vmcs_host/vc_vchi_cecservice.c b/interface/vmcs_host/vc_vchi_cecservice.c
+index 616b5b4..047163f 100644
+--- a/interface/vmcs_host/vc_vchi_cecservice.c
++++ b/interface/vmcs_host/vc_vchi_cecservice.c
+@@ -24,6 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
++#include <inttypes.h>
+ #include <string.h>
+ #include <stdio.h>
+ #include "vchost_platform_config.h"
+@@ -356,10 +357,10 @@ VCHPRE_ void VCHPOST_ vc_cec_register_callback(CECSERVICE_CALLBACK_T callback, v
+    if(lock_obtain() == 0){
+       cecservice_client.notify_fn   = callback;
+       cecservice_client.notify_data = callback_data;
+-      vc_cec_log_info("CEC service registered callback 0x%x", (uint32_t) callback);
++      vc_cec_log_info("CEC service registered callback 0x%" PRIxPTR, (uintptr_t) callback);
+       lock_release();
+    } else {
+-      vc_cec_log_error("CEC service registered callback 0x%x failed", (uint32_t) callback);
++      vc_cec_log_error("CEC service registered callback 0x%" PRIxPTR " failed", (uintptr_t) callback);
+    }
+ }
+ 

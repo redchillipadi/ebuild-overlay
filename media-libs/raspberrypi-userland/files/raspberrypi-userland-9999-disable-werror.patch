@@ -1,0 +1,141 @@
+diff -Naur a/host_applications/android/apps/vidtex/CMakeLists.txt b/host_applications/android/apps/vidtex/CMakeLists.txt
+--- a/host_applications/android/apps/vidtex/CMakeLists.txt	2018-08-02 14:11:37.049050022 +1000
++++ b/host_applications/android/apps/vidtex/CMakeLists.txt	2018-08-02 14:12:26.991050003 +1000
+@@ -1,6 +1,6 @@
+ cmake_minimum_required(VERSION 2.8)
+ 
+-SET(COMPILE_DEFINITIONS -Werror -Wall)
++SET(COMPILE_DEFINITIONS -Wall)
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/bcm_host/include)
+ 
+ set (VIDTEX_SOURCES
+diff -Naur a/host_applications/linux/apps/dtmerge/CMakeLists.txt b/host_applications/linux/apps/dtmerge/CMakeLists.txt
+--- a/host_applications/linux/apps/dtmerge/CMakeLists.txt	2018-08-02 14:11:37.051050022 +1000
++++ b/host_applications/linux/apps/dtmerge/CMakeLists.txt	2018-08-02 14:13:35.062049977 +1000
+@@ -4,7 +4,7 @@
+ include (${VIDEOCORE_ROOT}/makefiles/cmake/global_settings.cmake)
+ 
+ if (NOT WIN32)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall)
+ endif ()
+ 
+ include_directories (
+diff -Naur a/host_applications/linux/apps/dtoverlay/CMakeLists.txt b/host_applications/linux/apps/dtoverlay/CMakeLists.txt
+--- a/host_applications/linux/apps/dtoverlay/CMakeLists.txt	2018-08-02 14:11:37.052050022 +1000
++++ b/host_applications/linux/apps/dtoverlay/CMakeLists.txt	2018-08-02 14:14:18.333049960 +1000
+@@ -4,7 +4,7 @@
+ include (${VIDEOCORE_ROOT}/makefiles/cmake/global_settings.cmake)
+ 
+ if (NOT WIN32)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall)
+ endif ()
+ 
+ include_directories (
+diff -Naur a/host_applications/linux/apps/gencmd/CMakeLists.txt b/host_applications/linux/apps/gencmd/CMakeLists.txt
+--- a/host_applications/linux/apps/gencmd/CMakeLists.txt	2018-08-02 14:11:37.052050022 +1000
++++ b/host_applications/linux/apps/gencmd/CMakeLists.txt	2018-08-02 14:14:27.712049957 +1000
+@@ -4,7 +4,7 @@
+    set(VCOS_PLATFORM win32)
+ else ()
+    set(VCOS_PLATFORM pthreads)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall)
+ endif ()
+ 
+ include_directories( ../../../.. 
+diff -Naur a/host_applications/linux/apps/raspicam/CMakeLists.txt b/host_applications/linux/apps/raspicam/CMakeLists.txt
+--- a/host_applications/linux/apps/raspicam/CMakeLists.txt	2018-08-02 14:11:37.223050022 +1000
++++ b/host_applications/linux/apps/raspicam/CMakeLists.txt	2018-08-02 14:13:11.622049986 +1000
+@@ -1,8 +1,6 @@
+ 
+ # raspistill/raspivid/raspiyuv
+ 
+-SET(COMPILE_DEFINITIONS -Werror)
+-
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/bcm_host/include)
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/apps/raspicam/)
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/sm)
+diff -Naur a/host_applications/linux/apps/smem/CMakeLists.txt b/host_applications/linux/apps/smem/CMakeLists.txt
+--- a/host_applications/linux/apps/smem/CMakeLists.txt	2018-08-02 14:11:37.223050022 +1000
++++ b/host_applications/linux/apps/smem/CMakeLists.txt	2018-08-02 14:14:43.293049951 +1000
+@@ -4,7 +4,7 @@
+ include (${VIDEOCORE_ROOT}/makefiles/cmake/global_settings.cmake)
+ 
+ if (NOT WIN32)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall)
+ endif ()
+ 
+ include_directories (
+diff -Naur a/host_applications/linux/libs/bcm_host/CMakeLists.txt b/host_applications/linux/libs/bcm_host/CMakeLists.txt
+--- a/host_applications/linux/libs/bcm_host/CMakeLists.txt	2018-08-02 14:11:37.225050022 +1000
++++ b/host_applications/linux/libs/bcm_host/CMakeLists.txt	2018-08-02 14:12:49.672049994 +1000
+@@ -3,7 +3,7 @@
+    set(VCOS_PLATFORM win32)
+ else ()
+    set(VCOS_PLATFORM pthreads)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall)
+ endif ()
+ 
+ # set this as we want all the source of vchostif to be available in libbcm_host
+diff -Naur a/host_applications/linux/libs/sm/CMakeLists.txt b/host_applications/linux/libs/sm/CMakeLists.txt
+--- a/host_applications/linux/libs/sm/CMakeLists.txt	2018-08-02 14:11:37.226050022 +1000
++++ b/host_applications/linux/libs/sm/CMakeLists.txt	2018-08-02 14:15:06.594049942 +1000
+@@ -3,7 +3,7 @@
+    set(VCOS_PLATFORM win32)
+ else ()
+    set(VCOS_PLATFORM pthreads)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall)
+ endif ()
+ 
+ include_directories( ../../../..
+diff -Naur a/interface/mmal/CMakeLists.txt b/interface/mmal/CMakeLists.txt
+--- a/interface/mmal/CMakeLists.txt	2018-08-02 14:11:36.932050022 +1000
++++ b/interface/mmal/CMakeLists.txt	2018-08-02 14:16:20.193049914 +1000
+@@ -3,7 +3,7 @@
+ set(LIBRARY_TYPE SHARED)
+ endif (NOT DEFINED LIBRARY_TYPE)
+ 
+-add_definitions(-Wall -Werror)
++add_definitions(-Wall)
+ 
+ add_library(mmal SHARED util/mmal_util.c)
+ 
+diff -Naur a/interface/vcos/CMakeLists.txt b/interface/vcos/CMakeLists.txt
+--- a/interface/vcos/CMakeLists.txt	2018-08-02 14:11:36.954050022 +1000
++++ b/interface/vcos/CMakeLists.txt	2018-08-02 14:16:02.534049920 +1000
+@@ -43,7 +43,7 @@
+ endforeach ()
+ 
+ if (CMAKE_COMPILER_IS_GNUCC)
+-   add_definitions (-ggdb -Werror -Wall)
++   add_definitions (-ggdb -Wall)
+ endif ()
+ 
+ if (CMAKE_COMPILER_2005)
+diff -Naur a/interface/vcos/pthreads/CMakeLists.txt b/interface/vcos/pthreads/CMakeLists.txt
+--- a/interface/vcos/pthreads/CMakeLists.txt	2018-08-02 14:11:36.958050022 +1000
++++ b/interface/vcos/pthreads/CMakeLists.txt	2018-08-02 14:15:40.564049929 +1000
+@@ -1,7 +1,7 @@
+ # MSVC5 does not fully support C99, enabling declaration-after-statement
+ # warnings allows a common MSVC5 build error to be detected in Linux builds.
+ if (CMAKE_COMPILER_IS_GNUCC)
+-   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wdeclaration-after-statement")
++   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wdeclaration-after-statement")
+    add_definitions (-D_GNU_SOURCE)
+ endif ()
+ 
+diff -Naur a/interface/vmcs_host/linux/vcfiled/CMakeLists.txt b/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
+--- a/interface/vmcs_host/linux/vcfiled/CMakeLists.txt	2018-08-02 14:11:36.967050022 +1000
++++ b/interface/vmcs_host/linux/vcfiled/CMakeLists.txt	2018-08-02 14:16:38.934049907 +1000
+@@ -1,6 +1,3 @@
+-
+-add_definitions(-Werror)
+-
+ # vcfiled - serves files to videocore. used for media handlers from
+ # OpenMAX/IL and loading VLLs.
+ add_executable(vcfiled vcfiled.c)
