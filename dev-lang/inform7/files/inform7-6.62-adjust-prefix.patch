@@ -1,0 +1,12 @@
+diff -Naur a/bin/i7 b/bin/i7
+--- a/bin/i7	2018-10-08 06:37:22.511648498 +0800
++++ b/bin/i7	2018-10-08 06:37:31.621564312 +0800
+@@ -6,7 +6,7 @@
+ use File::Find;
+ $Getopt::Std::STANDARD_HELP_VERSION=1;
+ 
+-$idesettings{'PREFIX'}="/usr/local";
++$idesettings{'PREFIX'}="/usr";
+ $opt_c="";
+ $opt_r="";
+ $opt_s="";
