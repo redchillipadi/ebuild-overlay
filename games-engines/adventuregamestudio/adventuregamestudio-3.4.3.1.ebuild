@@ -3,23 +3,21 @@
 
 EAPI=7
 
-inherit git-r3 cmake-utils
-
 DESCRIPTION="Play hundreds of adventure games made with Adventure Game Studio"
 HOMEPAGE="https://www.adventuregamestudio.co.uk/"
-EGIT_REPO_URI="https://github.com/${PN}/ags.git"
-EGIT_BRANCH="release-${PV}"
+SRC_URI="https://github.com/adventuregamestudio/ags/archive/v.3.4.3.1.tar.gz"
 LICENSE="Artistic-2"
 KEYWORDS="~amd64"
 SLOT="0"
+S="${WORKDIR}/ags-v.${PV}/Engine"
 
 RDEPEND="
+	>=sys-devel/gcc-4.4.7:=
 	<media-libs/allegro-5.0.11[vorbis,X]
 	media-libs/libtheora
 	media-libs/freetype
 	media-libs/dumb
 	media-libs/aldumb
-	>=sys-devel/gcc-4.4.7:=
 "
 
 DEPEND="${RDEPEND}"
@@ -31,16 +29,6 @@ DEPEND="${RDEPEND}"
 #x11-libs/libXxf86vm
 #x11-libs/libXext
 
-# Allegro 5 does not build as I am missing glXCreateContextAttribsARB
-# I think is is included by mesa with other gfx cards, but not nvidia
-# If allegro5 were made to build, then it might be possible to specifg
-# USE flags dumb and truetype for allegro, and remove reliance on
-# aldumb, dumb and freetype directly.
-
-#src_compile() {
-#	make --directory=Engine
-#}
-
-#src_install() {
-#	make --directory=Engine install
-#}
+src_install() {
+	dobin	ags
+}
