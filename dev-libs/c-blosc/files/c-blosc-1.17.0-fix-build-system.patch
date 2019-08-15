@@ -1,0 +1,24 @@
+diff -Naur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2019-08-15 09:58:31.517297660 +0800
++++ b/CMakeLists.txt	2019-08-15 11:29:45.291614302 +0800
+@@ -261,20 +261,6 @@
+ endif()
+ 
+ # flags
+-# Set -Wall and other useful warning flags.
+-if(CMAKE_C_COMPILER_ID STREQUAL GNU OR CMAKE_C_COMPILER_ID STREQUAL Clang OR CMAKE_C_COMPILER_ID STREQUAL Intel)
+-    add_compile_options(-Wall -Wwrite-strings -Wno-unused-function)
+-endif(CMAKE_C_COMPILER_ID STREQUAL GNU OR CMAKE_C_COMPILER_ID STREQUAL Clang OR CMAKE_C_COMPILER_ID STREQUAL Intel)
+-
+-# @NOTE: -O3 is enabled in Release mode (CMAKE_BUILD_TYPE="Release")
+-
+-# Set the "-msse2" build flag if supported.
+-if(CMAKE_C_COMPILER_ID STREQUAL GNU OR CMAKE_C_COMPILER_ID STREQUAL Clang OR CMAKE_C_COMPILER_ID STREQUAL Intel)
+-     if(COMPILER_SUPPORT_SSE2)
+-         add_compile_options(-msse2)
+-     endif(COMPILER_SUPPORT_SSE2)
+-endif(CMAKE_C_COMPILER_ID STREQUAL GNU OR CMAKE_C_COMPILER_ID STREQUAL Clang OR CMAKE_C_COMPILER_ID STREQUAL Intel)
+-
+ if(MSVC)
+     if(NOT CMAKE_C_FLAGS)
+         set(CMAKE_C_FLAGS "/Ox" CACHE STRING "C flags." FORCE)
