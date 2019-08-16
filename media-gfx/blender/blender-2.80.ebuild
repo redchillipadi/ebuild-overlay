@@ -104,6 +104,7 @@ DEPEND="${RDEPEND}
 PATCHES=(
 	"${FILESDIR}/${P}-fix-install-rules.patch"
 	"${FILESDIR}/${P}-link-cycles-standalone-with-opengl.patch"
+	"${FILESDIR}/${P}-fix-draco-directory.patch"
 )
 
 blender_check_requirements() {
