@@ -58,7 +58,7 @@ src_install() {
 
 	exeinto "/opt/${PN}"
 	doexe "${BUILD_DIR}/OgreMeshy"
-	dosym "/opt/${PN}/OgreMeshy" /usr/bin/OgreMeshy
+	dosym "../../opt/${PN}/OgreMeshy" /usr/bin/OgreMeshy
 
 	insinto "/opt/${PN}"
 	doins "${S}/bin/Release_Linux/Plugins.cfg"

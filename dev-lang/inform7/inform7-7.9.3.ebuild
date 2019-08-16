@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -45,13 +45,13 @@ src_install() {
 	dodir "/usr/share/${PN}"
 	cp -R share/${PN}/* "${D}/usr/share/${PN}/"
 
-	dosym "/usr/share/${PN}/Compilers/cBlorb" "/usr/libexec/cBlorb"
-	dosym "/usr/share/${PN}/Compilers/inform6" "/usr/libexec/inform6"
-	dosym "/usr/share/${PN}/Compilers/intest" "/usr/libexec/intest"
-	dosym "/usr/share/${PN}/Compilers/ni" "/usr/libexec/ni"
-	dosym "/usr/share/${PN}/Interpreters/dumb-frotz" "/usr/libexec/dumb-frotz"
-	dosym "/usr/share/${PN}/Interpreters/dumb-git" "/usr/libexec/dumb-git"
-	dosym "/usr/share/${PN}/Interpreters/dumb-glulxe" "/usr/libexec/dumb-glulxe"
+	dosym "../share/${PN}/Compilers/cBlorb" "/usr/libexec/cBlorb"
+	dosym "../share/${PN}/Compilers/inform6" "/usr/libexec/inform6"
+	dosym "../share/${PN}/Compilers/intest" "/usr/libexec/intest"
+	dosym "../share/${PN}/Compilers/ni" "/usr/libexec/ni"
+	dosym "../share/${PN}/Interpreters/dumb-frotz" "/usr/libexec/dumb-frotz"
+	dosym "../share/${PN}/Interpreters/dumb-git" "/usr/libexec/dumb-git"
+	dosym "../share/${PN}/Interpreters/dumb-glulxe" "/usr/libexec/dumb-glulxe"
 
 	dodoc -r ${DOCS}
 }
