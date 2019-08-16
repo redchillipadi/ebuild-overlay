@@ -5,13 +5,13 @@ EAPI="6"
 
 PYTHON_COMPAT=( python3_7 )
 
-inherit check-reqs cmake-utils xdg-utils flag-o-matic gnome2-utils \
+inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
 	pax-utils python-single-r1 toolchain-funcs eapi7-ver
 
 DESCRIPTION="3D Creation/Animation/Publishing System"
-HOMEPAGE="http://www.blender.org"
+HOMEPAGE="https://www.blender.org"
 
-SRC_URI="http://download.blender.org/source/${P}.tar.gz"
+SRC_URI="https://download.blender.org/source/${P}.tar.gz"
 
 # Blender can have letters in the version string,
 # so strip off the letter if it exists.
@@ -55,7 +55,7 @@ RDEPEND="${PYTHON_DEPS}
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
 	draco? ( media-libs/draco )
-	embree? ( media-libs/embree )
+	embree? ( media-libs/embree[static-libs,raymask] )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
 	libav? ( media-video/libav:=[x264,mp3,encode,theora,jpeg2k?] )
 	fftw? ( sci-libs/fftw:3.0= )
@@ -105,6 +105,7 @@ PATCHES=(
 	"${FILESDIR}/${P}-fix-install-rules.patch"
 	"${FILESDIR}/${P}-link-cycles-standalone-with-opengl.patch"
 	"${FILESDIR}/${P}-fix-draco-directory.patch"
+	"${FILESDIR}/${P}-fix-Embree-capitalisation.patch"
 )
 
 blender_check_requirements() {
@@ -266,10 +267,6 @@ src_install() {
 	python_optimize "${ED%/}/usr/share/blender/${MY_PV}/scripts"
 }
 
-pkg_preinst() {
-	gnome2_icon_savelist
-}
-
 pkg_postinst() {
 	elog
 	elog "Blender uses python integration. As such, may have some"
@@ -287,12 +284,12 @@ pkg_postinst() {
 	ewarn "If you are concerned about security, file a bug upstream:"
 	ewarn "  https://developer.blender.org/"
 	ewarn
-	gnome2_icon_cache_update
+	xdg_icon_cache_update
 	xdg_mimeinfo_database_update
 }
 
 pkg_postrm() {
-	gnome2_icon_cache_update
+	xdg_icon_cache_update
 	xdg_mimeinfo_database_update
 
 	ewarn ""
