@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>agrigo2001@yahoo.com.au</email>
+		<name>Adrian Grigo</name>
+	</maintainer>
+
+	<longdescription>
+		USB CEC Adapter communication library for raspberry pi
+	</longdescription>
+
+	<use>
+		<flag name="cubox">
+			Enable support for enable support for the TDA995x.
+		</flag>
+		<flag name="exynos">
+			Enable support for Exynos chipsets.
+		</flag>
+		<flag name="raspberry-pi">
+			Enable support for the Raspberry Pi.
+		</flag>
+		<flag name="xrandr">
+			Enable detection of active HDMI using xrandr extensions.
+			<pkg>x11-apps/xrandr</pkg>
+		</flag>
+	</use>
+</pkgmetadata>
