@@ -11,7 +11,7 @@ EGIT_REPO_URI="https://github.com/nicehash/nheqminer.git"
 EGIT_TAG="0.5c"
 LICENSE="ZLIB"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 RESTRICT="test"
 DEPEND="dev-libs/boost[static-libs]
 	dev-lang/fasm
