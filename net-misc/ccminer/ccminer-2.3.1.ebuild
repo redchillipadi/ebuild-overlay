@@ -11,7 +11,7 @@ EGIT_REPO_URI="https://github.com/tpruvot/ccminer.git"
 EGIT_TAG="2.3.1-tpruvot"
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 RESTRICT="test"
 DEPEND="dev-libs/openssl
 	net-misc/curl
