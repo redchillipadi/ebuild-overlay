@@ -12,8 +12,6 @@ S="${WORKDIR}/inform7-6M62"
 DOCS="share/doc/${PN}/README share/doc/${PN}/ChangeLogs"
 RESTRICT="strip"
 
-inherit epatch
-
 src_prepare()
 {
 	local MY_ARCH="error"
@@ -33,7 +31,7 @@ src_prepare()
 	tar xzf ${INFORM_COMPILERS} || die
 	tar xzf ${INFORM_INTERPRETERS} || die
 
-	epatch "${FILESDIR}/${P}-adjust-prefix.patch"
+	eapply "${FILESDIR}/${P}-adjust-prefix.patch"
 	eapply_user
 }
 
