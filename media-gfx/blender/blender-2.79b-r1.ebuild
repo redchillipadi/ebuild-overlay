@@ -3,15 +3,15 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python{3_5,3_6} )
+PYTHON_COMPAT=( python{3_5,3_6,3_7} )
 
-inherit check-reqs cmake-utils xdg-utils flag-o-matic gnome2-utils \
+inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
 	pax-utils python-single-r1 toolchain-funcs eapi7-ver
 
 DESCRIPTION="3D Creation/Animation/Publishing System"
-HOMEPAGE="http://www.blender.org"
+HOMEPAGE="https://www.blender.org"
 
-SRC_URI="http://download.blender.org/source/${P}.tar.gz"
+SRC_URI="https://download.blender.org/source/${P}.tar.gz"
 
 # Blender can have letters in the version string,
 # so strip off the letter if it exists.
@@ -19,23 +19,26 @@ MY_PV="$(ver_cut 1-2)"
 
 SLOT="0"
 LICENSE="|| ( GPL-2 BL )"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 ~x86"
 IUSE="+bullet +dds +elbeem +game-engine +openexr collada color-management \
-	cuda cycles debug doc ffmpeg fftw headless jack jemalloc jpeg2k libav \
-	llvm man ndof nls openal opencl openimageio openmp opensubdiv openvdb \
-	osl player sdl sndfile test tiff valgrind"
+	alembic cuda cycles debug doc ffmpeg fftw headless jack jemalloc \
+	jpeg2k libav llvm man ndof nls openal opencl openimageio openmp \
+	opensubdiv openvdb osl player sdl sndfile standalone \
+	test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
+	alembic? ( openexr )
 	cuda? ( cycles )
 	cycles? ( openexr tiff openimageio )
 	opencl? ( cycles )
 	osl? ( cycles llvm )
-	player? ( game-engine !headless )"
+	player? ( game-engine !headless )
+	standalone? ( cycles )"
 
 RDEPEND="${PYTHON_DEPS}
-	>=dev-libs/boost-1.62:=[nls?,threads(+)]
+	dev-libs/boost:=[nls?,threads(+)]
 	dev-libs/lzo:2
-	>=dev-python/numpy-1.10.1[${PYTHON_USEDEP}]
+	dev-python/numpy[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
 	media-libs/freetype
 	media-libs/glew:*
@@ -46,7 +49,8 @@ RDEPEND="${PYTHON_DEPS}
 	virtual/jpeg:0=
 	virtual/libintl
 	virtual/opengl
-	collada? ( >=media-libs/opencollada-1.6.18:= )
+	alembic? ( media-libs/alembic[boost(+),hdf(+)] )
+	collada? ( >=media-libs/opencollada-1.6.51:= )
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
@@ -68,16 +72,16 @@ RDEPEND="${PYTHON_DEPS}
 	nls? ( virtual/libiconv )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
-	openimageio? ( >=media-libs/openimageio-1.7.0 )
+	openimageio? ( >=media-libs/openimageio-1.7.15 )
 	openexr? (
 		>=media-libs/ilmbase-2.2.0:=
 		>=media-libs/openexr-2.2.0:=
 	)
-	opensubdiv? ( >=media-libs/opensubdiv-3.3.0:=[cuda=,opencl=] )
+	opensubdiv? ( media-libs/opensubdiv:=[cuda=,opencl=] )
 	openvdb? (
 		media-gfx/openvdb[-abi3-compat(-),abi4-compat(+)]
 		dev-cpp/tbb
-		>=dev-libs/c-blosc-1.5.2
+		dev-libs/c-blosc
 	)
 	osl? ( media-libs/osl:= )
 	sdl? ( media-libs/libsdl2[sound,joystick] )
@@ -154,6 +158,7 @@ src_configure() {
 		-DWITH_SYSTEM_OPENJPEG=ON
 		-DWITH_SYSTEM_EIGEN3=ON
 		-DWITH_SYSTEM_LZO=ON
+		-DWITH_ALEMBIC=$(usex alembic)
 		-DWITH_C11=ON
 		-DWITH_CXX11=ON
 		-DWITH_BOOST=ON
@@ -164,6 +169,8 @@ src_configure() {
 		-DWITH_CYCLES_DEVICE_CUDA=$(usex cuda TRUE FALSE)
 		-DWITH_CYCLES=$(usex cycles)
 		-DWITH_CYCLES_OSL=$(usex osl)
+		-DWITH_CYCLES_STANDALONE=$(usex standalone)
+		-DWITH_CYCLES_STANDALONE_GUI=$(usex standalone)
 		-DWITH_LLVM=$(usex llvm)
 		-DWITH_FFTW3=$(usex fftw)
 		-DWITH_GAMEENGINE=$(usex game-engine)
@@ -237,6 +244,10 @@ src_install() {
 	# Pax mark blender for hardened support.
 	pax-mark m "${CMAKE_BUILD_DIR}"/bin/blender
 
+	if use standalone; then
+		dobin "${CMAKE_BUILD_DIR}"/bin/cycles
+	fi
+
 	if use doc; then
 		docinto "html/API/python"
 		dodoc -r "${CMAKE_USE_DIR}"/doc/python_api/BPY_API/.
@@ -256,10 +267,6 @@ src_install() {
 	python_optimize "${ED%/}/usr/share/blender/${MY_PV}/scripts"
 }
 
-pkg_preinst() {
-	gnome2_icon_savelist
-}
-
 pkg_postinst() {
 	elog
 	elog "Blender uses python integration. As such, may have some"
@@ -277,12 +284,12 @@ pkg_postinst() {
 	ewarn "If you are concerned about security, file a bug upstream:"
 	ewarn "  https://developer.blender.org/"
 	ewarn
-	gnome2_icon_cache_update
+	xdg_icon_cache_update
 	xdg_mimeinfo_database_update
 }
 
 pkg_postrm() {
-	gnome2_icon_cache_update
+	xdg_icon_cache_update
 	xdg_mimeinfo_database_update
 
 	ewarn ""
