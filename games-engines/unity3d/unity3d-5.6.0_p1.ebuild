@@ -9,7 +9,7 @@ inherit gnome2-utils
 BUILDTAG=b7d937b6f596
 PV_F=${PV}xb3 # Workaround for that ugly b-revision
 IUSE="ffmpeg nodejs java gzip android"
-DESCRIPTION="The world's most popular development platform for creating 2D and 3D multiplatform games and interactive experiences."
+DESCRIPTION="Realtime creation platform for 2D and 3D games and applications."
 HOMEPAGE="https://unity3d.com"
 SRC_URI="http://beta.unity3d.com/download/${BUILDTAG}/unity-editor-installer-5.6.0xb3Linux.sh -> ${P}+${BUILDTAG}.sh"
 
