@@ -4,7 +4,7 @@
 EAPI=6
 DESCRIPTION="design system for interactive fiction"
 HOMEPAGE="https://inform7.com"
-SRC_URI="https://inform7.com/download/content/6M62/I7_6M62_Linux_all.tar.gz"
+SRC_URI="http://inform7.com/apps/6M62/I7_6M62_Linux_all.tar.gz"
 LICENSE="Artistic-2 Inform"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86 ~arm ~ppc"
