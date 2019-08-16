@@ -12,11 +12,7 @@ LICENSE=GPL-2
 KEYWORDS="~amd64"
 IUSE="+qtcreator"
 RDEPEND="
-	<=sys-devel/clang-4.0.1:*
-	|| (
-		<=sys-devel/clang-4.0.1:4
-		>=sys-devel/clang-3.5:0
-	)
+	sys-devel/clang-4.0.1:4
 	qtcreator? ( dev-qt/qt-creator )
 	>=dev-lang/mono-3.2.8
 	app-text/dos2unix
