@@ -19,7 +19,7 @@ MY_PV="$(ver_cut 1-2)"
 
 SLOT="0"
 LICENSE="|| ( GPL-2 BL )"
-KEYWORDS="amd64 ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +game-engine +openexr collada color-management \
 	alembic cuda cycles debug doc ffmpeg fftw headless jack jemalloc \
 	jpeg2k libav llvm man ndof nls openal opencl openimageio openmp \
@@ -49,7 +49,7 @@ RDEPEND="${PYTHON_DEPS}
 	virtual/jpeg:0=
 	virtual/libintl
 	virtual/opengl
-	alembic? ( media-libs/alembic[boost(+),hdf(+)] )
+	alembic? ( media-gfx/alembic[boost(+),hdf(+)] )
 	collada? ( >=media-libs/opencollada-1.6.51:= )
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
