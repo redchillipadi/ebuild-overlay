@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -12,7 +12,7 @@ LICENSE=GPL-2
 KEYWORDS="~amd64"
 IUSE="+qtcreator"
 RDEPEND="
-	sys-devel/clang-4.0.1:4
+	sys-devel/clang:4
 	qtcreator? ( dev-qt/qt-creator )
 	>=dev-lang/mono-3.2.8
 	app-text/dos2unix

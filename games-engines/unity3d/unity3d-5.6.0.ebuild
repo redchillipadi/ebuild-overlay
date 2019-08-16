@@ -18,12 +18,12 @@ KEYWORDS="-* ~amd64" # Package is x86_64-only
 RESTRICT="strip mirror"
 RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	nodejs? ( net-libs/nodejs )
-	java? ( virtual/jdk virtual/jre )
+	java? ( virtual/jdk:* virtual/jre:* )
 	android? ( dev-util/android-studio )
 	gzip? ( app-arch/gzip )
 	dev-util/desktop-file-utils
 	x11-misc/xdg-utils
-	sys-devel/gcc[multilib]
+	sys-devel/gcc:*[multilib]
 	virtual/opengl
 	virtual/glu
 	dev-libs/nss
