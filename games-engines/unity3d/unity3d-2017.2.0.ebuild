@@ -44,9 +44,9 @@ src_unpack() {
 }
 
 src_prepare() {
-	ln -s /usr/bin/python2 ${S}/Editor/python # Fix WebGL building
-	mkdir -p ${FILES}
-	cp -R ${FILESDIR}/* ${FILES}/
+	ln -s /usr/bin/python2 "${S}/Editor/python" # Fix WebGL building
+	mkdir -p "${FILES}"
+	cp -R "${FILESDIR}/*" "${FILES}/"
 	sed -i "/^Version=/c\Version=${PV}" "${FILES}/unity-editor.desktop"
 	sed -i "/^Version=/c\Version=${PV}" "${FILES}/unity-monodevelop.desktop"
 	eapply_user # In case someone wants to patch .desktop files, for example
@@ -55,7 +55,7 @@ src_prepare() {
 src_install() {
 	# Install Unity3D itself
 	insinto /opt/Unity
-	doins -r ${S}/*
+	doins -r "${S}/*"
 
 	# Install .desktop launchers
 	insopts "-Dm644"

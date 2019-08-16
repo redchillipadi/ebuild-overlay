@@ -24,9 +24,9 @@ src_configure() {
 }
 
 src_install() {
-	mkdir -p ${D}/usr/include/
+	mkdir -p "${D}/usr/include/"
 	cp -r "${S}/Box2D" "${D}/usr/include/"
 	find "${D}/usr/include/Box2D/" -type f -name "*.cpp" -exec rm '{}' \;
-	dodoc -r ${S}/Documentation
-	dolib.a ${S}/Build/bin/x86_64/Debug/libBox2D.a
+	dodoc -r "${S}/Documentation"
+	dolib.a "${S}/Build/bin/x86_64/Debug/libBox2D.a"
 }

@@ -19,26 +19,26 @@ DEPEND="dev-libs/boost[static-libs]
 "
 
 src_compile() {
-  sed -e "s|../${PN}/|../${P}/|" -i ${S}/CMakeLists.txt
-  fasm -m 1280000 ${S}/cpu_xenoncat/asm_linux/equihash_avx1.asm
-  fasm -m 1280000 ${S}/cpu_xenoncat/asm_linux/equihash_avx2.asm
-  cmake-utils_src_compile
+	sed -e "s|../${PN}/|../${P}/|" -i "${S}/CMakeLists.txt"
+	fasm -m 1280000 "${S}/cpu_xenoncat/asm_linux/equihash_avx1.asm"
+	fasm -m 1280000 "${S}/cpu_xenoncat/asm_linux/equihash_avx2.asm"
+	cmake-utils_src_compile
 }
 
 src_install() {
-  cmake-utils_src_install
-  dobin ${S}_build/nheqminer
-  doinitd ${FILESDIR}/nicehash
+	cmake-utils_src_install
+	dobin "${S}_build/nheqminer"
+	doinitd "${FILESDIR}/nicehash"
 }
 
 pkg_postinst() {
-  enewgroup nicehash
-  enewuser nicehash -1 -1 /dev/null video
-  elog
-  elog "Remember to configure the server and bitcoin address"
-  elog "as appropriate in /etc/init.d/nicehash"
-  elog
-  elog "To automatically start the daemon on boot run"
-  elog "# rc-update add nicehash default"
-  elog
+	enewgroup nicehash
+	enewuser nicehash -1 -1 /dev/null video
+	elog
+	elog "Remember to configure the server and bitcoin address"
+	elog "as appropriate in /etc/init.d/nicehash"
+	elog
+	elog "To automatically start the daemon on boot run"
+	elog "# rc-update add nicehash default"
+	elog
 }

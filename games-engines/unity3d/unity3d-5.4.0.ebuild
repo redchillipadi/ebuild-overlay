@@ -30,8 +30,8 @@ RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	media-libs/libpng:*
 	x11-libs/libXtst
 	dev-libs/libpqxx
-        dev-dotnet/mono-addins
-        dev-dotnet/gconf-sharp
+	dev-dotnet/mono-addins
+	dev-dotnet/gconf-sharp
 	net-libs/nodejs[npm]"
 
 DEPEND="${RDEPEND}
@@ -45,9 +45,9 @@ src_unpack() {
 }
 
 src_prepare() {
-	ln -s /usr/bin/python2 ${S}/Editor/python # Fix WebGL building
-	mkdir -p ${FILES}
-	cp -R ${FILESDIR}/* ${FILES}/
+	ln -s /usr/bin/python2 "${S}/Editor/python" # Fix WebGL building
+	mkdir -p "${FILES}"
+	cp -R "${FILESDIR}/*" "${FILES}/"
 	sed -i "/^Version=/c\Version=${PV}" "${FILES}/unity-editor.desktop"
 	sed -i "/^Version=/c\Version=${PV}" "${FILES}/unity-monodevelop.desktop"
 	eapply_user # In case someone wants to patch .desktop files, for example
@@ -56,7 +56,7 @@ src_prepare() {
 src_install() {
 	# Install Unity3D itself
 	insinto /opt/Unity
-	doins -r ${S}/*
+	doins -r "${S}/*"
 
 	# Install .desktop launchers
 	insopts "-Dm644"
@@ -98,7 +98,7 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-        chmod 4755 /opt/Unity/Editor/chrome-sandbox
+	chmod 4755 /opt/Unity/Editor/chrome-sandbox
 
 	gnome2_icon_cache_update
 	ewarn "Please note that Unity3D requires closed-source"

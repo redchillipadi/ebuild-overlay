@@ -15,11 +15,11 @@ DEPEND=""
 S="${WORKDIR}/${PN}"
 
 src_compile() {
-	${S}/fasm ${S}/source/Linux/fasm.asm
-	${S}/fasm.x64 ${S}/source/Linux/x64/fasm.asm
+	"${S}/fasm" "${S}/source/Linux/fasm.asm"
+	"${S}/fasm.x64" "${S}/source/Linux/x64/fasm.asm"
 }
 
 src_install() {
-	dobin ${S}/source/Linux/fasm
-	newbin ${S}/source/Linux/x64/fasm fasm.x64
+	dobin "${S}/source/Linux/fasm"
+	newbin "${S}/source/Linux/x64/fasm fasm.x64"
 }
