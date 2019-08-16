@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -23,7 +23,7 @@ DEPEND="${RDEPEND}"
 S="${WORKDIR}/OgreMeshy"
 
 PATCHES=(
-	${FILESDIR}/${P}-add-x11-library.patch
+	"${FILESDIR}/${P}-add-x11-library.patch"
 )
 
 # Note that the plugin libraries may be prestripped, as they are copies of those created by Ogre
