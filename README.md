@@ -21,7 +21,7 @@ A collection of ebuilds for packages not yet available in Gentoo
 * media-libs/embree-3.5.2 - High performance ray tracing kernels 
 * media-libs/Field3D-1.7.2 - Library for storing voxel data
 * media-libs/partio-1.5.4 - Library for reading and writing particle formats
-* media-libs/ptex-2.3.0 - Texture mapping system
+* media-libs/ptex-2.3.2 - Texture mapping system
 * media-libs/opensubdiv-3.4.0 - Open-Source Subdivision Surface library
 * media-libs/osl-1.9.9 - Open Shading Language library
 * media-tv/kodi-raspberrypi-17.6 - Kodi media player build for raspberry pi 32 bit
