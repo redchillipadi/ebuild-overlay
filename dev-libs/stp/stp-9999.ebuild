@@ -33,3 +33,15 @@ src_configure() {
 
 	cmake-utils_src_configure
 }
+
+src_install() {
+	#install recursively (source)/include/STP/* into /usr/include/STP/
+	mkdir -p ${D}/usr/include
+	cp -r ${S}/include/STP ${D}/usr/include/
+
+	#install (source)/README.md into /usr/share/doc/stp-9999/
+	dodoc ${S}/README.md
+
+	#install (workdir)/lib/libSTP.so into /usr/lib64/
+	dolib.so ${S}_build/lib/libSTP.so
+}
