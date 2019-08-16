@@ -3,29 +3,31 @@
 # $Id$
 
 EAPI=6
-inherit eutils cmake-utils git-r3
+inherit eutils git-r3
 
 DESCRIPTION="A 2d physics library"
 HOMEPAGE="http://box2d.org/"
-EGIT_REPO_URI="git://github.com/erincatto/Box2D.git"
+EGIT_REPO_URI="https://github.com/erincatto/Box2D.git"
 LICENSE="ZLIB"
 SLOT="0"
-DEPEND="app-arch/unzip"
+DEPEND="app-arch/unzip
+	dev-util/premake:5"
 KEYWORDS="~amd64 ~x86"
 RESTRICT="test"
 
 src_prepare() {
-	CMAKE_USE_DIR="${S}/Box2D"
-	cmake-utils_src_prepare
+	eapply_user
+	premake5 gmake
 }
 
 src_configure() {
-	mycmakeargs=(
-		-DBOX2D_BUILD_EXAMPLES=OFF
-		-DBOX2D_BUILD_SHARED=ON
-		-DCMAKE_CXX_FLAGS:STRING=-std=c++11
-	)
+	make -C Build
+}
 
-	CMAKE_USE_DIR="${S}/Box2D"
-	cmake-utils_src_configure
+src_install() {
+	mkdir -p ${D}/usr/include/
+	cp -r "${S}/Box2D" "${D}/usr/include/"
+	find "${D}/usr/include/Box2D/" -type f -name "*.cpp" -exec rm '{}' \;
+	dodoc -r ${S}/Documentation
+	dolib.a ${S}/Build/bin/x86_64/Debug/libBox2D.a
 }
