@@ -20,17 +20,17 @@ MY_PV="$(ver_cut 1-2)"
 SLOT="0"
 LICENSE="|| ( GPL-2 BL )"
 KEYWORDS="~amd64 ~x86"
-IUSE="+bullet +dds +elbeem +openexr +system-python alembic collada \
-	color-management cuda cycles debug doc draco embree ffmpeg fftw \
-	headless jack jemalloc jpeg2k libav llvm man ndof nls openal opencl \
-	openimageio openmp opensubdiv openvdb osl sdl sndfile standalone \
-	test tiff valgrind"
+IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
+	alembic collada color-management cuda cycles debug doc draco embree \
+	ffmpeg fftw headless jack jemalloc jpeg2k libav llvm man ndof nls \
+	openal opencl openimageio openmp opensubdiv openvdb osl \
+	sdl sndfile standalone test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
 	cuda? ( cycles )
 	cycles? ( openexr tiff openimageio )
-	draco? ( !system-python )
+	draco? ( !system-python !system-numpy )
 	embree? ( cycles )
 	opencl? ( cycles )
 	osl? ( cycles llvm )
@@ -154,7 +154,7 @@ src_configure() {
 		-DPYTHON_INCLUDE_DIR="$(python_get_includedir)"
 		-DWITH_INSTALL_PORTABLE=OFF
 		-DWITH_PYTHON_INSTALL=$(usex system-python OFF ON)
-		-DWITH_PYTHON_INSTALL_NUMPY=OFF
+		-DWITH_PYTHON_INSTALL_NUMPY=$(usex system-numpy OFF ON)
 		-DWITH_STATIC_LIBS=OFF
 		-DWITH_SYSTEM_GLEW=ON
 		-DWITH_SYSTEM_EIGEN3=ON

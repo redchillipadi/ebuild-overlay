@@ -100,6 +100,9 @@
 		<flag name="system-python">
 			Use the sytem python implementation rather than a local copy.
 		</flag>
+		<flag name="system-numpy">
+			Use the system numpy implementation rather than a local copy.
+		</flag>
 		<flag name="test" restrict="&gt;=media-gfx/blender-2.77">
 			Build the provided unit tests.
 		</flag>
