@@ -27,7 +27,7 @@ RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	virtual/opengl
 	virtual/glu
 	dev-libs/nss
-	media-libs/libpng
+	media-libs/libpng:*
 	x11-libs/libXtst
 	dev-libs/libpqxx
 	dev-lang/mono
