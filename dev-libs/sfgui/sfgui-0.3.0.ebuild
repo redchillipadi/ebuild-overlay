@@ -12,7 +12,4 @@ LICENSE="ZLIB"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 RESTRICT="test"
-DEPEND="media-libs/libsfml
-	virtual/opengl
-"
-
+DEPEND="media-libs/libsfml virtual/opengl"

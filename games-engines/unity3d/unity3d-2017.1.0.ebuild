@@ -91,7 +91,6 @@ src_install() {
 	fperms +x /opt/Unity/Editor/Data/Tools/nodejs/bin/npm
 	fperms +x /opt/Unity/Editor/Data/Tools/nodejs/bin/node
 
-
 	# TODO: Why is this changed to 4711 once installed?
 	fperms 4755 /opt/Unity/Editor/chrome-sandbox
 }

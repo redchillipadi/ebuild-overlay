@@ -20,7 +20,6 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 
-
 S="${WORKDIR}/OgreMeshy"
 
 PATCHES=(
@@ -49,7 +48,6 @@ src_configure() {
 	cp "${S}/scripts/Resources/Blender/Bones/BoneTip.mesh" "${S}/bin/Release_Linux/Resources/Models/"
 	cp "${S}/scripts/Resources/Blender/Bones/BoneGlobe.mesh" "${S}/bin/Release_Linux/Resources/Models/"
 	cp "${S}/bin/Release/{Readme,ChangeLog}.txt" "${S}/bin/Release_Linux/"
-
 
 	CMAKE_USE_DIR="${S}"
 	cmake-utils_src_configure

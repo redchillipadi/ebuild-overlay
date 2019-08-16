@@ -53,4 +53,3 @@ pkg_postinst() {
   elog "# rc-update add ccminer default"
   elog
 }
-

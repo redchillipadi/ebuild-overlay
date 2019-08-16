@@ -89,7 +89,6 @@ src_install() {
 	fperms +x /opt/Unity/MonoDevelop/bin/monodevelop
 	fperms +x /opt/Unity/Editor/Data/MonoBleedingEdge/bin/mono
 
-
 	# TODO: Why is this changed to 4711 once installed?
 	fperms 4755 /opt/Unity/Editor/chrome-sandbox
 }
