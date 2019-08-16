@@ -16,7 +16,7 @@ SRC_URI="https://github.com/Pulse-Eight/${MY_PN}/archive/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~arm x86"
+KEYWORDS="~arm"
 IUSE="cubox exynos python +raspberry-pi +xrandr"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
