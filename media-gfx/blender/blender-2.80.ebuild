@@ -55,7 +55,7 @@ RDEPEND="${PYTHON_DEPS}
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
 	draco? ( media-libs/draco )
-	embree? ( media-libs/embree[static-libs,raymask] )
+	embree? ( media-libs/embree[static-libs,raymask,-tbb] )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
 	libav? ( media-video/libav:=[x264,mp3,encode,theora,jpeg2k?] )
 	fftw? ( sci-libs/fftw:3.0= )
