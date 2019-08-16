@@ -102,6 +102,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-fix-install-rules.patch"
 	"${FILESDIR}/${P}-gcc-8.patch"
 	"${FILESDIR}/${P}-ffmpeg-4-compat.patch"
+	"${FILESDIR}/${P}-fix-elbeem-gcc9.patch"
 )
 
 blender_check_requirements() {

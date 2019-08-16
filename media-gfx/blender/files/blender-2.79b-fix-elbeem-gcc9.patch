@@ -1,0 +1,30 @@
+diff -Naur a/intern/elbeem/intern/solver_main.cpp b/intern/elbeem/intern/solver_main.cpp
+--- a/intern/elbeem/intern/solver_main.cpp	2019-08-17 03:11:04.130628857 +0800
++++ b/intern/elbeem/intern/solver_main.cpp	2019-08-17 03:11:38.040553901 +0800
+@@ -381,7 +381,7 @@
+ 	GRID_REGION_INIT();
+ #if PARALLEL==1
+ 	const int gDebugLevel = ::gDebugLevel;
+-#pragma omp parallel default(none) num_threads(mNumOMPThreads) \
++#pragma omp parallel num_threads(mNumOMPThreads) \
+   reduction(+: \
+ 	  calcCurrentMass,calcCurrentVolume, \
+ 		calcCellsFilled,calcCellsEmptied, \
+@@ -1126,7 +1126,7 @@
+ 		GRID_REGION_INIT();
+ #if PARALLEL==1
+ 	const int gDebugLevel = ::gDebugLevel;
+-#pragma omp parallel default(none) num_threads(mNumOMPThreads) \
++#pragma omp parallel num_threads(mNumOMPThreads) \
+   reduction(+: \
+ 	  calcCurrentMass,calcCurrentVolume, \
+ 		calcCellsFilled,calcCellsEmptied, \
+@@ -1164,7 +1164,7 @@
+ 	GRID_REGION_INIT();
+ #if PARALLEL==1
+ 	const int gDebugLevel = ::gDebugLevel;
+-#pragma omp parallel default(none) num_threads(mNumOMPThreads) \
++#pragma omp parallel num_threads(mNumOMPThreads) \
+   reduction(+: \
+ 	  calcCurrentMass,calcCurrentVolume, \
+ 		calcCellsFilled,calcCellsEmptied, \
