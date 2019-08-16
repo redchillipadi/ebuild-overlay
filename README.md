@@ -6,7 +6,7 @@ A collection of ebuilds for packages not yet available in Gentoo
 * app-accessibility/flite-2.1 - Flite text to speech engine
 * app-accessibility/speech-tools-2.5 - Speech tools for Festival
 * dev-games/ogremeshy-1.5 - Viewer for Ogre meshes (inactive upstream)
-* dev-lang/fasm-1.72 - Flat assembler
+* dev-lang/fasm-1.73.16 - Flat assembler
 * dev-lang/inform7-6.62 - Design system for Interactive Fiction
 * dev-libs/libcec-raspberrypi-4.0.0_p3 - Communicate with Pulse-Eight USB HDMI-CEC Adaptor
 * dev-libs/sfgui-0.3.2 - Simple Fast Graphics User Interface with List Box patch
