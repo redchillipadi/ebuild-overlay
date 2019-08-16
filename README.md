@@ -23,9 +23,9 @@ A collection of ebuilds for packages not yet available in Gentoo
 * media-libs/partio-1.5.4 - Library for reading and writing particle formats
 * media-libs/ptex-2.3.0 - Texture mapping system
 * media-libs/opensubdiv-3.4.0 - Open-Source Subdivision Surface library
-* media-libs/osl - Open Shading Language library
+* media-libs/osl-1.9.9 - Open Shading Language library
 * media-tv/kodi-raspberrypi-17.6 - Kodi media player build for raspberry pi 32 bit
-* net-misc/ccminer-2.2.4 - CUDA miner project
+* net-misc/ccminer-2.3.1 - CUDA miner project
 * net-misc/nheqminer-0.5c - NiceHash Equihash miner (inactive upstream)
 * sci-physics/box2d-2.3.2 - 2d physics library
 * sys-apps/it87-1.0 - Temperature and voltage monitoring for ITE LPC chips in most Ryzen systems. Some boards require nct6775 instead.
