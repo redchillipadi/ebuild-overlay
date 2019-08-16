@@ -11,7 +11,7 @@ A collection of ebuilds for packages not yet available in Gentoo
 * dev-libs/libcec-raspberrypi-4.0.0_p3 - Communicate with Pulse-Eight USB HDMI-CEC Adaptor
 * dev-libs/sfgui-0.4.0 - Simple Fast Graphical User Interface
 * dev-libs/stp-9999 - SFML TMX File Parser (inactive upstream)
-* dev-util/entityx-1.0.0 - Fast, type-safe c++ entity component system (inactive upstream)
+* dev-util/entityx-1.3.0 - Fast, type-safe c++ entity component system (inactive upstream)
 * dev-games/adventuregamestudio-3.4.3.1 - Play hundreds of adventures made with AGS 
 * dev-games/unity3d-2018.3.0b4 - Unity3d Engine (work in progress)
 * dev-games/UnrealEngine-4.18.3 - UE4 Engine (work in progress)
