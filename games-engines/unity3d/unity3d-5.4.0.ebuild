@@ -76,11 +76,6 @@ src_install() {
 	doins "${FILES}/unity-editor"
 	doins "${FILES}/monodevelop-unity"
 
-	# Install EULA license
-	insopts "-Dm644"
-	insinto /usr/share/licenses/${PN}
-	doins "${FILES}/EULA"
-
 	fperms +x /opt/Unity/Editor/Unity
 	fperms +x /opt/Unity/Editor/UnityHelper
 	fperms +x /opt/Unity/Editor/Data/Mono/bin/mono
