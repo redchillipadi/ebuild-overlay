@@ -13,7 +13,7 @@ DESCRIPTION="Realtime creation platform for 2D and 3D games and applications."
 HOMEPAGE="https://unity3d.com"
 SRC_URI="http://beta.unity3d.com/download/${BUILDTAG}/unity-editor-installer-5.5.1xf1Linux.sh -> ${P}+${BUILDTAG}.sh"
 
-LICENSE="custom"
+LICENSE="Unity-Companion-License-1.2"
 SLOT="0"
 KEYWORDS="-* ~amd64 amd64" # Package is x86_64-only
 RESTRICT="strip mirror"
