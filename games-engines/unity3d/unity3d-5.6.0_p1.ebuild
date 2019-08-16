@@ -15,7 +15,7 @@ SRC_URI="http://beta.unity3d.com/download/${BUILDTAG}/unity-editor-installer-5.6
 
 LICENSE="Unity-Companion-License-1.2"
 SLOT="0"
-KEYWORDS="-* ~amd64 amd64" # Package is x86_64-only
+KEYWORDS="-* ~amd64" # Package is x86_64-only
 RESTRICT="strip mirror"
 RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	nodejs? ( net-libs/nodejs )

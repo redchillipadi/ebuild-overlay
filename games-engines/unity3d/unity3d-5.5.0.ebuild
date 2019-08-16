@@ -15,7 +15,7 @@ SRC_URI="http://download.unity3d.com/download_unity/linux/unity-editor-installer
 
 LICENSE="Unity-Companion-License-1.2"
 SLOT="0"
-KEYWORDS="-* ~amd64 amd64" # Package is x86_64-only
+KEYWORDS="-* ~amd64" # Package is x86_64-only
 RESTRICT="strip mirror"
 RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	nodejs? ( net-libs/nodejs )
