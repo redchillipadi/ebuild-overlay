@@ -7,7 +7,7 @@ inherit eutils cmake-utils git-r3
 
 DESCRIPTION="An extension library for SFML2 designed to read the Tiled map format"
 HOMEPAGE="https://edoren.github.io/STP"
-EGIT_REPO_URI="git://github.com/edoren/STP.git"
+EGIT_REPO_URI="https://github.com/edoren/STP.git"
 LICENSE="MIT"
 SLOT="0"
 IUSE="doc"

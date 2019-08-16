@@ -20,7 +20,7 @@ SRC_URI="https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_COMMIT}.tar.gz ->
 	https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_COMMIT}.tar.gz -> libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz"
 case ${PV} in
 9999)
-	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
+	EGIT_REPO_URI="https://github.com/xbmc/xbmc.git"
 	inherit git-r3
 	;;
 *|*_p*)
