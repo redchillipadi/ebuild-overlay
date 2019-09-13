@@ -21,10 +21,11 @@ SLOT="0"
 LICENSE="|| ( GPL-2 BL )"
 KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
-	alembic collada color-management cuda cycles debug doc draco embree \
-	ffmpeg fftw headless jack jemalloc jpeg2k libav llvm man ndof nls \
-	openal opencl openimageio openmp opensubdiv openvdb osl \
-	sdl sndfile standalone test tiff valgrind"
+	alembic collada color-management cuda cycles debug doc \
+	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
+	man ndof nls openal opencl openimageio openmp opensubdiv \
+	openvdb openvdb_abi_4 openvdb_abi_5 \
+	osl sdl sndfile standalone test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
@@ -33,6 +34,9 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	draco? ( !system-python !system-numpy )
 	embree? ( cycles )
 	opencl? ( cycles )
+	openvdb ( || ( openvdb_abi_4 openvdb_abi_5 ) )
+	openvdb_abi_4? ( openvdb )
+	openvdb_abi_5? ( openvdb )
 	osl? ( cycles llvm )
 	standalone? ( cycles )"
 
@@ -82,9 +86,9 @@ RDEPEND="${PYTHON_DEPS}
 	)
 	opensubdiv? ( >=media-libs/opensubdiv-3.4.0:=[cuda=,opencl=] )
 	openvdb? (
-		>=media-gfx/openvdb-5.2.0[-abi3-compat(-),abi4-compat(+)]
+		>=media-gfx/openvdb-5.2.0:=[-openvdb_abi_3,openvdb_abi_4=,openvdb_abi_5=]
 		dev-cpp/tbb
-		>=dev-libs/c-blosc-1.14.4
+		dev-libs/c-blosc
 	)
 	osl? ( >=media-libs/osl-1.9.9:= )
 	sdl? ( media-libs/libsdl2[sound,joystick] )
@@ -147,8 +151,15 @@ src_configure() {
 	# shadows, see bug #276338 for reference
 	append-flags -funsigned-char
 	append-lfs-flags
-	# Blender is compatible ABI 4 or less, so use ABI 4.
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=4
+
+	openvdb_version=0
+	if use openvdb_abi_4; then
+		openvdb_version=4
+	elif use openvdb_abi_5; then
+		openvdb_version=5
+	fi
+	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 
 	local mycmakeargs=(
 		-DPYTHON_VERSION="${EPYTHON/python/}"

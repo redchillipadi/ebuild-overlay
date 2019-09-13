@@ -15,8 +15,11 @@ SRC_URI="https://github.com/dreamworksanimation/${PN}/archive/v${PV}.tar.gz -> $
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="amd64 ~x86"
-IUSE="+abi3-compat doc python test"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
+IUSE="openvdb_abi_3 +openvdb_abi_4 doc python test"
+REQUIRED_USE="
+	python? ( ${PYTHON_REQUIRED_USE} )
+	|| ( openvdb_abi_3 openvdb_abi_4 )
+"
 
 RDEPEND="
 	>=dev-libs/boost-1.62:=[python?,${PYTHON_USEDEP}]
@@ -65,7 +68,7 @@ src_configure() {
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
-		-DOPENVDB_ENABLE_3_ABI_COMPATIBLE=$(usex abi3-compat)
+		-DOPENVDB_ENABLE_3_ABI_COMPATIBLE=$(usex openvdb_abi_3)
 		-DOPENVDB_ENABLE_RPATH=OFF
 		-DTBB_LOCATION="${myprefix}"
 		-DUSE_GLFW3=ON

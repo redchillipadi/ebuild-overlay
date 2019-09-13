@@ -23,8 +23,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +game-engine +openexr collada color-management \
 	alembic cuda cycles debug doc ffmpeg fftw headless jack jemalloc \
 	jpeg2k libav llvm man ndof nls openal opencl openimageio openmp \
-	opensubdiv openvdb osl player sdl sndfile standalone \
-	test tiff valgrind"
+	opensubdiv openvdb openvdb_abi_4 openvdb_abi_5 osl \
+	player sdl sndfile standalone test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
@@ -32,6 +32,9 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	cycles? ( openexr tiff openimageio )
 	opencl? ( cycles )
 	osl? ( cycles llvm )
+	openvdb? ( || ( openvdb_abi_4 openvdb_abi_5 ) )
+	openvdb_abi_4? ( openvdb )
+	openvdb_abi_5? ( openvdb )
 	player? ( game-engine !headless )
 	standalone? ( cycles )"
 
@@ -50,7 +53,9 @@ RDEPEND="${PYTHON_DEPS}
 	virtual/libintl
 	virtual/opengl
 	alembic? ( media-gfx/alembic[boost(+),hdf(+)] )
-	collada? ( >=media-libs/opencollada-1.6.51:= )
+	collada? ( >=media-libs/opencollada-1.6.51:=
+		<media-libs/opencollada-1.6.68:=
+	)
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
@@ -79,7 +84,7 @@ RDEPEND="${PYTHON_DEPS}
 	)
 	opensubdiv? ( media-libs/opensubdiv:=[cuda=,opencl=] )
 	openvdb? (
-		media-gfx/openvdb[-abi3-compat(-),abi4-compat(+)]
+		media-gfx/openvdb:=[-openvdb_abi_3,openvdb_abi_4=,openvdb_abi_5=]
 		dev-cpp/tbb
 		dev-libs/c-blosc
 	)
@@ -144,8 +149,15 @@ src_configure() {
 	# shadows, see bug #276338 for reference
 	append-flags -funsigned-char
 	append-lfs-flags
-	# Blender is compatible ABI 4 or less, so use ABI 4.
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=4
+
+	# Blender 2.79b-r1 does not support Openvdb ABI 3 as it lacks copyGridWithNewTree
+	if use openvdb_abi_4; then
+		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=4
+	elif use openvdb_abi_5; then
+		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=5
+	elif use openvdb; then
+		die "Openvdb ABI version not specified"
+	fi
 
 	local mycmakeargs=(
 		-DPYTHON_VERSION="${EPYTHON/python/}"

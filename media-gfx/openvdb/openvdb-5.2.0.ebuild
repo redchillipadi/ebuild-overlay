@@ -15,8 +15,11 @@ SRC_URI="https://github.com/dreamworksanimation/${PN}/archive/v${PV}.tar.gz -> $
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+abi4-compat doc python test"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
+IUSE="openvdb_abi_3 openvdb_abi_4 +openvdb_abi_5 doc python test"
+REQUIRED_USE="
+	python? ( ${PYTHON_REQUIRED_USE} )
+	|| ( openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 )
+"
 
 RDEPEND="
 	>=dev-libs/boost-1.62:=[python?,${PYTHON_USEDEP}]
@@ -53,11 +56,21 @@ pkg_setup() {
 src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
+	if use openvdb_abi_3; then
+		local openvdb_version=3
+	elif use openvdb_abi_4; then
+		local openvdb_version=4
+	elif use openvdb_abi_5; then
+		local openvdb_version=5
+	else
+		die "Openvdb ABI version not specified"
+	fi
+
 	local mycmakeargs=(
 		-DBLOSC_LOCATION="${myprefix}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
 		-DGLFW3_LOCATION="${myprefix}"
-		-DOPENVDB_ABI_VERSION_NUMBER=$(usex abi4-compat 4 5)
+		-DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
