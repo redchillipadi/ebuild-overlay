@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,7 +6,7 @@ DESCRIPTION="A cross playform 3d games engine"
 HOMEPAGE="https://unity3d.com"
 #SRC_URI="http://beta.unity3d.com/download/44012bad7987/UnitySetup -> UnitySetup-${PVR}"
 SRC_URI="https://download.unity3d.com/download_unity/44012bad7987/LinuxEditorInstaller/Unity.tar.xz -> Unity-${PVR}.tar.xz"
-LICENSE="custom"
+LICENSE="Unity-Companion-License-1.2"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 S="${WORKDIR}/"

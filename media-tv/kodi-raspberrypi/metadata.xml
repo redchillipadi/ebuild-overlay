@@ -7,6 +7,7 @@
   </maintainer>
   <use>
     <flag name="airplay">Support airplay devices with <pkg>app-pda/libplist</pkg></flag>
+    <flag name="avahi">Support local service discovery using <pkg>net-dns/avahi</pkg></flag>
     <flag name="bluray">Support bluray format</flag>
     <flag name="cec">Support CEC devices</flag>
     <flag name="gles">Use OpenGL for Embedded Systems (GLES)</flag>

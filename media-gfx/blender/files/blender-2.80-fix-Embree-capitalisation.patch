@@ -1,0 +1,12 @@
+diff -Naur a/intern/cycles/cmake/external_libs.cmake b/intern/cycles/cmake/external_libs.cmake
+--- a/intern/cycles/cmake/external_libs.cmake	2019-08-16 23:44:20.349390213 +0800
++++ b/intern/cycles/cmake/external_libs.cmake	2019-08-16 23:44:53.319746491 +0800
+@@ -144,7 +144,7 @@
+   ####
+   # embree
+   if(WITH_CYCLES_EMBREE)
+-    find_package(embree 3.2.4 REQUIRED)
++    find_package(Embree 3.2.4 REQUIRED)
+   endif()
+ 
+   ####

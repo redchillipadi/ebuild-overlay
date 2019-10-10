@@ -151,4 +151,3 @@ pkg_postinst() {
 	elog "variables in /etc/festival/sitevars.scm."
 	elog
 }
-

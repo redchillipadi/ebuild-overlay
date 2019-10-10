@@ -1,13 +1,13 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 inherit eutils cmake-utils git-r3
 
 DESCRIPTION="A fast, type-safe c++ entity component system"
 HOMEPAGE="https://github.com/alecthomas/entityx"
-EGIT_REPO_URI="git://github.com/alecthomas/entityx.git"
+EGIT_REPO_URI="https://github.com/alecthomas/entityx.git"
+EGIT_COMMIT="1.0.0"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"

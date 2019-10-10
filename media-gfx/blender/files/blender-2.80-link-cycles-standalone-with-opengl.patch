@@ -1,0 +1,34 @@
+diff -Naur a/intern/cycles/app/CMakeLists.txt b/intern/cycles/app/CMakeLists.txt
+--- a/intern/cycles/app/CMakeLists.txt	2019-08-16 05:41:54.338527608 +0800
++++ b/intern/cycles/app/CMakeLists.txt	2019-08-16 05:45:38.879539875 +0800
+@@ -46,7 +46,10 @@
+ endif()
+ 
+ if(WITH_CYCLES_STANDALONE AND WITH_CYCLES_STANDALONE_GUI)
+-  list(APPEND LIBRARIES ${GLUT_LIBRARIES})
++  list(APPEND LIBRARIES
++    ${GLUT_LIBRARIES}
++    ${OPENGL_LIBRARIES}
++  )
+ endif()
+ 
+ # Common configuration.
+diff -Naur a/intern/cycles/cmake/external_libs.cmake b/intern/cycles/cmake/external_libs.cmake
+--- a/intern/cycles/cmake/external_libs.cmake	2019-08-16 05:33:50.856430786 +0800
++++ b/intern/cycles/cmake/external_libs.cmake	2019-08-16 05:51:24.213700514 +0800
+@@ -23,6 +23,15 @@
+ endif()
+ 
+ ###########################################################################
++# OpenGL
++
++# Ensure linking with OpenGL even when CYCLES_STANDALONE_REPOSITORY is not used
++# Required for gluOrtho2D in util_view.h using WITH_CYCLES_STANDALONE
++if(WITH_CYCLES_STANDALONE AND WITH_CYCLES_STANDALONE_GUI)
++  find_package(OpenGL REQUIRED)
++endif()
++
++###########################################################################
+ # GLEW
+ 
+ # Workaround for unconventional variable name use in Blender.

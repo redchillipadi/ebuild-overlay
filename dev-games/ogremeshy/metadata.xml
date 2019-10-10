@@ -11,4 +11,10 @@
 		A utility to view OGRE meshes.
 	</longdescription>
 
+	<use>
+		<flag name="cg">
+			Use NVIDIA toolkit plugin.
+		</flag>
+	</use>
+
 </pkgmetadata>

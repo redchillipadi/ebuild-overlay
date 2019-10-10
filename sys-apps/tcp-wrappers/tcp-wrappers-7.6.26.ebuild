@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="4"
+EAPI="7"
 
-inherit eutils toolchain-funcs versionator flag-o-matic multilib-minimal
+inherit eutils toolchain-funcs flag-o-matic multilib-minimal
 
-MY_PV=$(get_version_component_range 1-2)
-DEB_PV=$(get_version_component_range 3)
+MY_PV=$(ver_cut 1-2)
+DEB_PV=$(ver_cut 3)
 MY_P="${PN//-/_}_${MY_PV}"
 DESCRIPTION="TCP Wrappers"
 HOMEPAGE="ftp://ftp.porcupine.org/pub/security/index.html"
@@ -15,7 +15,7 @@ SRC_URI="ftp://ftp.porcupine.org/pub/security/${MY_P}.tar.gz
 
 LICENSE="tcp_wrappers_license"
 SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux"
 IUSE="ipv6 netgroups static-libs"
 
 RDEPEND="
@@ -27,10 +27,10 @@ RDEPEND="
 S=${WORKDIR}/${MY_P}
 
 src_prepare() {
-	EPATCH_OPTS="-p1" \
-	epatch $(sed -e 's:^:../debian/patches/:' ../debian/patches/series)
-	epatch "${FILESDIR}"/${PN}-7.6.26-headers.patch
-	epatch "${FILESDIR}"/${PN}-7.6-redhat-bug11881.patch
+	eapply $(sed -e 's:^:../debian/patches/:' ../debian/patches/series)
+	eapply "${FILESDIR}"/${PN}-7.6.26-headers.patch
+	eapply "${FILESDIR}"/${PN}-7.6-redhat-bug11881.patch
+	eapply_user
 
 	multilib_copy_sources
 }

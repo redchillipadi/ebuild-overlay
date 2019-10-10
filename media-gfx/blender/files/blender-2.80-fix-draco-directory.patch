@@ -1,0 +1,16 @@
+diff -Naur a/release/scripts/addons/io_scene_gltf2/io/exp/gltf2_io_draco_compression_extension.py b/release/scripts/addons/io_scene_gltf2/io/exp/gltf2_io_draco_compression_extension.py
+--- a/release/scripts/addons/io_scene_gltf2/io/exp/gltf2_io_draco_compression_extension.py	2019-08-16 18:37:47.077340835 +0800
++++ b/release/scripts/addons/io_scene_gltf2/io/exp/gltf2_io_draco_compression_extension.py	2019-08-16 18:41:39.907343080 +0800
+@@ -28,10 +28,11 @@
+     """
+     lib_name = 'extern_draco'
+     blender_root = Path(bpy.app.binary_path).parent
++    linux_python_root = Path('/usr/share/blender')
+     python_lib = Path('2.80/python/lib')
+     paths = {
+         'win32': blender_root/python_lib/'site-packages'/'{}.dll'.format(lib_name),
+-        'linux': blender_root/python_lib/'python3.7'/'site-packages'/'lib{}.so'.format(lib_name),
++        'linux': linux_python_root/python_lib/'python3.7'/'site-packages'/'lib{}.so'.format(lib_name),
+         'darwin': blender_root.parent/'Resources'/python_lib/'python3.7'/'site-packages'/'lib{}.dylib'.format(lib_name)
+     }
+ 

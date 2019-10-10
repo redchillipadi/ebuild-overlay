@@ -125,4 +125,3 @@ pkg_postinst() {
 		ewarn "flite with alsa, oss or pulseaudio in your use flags."
 	fi
 }
-

@@ -1,6 +1,5 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 
@@ -9,25 +8,25 @@ inherit gnome2-utils
 BUILDTAG=ee86734cf592
 PV_F=${PV}f3 # Workaround for that ugly b-revision
 IUSE="ffmpeg nodejs java gzip android"
-DESCRIPTION="The world's most popular development platform for creating 2D and 3D multiplatform games and interactive experiences."
+DESCRIPTION="Realtime creation platform for 2D and 3D games and applications."
 HOMEPAGE="https://unity3d.com"
 SRC_URI="http://beta.unity3d.com/download/${BUILDTAG}/unity-editor-installer-${PV_F}.sh -> ${P}+${BUILDTAG}.sh"
-LICENSE="custom"
+LICENSE="Unity-Companion-License-1.2"
 SLOT="0"
-KEYWORDS="-* ~amd64 amd64" # Package is x86_64-only
+KEYWORDS="-* ~amd64" # Package is x86_64-only
 RESTRICT="strip mirror"
 RDEPEND="ffmpeg? ( media-video/ffmpeg )
 	nodejs? ( net-libs/nodejs )
-	java? ( virtual/jdk virtual/jre )
+	java? ( virtual/jdk:* virtual/jre:* )
 	android? ( dev-util/android-studio )
 	gzip? ( app-arch/gzip )
 	dev-util/desktop-file-utils
 	x11-misc/xdg-utils
-	sys-devel/gcc[multilib]
+	sys-devel/gcc:*[multilib]
 	virtual/opengl
 	virtual/glu
 	dev-libs/nss
-	media-libs/libpng
+	media-libs/libpng:*
 	x11-libs/libXtst
 	dev-libs/libpqxx
 	dev-lang/mono
@@ -45,9 +44,9 @@ src_unpack() {
 }
 
 src_prepare() {
-	ln -s /usr/bin/python2 ${S}/Editor/python # Fix WebGL building
-	mkdir -p ${FILES}
-	cp -R ${FILESDIR}/* ${FILES}/
+	ln -s /usr/bin/python2 "${S}/Editor/python" # Fix WebGL building
+	mkdir -p "${FILES}"
+	cp -R "${FILESDIR}/*" "${FILES}/"
 	sed -i "/^Version=/c\Version=${PV}" "${FILES}/unity-editor.desktop"
 	sed -i "/^Version=/c\Version=${PV}" "${FILES}/unity-monodevelop.desktop"
 	eapply_user # In case someone wants to patch .desktop files, for example
@@ -56,7 +55,7 @@ src_prepare() {
 src_install() {
 	# Install Unity3D itself
 	insinto /opt/Unity
-	doins -r ${S}/*
+	doins -r "${S}/*"
 
 	# Install .desktop launchers
 	insopts "-Dm644"
@@ -76,11 +75,6 @@ src_install() {
 	doins "${FILES}/unity-editor"
 	doins "${FILES}/monodevelop-unity"
 
-	# Install EULA license
-	insopts "-Dm644"
-	insinto /usr/share/licenses/${PN}
-	doins "${FILES}/EULA"
-
 	fperms +x /opt/Unity/Editor/Unity
 	fperms +x /opt/Unity/Editor/UnityHelper
 	fperms +x /opt/Unity/Editor/Data/Mono/bin/mono
@@ -90,7 +84,6 @@ src_install() {
 	fperms +x /opt/Unity/Editor/Data/MonoBleedingEdge/bin/mono
 	fperms +x /opt/Unity/Editor/Data/Tools/nodejs/bin/npm
 	fperms +x /opt/Unity/Editor/Data/Tools/nodejs/bin/node
-
 
 	# TODO: Why is this changed to 4711 once installed?
 	fperms 4755 /opt/Unity/Editor/chrome-sandbox

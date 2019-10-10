@@ -1,46 +1,33 @@
 # ebuild-overlay
 
-Contains various ebuilds I have created to install packages in Gentoo
+A collection of ebuilds for packages not yet available in Gentoo
 
-# dev-games/ogremeshy
-Installs ogremeshy utility to view Ogre meshes
+* app-accessibility/festival-2.5 - The Festival Speech Synthesis System
+* app-accessibility/flite-2.1 - Flite text to speech engine
+* app-accessibility/speech-tools-2.5 - Speech tools for Festival
+* dev-games/ogremeshy-1.5 - Viewer for Ogre meshes (inactive upstream)
+* dev-lang/fasm-1.73.16 - Flat assembler
+* dev-lang/inform7-7.9.3 - Design system for Interactive Fiction
+* dev-libs/libcec-raspberrypi-4.0.0_p3 - Communicate with Pulse-Eight USB HDMI-CEC Adaptor
+* dev-libs/sfgui-0.4.0 - Simple Fast Graphical User Interface
+* dev-libs/stp-9999 - SFML TMX File Parser (inactive upstream)
+* dev-util/entityx-1.3.0 - Fast, type-safe c++ entity component system (inactive upstream)
+* dev-games/adventuregamestudio-3.4.3.1 - Play hundreds of adventures made with AGS 
+* dev-games/unity3d-2018.3.0b4 - Unity3d Engine (work in progress)
+* dev-games/UnrealEngine-4.18.3 - UE4 Engine (work in progress)
+* media-gfx/blender-2.80 - Blender 3D modelling, animation, rendering software
+* media-gfx/openvdb-5.2.0 - Library for efficient volumetric data manipulation
+* media-libs/draco-1.3.5 - Mesh compression library 
+* media-libs/embree-3.5.2 - High performance ray tracing kernels 
+* media-libs/Field3D-1.7.2 - Library for storing voxel data
+* media-libs/partio-1.5.4 - Library for reading and writing particle formats
+* media-libs/ptex-2.3.2 - Texture mapping system
+* media-libs/opensubdiv-3.4.0 - Open-Source Subdivision Surface library
+* media-libs/osl-1.10.5 - Open Shading Language library
+* media-tv/kodi-raspberrypi-17.6 - Kodi media player build for raspberry pi 32 bit
+* net-misc/ccminer-2.3.1 - CUDA miner project
+* net-misc/nheqminer-0.5c - NiceHash Equihash miner (inactive upstream)
+* sci-physics/box2d-2.3.2 - 2d physics library
+* sys-apps/it87-1.0 - Temperature and voltage monitoring for ITE LPC chips in most Ryzen systems. Some boards require nct6775 instead.
+* sys-apps/tcp-wrappers-7.6.26 - Update to work around missing headers for version 7.6.22
 
-# dev-lang/fasm
-Install the Flat Assembler (self-assembling)
-
-# dev-libs/libcec-raspberrypi
-Install libcec for raspberry pi (from sabayon-distro overlay)
-
-# dev-libs/sfgui
-Installs the SFML GUI library from http://sfgui.sfml-dev.de
-
-# dev-libs/stp
-Installs the STP SFML TMX file parser from https://edoren.github.io/STP
-
-# dev-util/entityx
-Installs the fast, type-safe c++ entity component system from https://github.com/alecthomas/entityx
-
-# games-engines/unity3d
-Installs the Unity3d game development platform (forked from maxik-overlay)
-
-# games-engines/UnrealEngine
-Installs the UnrealEngine 4 game development suite
-(Work in progress)
-
-# media-tv/kodi-raspberrypi
-Update of Kodi for raspberry pi (from sabayon-distro overlay)
-
-# net-misc/ccminer
-Install the CUDA Miner Project from tpruvot
-
-# net-misc/nheqminer
-Install the Nice Hash Equiminer
-
-# sci-physics/box2d
-Installs the Box2d physics library from https://github.com/erincatto/Box2D
-
-# sys-apps/it87
-Installs kernel module to monitor system temperatures and voltages on AMD Ryzen systems. Most Ryzen boards require this module, some require nct6775.
-
-# sys-apps/tcp-wrappers
-Upgraded to 2.6.q-26 as version in portage does not have source available

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -20,11 +20,10 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 
-
 S="${WORKDIR}/OgreMeshy"
 
 PATCHES=(
-	${FILESDIR}/${P}-add-x11-library.patch
+	"${FILESDIR}/${P}-add-x11-library.patch"
 )
 
 # Note that the plugin libraries may be prestripped, as they are copies of those created by Ogre
@@ -50,7 +49,6 @@ src_configure() {
 	cp "${S}/scripts/Resources/Blender/Bones/BoneGlobe.mesh" "${S}/bin/Release_Linux/Resources/Models/"
 	cp "${S}/bin/Release/{Readme,ChangeLog}.txt" "${S}/bin/Release_Linux/"
 
-
 	CMAKE_USE_DIR="${S}"
 	cmake-utils_src_configure
 }
@@ -60,7 +58,7 @@ src_install() {
 
 	exeinto "/opt/${PN}"
 	doexe "${BUILD_DIR}/OgreMeshy"
-	dosym "/opt/${PN}/OgreMeshy" /usr/bin/OgreMeshy
+	dosym "../../opt/${PN}/OgreMeshy" /usr/bin/OgreMeshy
 
 	insinto "/opt/${PN}"
 	doins "${S}/bin/Release_Linux/Plugins.cfg"
