@@ -47,6 +47,7 @@ DEPEND="${RDEPEND}
 PATCHES=( "${FILESDIR}/${P}-use-gnuinstalldirs.patch"
 	"${FILESDIR}/${P}-use-pkgconfig-for-ilmbase-and-openexr.patch"
 	"${FILESDIR}/${P}-find-boost_python.patch"
+	"${FILESDIR}/${P}-const-correctness-for-unittest.patch"
 )
 
 pkg_setup() {
