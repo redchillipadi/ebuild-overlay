@@ -3,11 +3,12 @@
 
 EAPI=7
 
-inherit cmake-utils
+inherit cmake-utils git-r3
 
 DESCRIPTION="Intel Open Image Denoise Library"
 HOMEPAGE="http://www.openimagedenoise.org/"
-SRC_URI="https://github.com/OpenImageDenoise/oidn/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+EGIT_REPO_URI="https://github.com/OpenImageDenoise/oidn.git"
+EGIT_TAG="v${PV}"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -17,3 +18,11 @@ RDEPEND="dev-cpp/tbb"
 DEPEND="${RDEPEND}"
 
 RESTRICT="test"
+
+src_configure() {
+        local mycmakeargs=(
+                -DCMAKE_BUILD_TYPE="Release"
+        )
+        cmake-utils_src_configure
+}
+
