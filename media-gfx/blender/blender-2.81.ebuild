@@ -109,7 +109,6 @@ DEPEND="${RDEPEND}
 PATCHES=(
 	"${FILESDIR}/${PN}-2.80-fix-install-rules.patch"
 	"${FILESDIR}/${PN}-2.80-link-cycles-standalone-with-opengl.patch"
-	"${FILESDIR}/${PN}-2.80-fix-draco-directory.patch"
 	"${FILESDIR}/${PN}-2.80-fix-Embree-capitalisation.patch"
 )
 
