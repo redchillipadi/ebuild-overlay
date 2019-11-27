@@ -20,9 +20,8 @@ DEPEND="${RDEPEND}"
 RESTRICT="test"
 
 src_configure() {
-        local mycmakeargs=(
-                -DCMAKE_BUILD_TYPE="Release"
-        )
-        cmake-utils_src_configure
+	local mycmakeargs=(
+		-DCMAKE_BUILD_TYPE="Release"
+	)
+	cmake-utils_src_configure
 }
-
