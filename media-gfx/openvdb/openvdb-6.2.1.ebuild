@@ -1,24 +1,24 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-PYTHON_COMPAT=( python{2_7,3_5,3_6} )
+PYTHON_COMPAT=( python{2_7,3_5,3_6,3_7} )
+CMAKE_MAKEFILE_GENERATOR="emake"
 
 inherit cmake-utils flag-o-matic python-single-r1
 
 DESCRIPTION="Libs for the efficient manipulation of volumetric data"
-HOMEPAGE="https://www.openvdb.org"
-SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	https://dev.gentoo.org/~dracwyrm/patches/${P}-patchset-02.tar.xz"
+HOMEPAGE="http://www.openvdb.org"
+SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MPL-2.0"
 SLOT="0"
-KEYWORDS="amd64 ~x86"
-IUSE="openvdb_abi_3 +openvdb_abi_4 doc python test"
+KEYWORDS="~amd64 ~x86"
+IUSE="openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 doc python test"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	|| ( openvdb_abi_3 openvdb_abi_4 )
+	|| ( openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 )
 "
 
 RDEPEND="
@@ -44,11 +44,10 @@ DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen[latex] )
 	test? ( dev-util/cppunit )"
 
-PATCHES=(
-	"${WORKDIR}/${P}-patchset-02/0001-use-gnuinstalldirs.patch"
-	"${WORKDIR}/${P}-patchset-02/0002-use-pkgconfig-for-ilmbase-and-openexr.patch"
-	"${WORKDIR}/${P}-patchset-02/0003-boost-1.65-numpy-support.patch"
-	"${FILESDIR}/${P}-findboost-fix.patch"
+PATCHES=( "${FILESDIR}/${P}-use-gnuinstalldirs.patch"
+	"${FILESDIR}/${P}-use-pkgconfig-for-ilmbase-and-openexr.patch"
+	"${FILESDIR}/${P}-find-boost_python.patch"
+	"${FILESDIR}/${P}-const-correctness-for-unittest.patch"
 )
 
 pkg_setup() {
@@ -58,17 +57,26 @@ pkg_setup() {
 src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
-	# To stay in sync with Boost
-	append-cxxflags -std=c++14
+	if use openvdb_abi_3; then
+		local openvdb_version=3
+	elif use openvdb_abi_4; then
+		local openvdb_version=4
+	elif use openvdb_abi_5; then
+		local openvdb_version=5
+	elif use openvdb_abi_6; then
+		local openvdb_version=6
+	else
+		die "Openvdb ABI version not specified"
+	fi
 
 	local mycmakeargs=(
 		-DBLOSC_LOCATION="${myprefix}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
 		-DGLFW3_LOCATION="${myprefix}"
+		-DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
-		-DOPENVDB_ENABLE_3_ABI_COMPATIBLE=$(usex openvdb_abi_3)
 		-DOPENVDB_ENABLE_RPATH=OFF
 		-DTBB_LOCATION="${myprefix}"
 		-DUSE_GLFW3=ON
