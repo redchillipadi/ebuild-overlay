@@ -11,7 +11,7 @@ inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
 DESCRIPTION="3D Creation/Animation/Publishing System"
 HOMEPAGE="https://www.blender.org"
 
-SRC_URI="https://download.blender.org/source/${P}.tar.gz"
+SRC_URI="https://download.blender.org/source/${P}.tar.xz"
 
 # Blender can have letters in the version string,
 # so strip off the letter if it exists.
@@ -49,6 +49,7 @@ RDEPEND="${PYTHON_DEPS}
 	media-libs/glew:*
 	media-libs/libpng:0=
 	media-libs/libsamplerate
+	media-libs/oidn
 	sys-libs/zlib
 	virtual/glu
 	virtual/jpeg:0=
@@ -106,10 +107,9 @@ DEPEND="${RDEPEND}
 	nls? ( sys-devel/gettext )"
 
 PATCHES=(
-	"${FILESDIR}/${P}-fix-install-rules.patch"
-	"${FILESDIR}/${P}-link-cycles-standalone-with-opengl.patch"
-	"${FILESDIR}/${P}-fix-draco-directory.patch"
-	"${FILESDIR}/${P}-fix-Embree-capitalisation.patch"
+	"${FILESDIR}/${PN}-2.80-fix-install-rules.patch"
+	"${FILESDIR}/${PN}-2.80-link-cycles-standalone-with-opengl.patch"
+	"${FILESDIR}/${PN}-2.80-fix-Embree-capitalisation.patch"
 )
 
 blender_check_requirements() {
