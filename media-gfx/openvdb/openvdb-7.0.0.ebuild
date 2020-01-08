@@ -39,16 +39,17 @@ RDEPEND="
 	)"
 
 DEPEND="${RDEPEND}
+	>=dev-util/cmake-3.16.2-r1
 	dev-cpp/tbb
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen[latex] )
 	test? ( dev-util/cppunit )"
 
-PATCHES=( "${FILESDIR}/${P}-use-gnuinstalldirs.patch"
-	"${FILESDIR}/${P}-use-pkgconfig-for-ilmbase-and-openexr.patch"
-	"${FILESDIR}/${P}-find-boost_python.patch"
-	"${FILESDIR}/${P}-const-correctness-for-unittest.patch"
+PATCHES=(
+	"${FILESDIR}/${PN}-6.2.1-fix-multilib-header-source.patch"
+	"${FILESDIR}/${PN}-6.2.1-find-boost_python.patch"
 )
+#"${FILESDIR}/${PN}-6.2.1-use-gnuinstalldirs.patch"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup

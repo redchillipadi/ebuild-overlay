@@ -1,0 +1,21 @@
+diff -Naur a/cmake/FindIlmBase.cmake b/cmake/FindIlmBase.cmake
+--- a/cmake/FindIlmBase.cmake	2020-01-08 19:24:21.592097034 +0800
++++ b/cmake/FindIlmBase.cmake	2020-01-08 19:23:42.384535414 +0800
+@@ -178,7 +178,7 @@
+ 
+ if(EXISTS "${IlmBase_INCLUDE_DIR}/IlmBaseConfig.h")
+   # Get the ILMBASE version information from the config header
+-  file(STRINGS "${IlmBase_INCLUDE_DIR}/IlmBaseConfig.h"
++  file(STRINGS "/usr/include/x86_64-pc-linux-gnu/OpenEXR/IlmBaseConfig.h"
+     _ilmbase_version_major_string REGEX "#define ILMBASE_VERSION_MAJOR "
+   )
+   string(REGEX REPLACE "#define ILMBASE_VERSION_MAJOR" ""
+@@ -186,7 +186,7 @@
+   )
+   string(STRIP "${_ilmbase_version_major_string}" IlmBase_VERSION_MAJOR)
+ 
+-  file(STRINGS "${IlmBase_INCLUDE_DIR}/IlmBaseConfig.h"
++  file(STRINGS "/usr/include/x86_64-pc-linux-gnu/OpenEXR/IlmBaseConfig.h"
+      _ilmbase_version_minor_string REGEX "#define ILMBASE_VERSION_MINOR "
+   )
+   string(REGEX REPLACE "#define ILMBASE_VERSION_MINOR" ""

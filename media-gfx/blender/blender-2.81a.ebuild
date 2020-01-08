@@ -24,7 +24,7 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
 	man ndof nls openal opencl openimageio openmp opensubdiv \
-	openvdb openvdb_abi_4 openvdb_abi_5 \
+	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
 	osl sdl sndfile standalone test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
@@ -34,9 +34,11 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	draco? ( !system-python !system-numpy )
 	embree? ( cycles )
 	opencl? ( cycles )
-	openvdb ( || ( openvdb_abi_4 openvdb_abi_5 ) )
+	openvdb ( || ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
 	openvdb_abi_4? ( openvdb )
 	openvdb_abi_5? ( openvdb )
+	openvdb_abi_6? ( openvdb )
+	openvdb_abi_7? ( openvdb )
 	osl? ( cycles llvm )
 	standalone? ( cycles )"
 
@@ -157,6 +159,10 @@ src_configure() {
 		openvdb_version=4
 	elif use openvdb_abi_5; then
 		openvdb_version=5
+	elif use openvdb_abi_6; then
+		openvdb_version=6
+	elif use openvdb_abi_7; then
+		openvdb_version=7
 	fi
 	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
 	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
@@ -297,11 +303,13 @@ pkg_postinst() {
 	ewarn
 	xdg_icon_cache_update
 	xdg_mimeinfo_database_update
+	xdg_desktop_database_update
 }
 
 pkg_postrm() {
 	xdg_icon_cache_update
 	xdg_mimeinfo_database_update
+	xdg_desktop_database_update
 
 	ewarn ""
 	ewarn "You may want to remove the following directory."

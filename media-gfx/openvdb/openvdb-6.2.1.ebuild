@@ -39,15 +39,17 @@ RDEPEND="
 	)"
 
 DEPEND="${RDEPEND}
+	>=dev-util/cmake-3.16.2-r1
 	dev-cpp/tbb
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen[latex] )
 	test? ( dev-util/cppunit )"
 
-PATCHES=( "${FILESDIR}/${P}-use-gnuinstalldirs.patch"
-	"${FILESDIR}/${P}-use-pkgconfig-for-ilmbase-and-openexr.patch"
+PATCHES=(
+	"${FILESDIR}/${P}-fix-multilib-header-source.patch"
 	"${FILESDIR}/${P}-find-boost_python.patch"
-	"${FILESDIR}/${P}-const-correctness-for-unittest.patch"
+	"${FILESDIR}/${PN}-5.2.0-const-correctness-for-unittest.patch"
+	"${FILESDIR}/${P}-use-gnuinstalldirs.patch"
 )
 
 pkg_setup() {
@@ -70,16 +72,16 @@ src_configure() {
 	fi
 
 	local mycmakeargs=(
-		-DBLOSC_LOCATION="${myprefix}"
+		#-DBLOSC_LOCATION="${myprefix}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
-		-DGLFW3_LOCATION="${myprefix}"
+		#-DGLFW3_LOCATION="${myprefix}"
 		-DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
 		-DOPENVDB_ENABLE_RPATH=OFF
-		-DTBB_LOCATION="${myprefix}"
-		-DUSE_GLFW3=ON
+		#-DTBB_LOCATION="${myprefix}"
+		#-DUSE_GLFW3=ON
 	)
 
 	use python && mycmakeargs+=( -DPYOPENVDB_INSTALL_DIRECTORY="$(python_get_sitedir)" )

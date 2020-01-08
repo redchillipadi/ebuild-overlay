@@ -16,13 +16,19 @@
 	</longdescription>
 	<use>
 		<flag name="openvdb_abi_3">
-			Disables newer features to maintain compatibility with ABI3. Enabled by default.
+			Disables newer features to maintain compatibility with ABI3. Enabled by default in version 3.
 		</flag>
 		<flag name="openvdb_abi_4">
-			Disables newer features to maintain compatibility with ABI4. Enabled by default.
+			Disables newer features to maintain compatibility with ABI4. Enabled by default in version 4.
 		</flag>
 		<flag restrict="&gt;=media-gfx/openvdb-5.0.0" name="openvdb_abi_5">
-			Disables newer features to maintain compatibility with ABI5. Enabled by default.
+			Disables newer features to maintain compatibility with ABI5. Enabled by default in version 5.
+		</flag>
+		<flag restrict="&gt;=media-gfx/openvdb-6.0.0" name="openvdb_abi_6">
+			Disables newer features to maintain compatibility with ABI6. Enabled by default in version 6.
+		</flag>
+		<flag restrict="&gt;=media-gfx/openvdb-7.0.0" name="openvdb_abi_7">
+			Disables newer features to maintain compatibility with ABI7. Enabled by defaul in version 7.
 		</flag>
 	</use>
 	<upstream>
