@@ -8,7 +8,7 @@ inherit cmake python-single-r1
 
 DESCRIPTION="A library for reading and writing images"
 HOMEPAGE="https://sites.google.com/site/openimageio/ https://github.com/OpenImageIO"
-SRC_URI="https://github.com/OpenImageIO/oiio/archive/RB-2.1.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/OpenImageIO/oiio/archive/RB-${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0/2.1"
