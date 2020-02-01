@@ -34,7 +34,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	draco? ( !system-python !system-numpy )
 	embree? ( cycles )
 	opencl? ( cycles )
-	openvdb ( || ( openvdb_abi_4 openvdb_abi_5 ) )
+	openvdb? ( || ( openvdb_abi_4 openvdb_abi_5 ) )
 	openvdb_abi_4? ( openvdb )
 	openvdb_abi_5? ( openvdb )
 	osl? ( cycles llvm )
