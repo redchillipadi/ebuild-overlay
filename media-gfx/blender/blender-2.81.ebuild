@@ -23,7 +23,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
-	man ndof nls openal opencl openimageio openmp opensubdiv \
+	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
 	openvdb openvdb_abi_4 openvdb_abi_5 \
 	osl sdl sndfile standalone test tiff valgrind"
 
@@ -49,7 +49,6 @@ RDEPEND="${PYTHON_DEPS}
 	media-libs/glew:*
 	media-libs/libpng:0=
 	media-libs/libsamplerate
-	media-libs/oidn
 	sys-libs/zlib
 	virtual/glu
 	virtual/jpeg:0=
@@ -78,6 +77,7 @@ RDEPEND="${PYTHON_DEPS}
 		dev-libs/libspnav
 	)
 	nls? ( virtual/libiconv )
+	oidn? ( media-libs/oidn )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
 	openimageio? ( media-libs/openimageio:= )
@@ -197,6 +197,7 @@ src_configure() {
 		-DWITH_JACK=$(usex jack)
 		-DWITH_MOD_FLUID=$(usex elbeem)
 		-DWITH_MOD_OCEANSIM=$(usex fftw)
+		-DWITH_OIDN=$(usex oidn)
 		-DWITH_OPENAL=$(usex openal)
 		-DWITH_CYCLES_DEVICE_OPENCL=$(usex opencl)
 		-DWITH_OPENCOLORIO=$(usex color-management)
