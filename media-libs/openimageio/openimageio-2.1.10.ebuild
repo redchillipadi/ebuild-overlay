@@ -3,12 +3,12 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 python3_{6,7} )
+PYTHON_COMPAT=( python3_{6,7} )
 inherit cmake python-single-r1
 
 DESCRIPTION="A library for reading and writing images"
 HOMEPAGE="https://sites.google.com/site/openimageio/ https://github.com/OpenImageIO"
-SRC_URI="https://github.com/OpenImageIO/oiio/archive/RB-${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/OpenImageIO/oiio/archive/RB-2.1.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0/2.1"
@@ -31,7 +31,6 @@ BDEPEND="
 RDEPEND="
 	dev-libs/boost:=
 	dev-libs/pugixml:=
-	dev-python/pybind11
 	media-libs/ilmbase:=
 	media-libs/libpng:0=
 	>=media-libs/libwebp-0.2.1:=
@@ -57,6 +56,7 @@ RDEPEND="
 	python? (
 		${PYTHON_DEPS}
 		dev-libs/boost:=[python,${PYTHON_USEDEP}]
+		dev-python/pybind11:=[${PYTHON_USEDEP}]
 	)
 	qt5? (
 		dev-qt/qtcore:5
@@ -75,9 +75,7 @@ DEPEND="${RDEPEND}"
 
 DOCS=( CHANGES.md CREDITS.md README.md src/doc/${PN}.pdf )
 
-PATCHES=( "${FILESDIR}/${PN}-2.0-find-pybind11.patch" )
-
-S="${WORKDIR}/oiio-RB-${PV}"
+S="${WORKDIR}/oiio-RB-2.1"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
@@ -127,6 +125,7 @@ src_configure() {
 		-DUSE_OPENGL=$(usex opengl)
 		-DUSE_PTEX=$(usex ptex)
 		-DUSE_PYTHON=$(usex python)
+		-DUSE_PYBIND11=$(usex python)
 		-DUSE_QT=$(usex qt5)
 		-DUSE_LIBRAW=$(usex raw)
 		-DUSE_OPENSSL=$(usex ssl)

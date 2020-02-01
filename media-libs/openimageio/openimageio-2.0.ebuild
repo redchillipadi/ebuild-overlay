@@ -8,11 +8,11 @@ inherit cmake python-single-r1
 
 DESCRIPTION="A library for reading and writing images"
 HOMEPAGE="https://sites.google.com/site/openimageio/ https://github.com/OpenImageIO"
-SRC_URI="https://github.com/OpenImageIO/oiio/archive/RB-2.1.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/OpenImageIO/oiio/archive/RB-2.0.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
-SLOT="0/2.1"
-KEYWORDS="amd64 ~ppc64 x86"
+SLOT="0/2.0"
+KEYWORDS="~amd64 ~ppc64 ~x86"
 
 X86_CPU_FEATURES=(
 	sse2:sse2 sse3:sse3 ssse3:ssse3 sse4_1:sse4.1 sse4_2:sse4.2
@@ -31,14 +31,16 @@ BDEPEND="
 RDEPEND="
 	dev-libs/boost:=
 	dev-libs/pugixml:=
+	dev-python/pybind11
 	media-libs/ilmbase:=
 	media-libs/libpng:0=
 	>=media-libs/libwebp-0.2.1:=
 	media-libs/openexr:=
+	media-libs/robin-map
 	media-libs/tiff:0=
 	sys-libs/zlib:=
 	virtual/jpeg:0
-	color-management? ( media-libs/opencolorio:= )
+	color-management? ( >=media-libs/opencolorio-1.1.1:= )
 	dicom? ( sci-libs/dcmtk )
 	ffmpeg? ( media-video/ffmpeg:= )
 	field3d? ( media-libs/Field3D:= )
@@ -73,9 +75,9 @@ DEPEND="${RDEPEND}"
 
 DOCS=( CHANGES.md CREDITS.md README.md src/doc/${PN}.pdf )
 
-PATCHES=( "${FILESDIR}/${P}-boostpython.patch" )
+PATCHES=( "${FILESDIR}/${P}-find-pybind11.patch" )
 
-S="${WORKDIR}/oiio-Release-${PV}"
+S="${WORKDIR}/oiio-RB-2.0"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
@@ -84,6 +86,15 @@ pkg_setup() {
 src_prepare() {
 	cmake_src_prepare
 	cmake_comment_add_subdirectory src/fonts
+
+	# Cheap hack to get version with ABIFLAGS
+	local abiver=$(cd "/usr/include"; echo python*)
+	for python in ${abiver}
+	do
+		sed -i "/find_path (PYBIND11_INCLUDE_DIR pybind11\/pybind11.h/a           HINTS \"/usr/include/${python}\"" "${S}/src/cmake/modules/FindPybind11.cmake"
+	done
+
+	sed -i "s/BUILDDIR :=.*/BUILDDIR := ..\/..\/..\/${P}_build/" "${S}/src/doc/Makefile"
 }
 
 src_configure() {
@@ -124,4 +135,16 @@ src_configure() {
 	)
 
 	cmake_src_configure
+}
+
+src_compile() {
+	cmake_src_compile
+
+	if use doc; then
+		einfo "Generating openimageio docs"
+		cd "${S}/src/doc"
+		make figures
+		make index
+		make openimageio.pdf
+	fi
 }

@@ -79,7 +79,7 @@ RDEPEND="${PYTHON_DEPS}
 	nls? ( virtual/libiconv )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
-	openimageio? ( media-libs/openimageio )
+	openimageio? ( media-libs/openimageio:= )
 	openexr? (
 		media-libs/ilmbase:=
 		media-libs/openexr:=

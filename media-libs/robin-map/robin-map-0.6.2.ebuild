@@ -10,7 +10,7 @@ HOMEPAGE="https://github.com/Tessil/robin-map"
 
 SLOT="0"
 LICENSE="MIT"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~ppc64 ~x86"
 
 EGIT_REPO_URI="https://github.com/Tessil/${PN}"
 EGIT_COMMIT="v${PV}"

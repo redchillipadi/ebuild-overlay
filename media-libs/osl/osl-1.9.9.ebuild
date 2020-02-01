@@ -26,7 +26,7 @@ IUSE="doc partio test ${CPU_FEATURES[@]%:*}"
 
 RDEPEND="dev-libs/pugixml
 	>=media-libs/openexr-2.2.0
-	>=media-libs/openimageio-1.8.0
+	media-libs/openimageio:=
 	sys-libs/zlib:=
 	partio? ( media-libs/partio )"
 

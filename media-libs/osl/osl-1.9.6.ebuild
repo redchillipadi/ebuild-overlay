@@ -25,7 +25,7 @@ CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 IUSE="doc partio test ${CPU_FEATURES[@]%:*}"
 
 RDEPEND=">=media-libs/openexr-2.2.0
-	>=media-libs/openimageio-1.8.0
+	media-libs/openimageio:=
 	dev-libs/pugixml
 	sys-libs/zlib:=
 	partio? ( media-libs/partio )"
