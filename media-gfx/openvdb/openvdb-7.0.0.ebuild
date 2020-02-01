@@ -83,6 +83,7 @@ src_configure() {
 		-DOPENVDB_ENABLE_RPATH=OFF
 		-DTBB_LOCATION="${myprefix}"
 		-DUSE_GLFW3=ON
+		-DCHOST="${CHOST}"
 	)
 
 	use python && mycmakeargs+=( -DPYOPENVDB_INSTALL_DIRECTORY="$(python_get_sitedir)" )
