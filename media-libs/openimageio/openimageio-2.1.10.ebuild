@@ -128,6 +128,7 @@ src_configure() {
 	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 
 	local mycmakeargs=(
+		-DBUILD_DOCS=$(usex doc)
 		-DINSTALL_DOCS=$(usex doc)
 		-DOIIO_BUILD_TESTS=OFF # as they are RESTRICTed
 		-DSTOP_ON_WARNING=OFF
@@ -156,16 +157,4 @@ src_configure() {
 	)
 
 	cmake_src_configure
-}
-
-src_compile() {
-	cmake_src_compile
-
-	if use doc; then
-		einfo "Generating openimageio docs"
-		cd "${S}/src/doc"
-		make figures
-		make index
-		make openimageio.pdf
-	fi
 }
