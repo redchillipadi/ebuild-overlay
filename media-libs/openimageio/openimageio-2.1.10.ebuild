@@ -158,3 +158,14 @@ src_configure() {
 
 	cmake_src_configure
 }
+
+src_compile() {
+	cmake_src_compile
+
+	if use doc; then
+		cd "${S}/src/doc"
+		make figures
+		make index
+		make openimageio.pdf
+	fi
+}
