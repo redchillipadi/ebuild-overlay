@@ -75,7 +75,7 @@ DEPEND="${RDEPEND}"
 
 DOCS=( CHANGES.md CREDITS.md README.md src/doc/${PN}.pdf )
 
-S="${WORKDIR}/oiio-RB-2.1"
+S="${WORKDIR}/oiio-RB-${PV}"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
