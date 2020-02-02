@@ -77,6 +77,10 @@
 		<flag name="ndof">
 			Enable NDOF input devices (SpaceNavigator and friends).
 		</flag>
+		<flag name="oidn" restrict="&gt;=media-gfx/blender-2.81">
+			Enable Intel Open Image Denoiser with
+			<pkg>media-libs/oidn</pkg>.
+		</flag>
 		<flag name="opencl" restrict="&lt;=media-gfx/blender-2.79">
 			Allow OpenCL Graphics Acceleration. This may
 			require extra graphics card drivers.</flag>
