@@ -20,8 +20,14 @@ X86_CPU_FEATURES=(
 )
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
-IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
+IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
+REQUIRED_USE="
+	python? ( ${PYTHON_REQUIRED_USE} )
+	openvdb? ( || ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
+	openvdb_abi_5? ( openvdb )
+	openvdb_abi_6? ( openvdb )
+	openvdb_abi_7? ( openvdb )
+"
 
 RESTRICT="test" # bug 431412
 
@@ -52,6 +58,10 @@ RDEPEND="
 		media-libs/glew:=
 		virtual/glu
 		virtual/opengl
+	)
+	openvdb? (
+		>=media-gfx/openvdb-5.2.0:=[-openvdb_abi_3,-openvdb_abi_4,openvdb_abi_5=,openvdb_abi_6=,openvdb_abi_7=]
+		dev-cpp/tbb
 	)
 	ptex? ( media-libs/ptex:= )
 	python? (
@@ -108,6 +118,17 @@ src_configure() {
 	# If no CPU SIMDs were used, completely disable them
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
+	openvdb_version=0
+	if use openvdb_abi_5; then
+		openvdb_version=5
+	elif use openvdb_abi_6; then
+		openvdb_version=6
+	elif use openvdb_abi_7; then
+		openvdb_version=7
+	fi
+	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
+
 	local mycmakeargs=(
 		-DINSTALL_DOCS=$(usex doc)
 		-DOIIO_BUILD_TESTS=OFF # as they are RESTRICTed
@@ -130,6 +151,7 @@ src_configure() {
 		-DUSE_QT=$(usex qt5)
 		-DUSE_LIBRAW=$(usex raw)
 		-DUSE_OPENSSL=$(usex ssl)
+		-DUSE_OPENVDB=$(usex openvdb)
 		-DUSE_FREETYPE=$(usex truetype)
 		-DUSE_SIMD=$(local IFS=','; echo "${mysimd[*]}")
 	)
