@@ -31,7 +31,7 @@ IUSE="doc llvm_targets_AArch64 llvm_targets_ARM sanitize test"
 RESTRICT="test"
 
 RDEPEND="
-	sys-devel/clang:=[llvm_targets_AArch64=,llvm_targets_ARM=]
+	=sys-devel/clang-8.0.1:=[llvm_targets_AArch64=,llvm_targets_ARM=]
 	sys-libs/ncurses:0=
 	sys-libs/zlib
 	doc? ( media-fonts/freefont )
@@ -48,6 +48,10 @@ BDEPEND="
 "
 
 DOCS=( README.md "${S}"/docs/{ReleaseNotes.txt,faq.rst,ispc.rst,news.rst,perf.rst,perfguide.rst} )
+
+PATCHES=(
+	"${FILESDIR}/${P}-set-clang-8.0.patch"
+)
 
 llvm_check_deps() {
 	has_version -d "sys-devel/clang:${LLVM_SLOT}[llvm_targets_AArch64=,llvm_targets_ARM=]"
