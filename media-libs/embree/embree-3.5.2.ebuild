@@ -36,7 +36,7 @@ RDEPEND="
 	tbb? ( dev-cpp/tbb )
 	tutorial? (
 		>=media-libs/libpng-1.6.34:0=
-		media-libs/openimageio:=
+		<media-libs/openimageio-2.0:=
 		virtual/jpeg:0
 	)
 "
