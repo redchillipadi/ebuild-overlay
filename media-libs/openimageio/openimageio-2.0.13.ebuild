@@ -170,4 +170,3 @@ src_compile() {
 		make openimageio.pdf
 	fi
 }
-
