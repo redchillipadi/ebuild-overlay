@@ -1,7 +1,7 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit check-reqs llvm eutils
 
 SLOT="0"
@@ -12,16 +12,14 @@ LICENSE=GPL-2
 KEYWORDS="~amd64"
 IUSE="+qtcreator"
 RDEPEND="
-	sys-devel/clang:4
+	sys-devel/clang:=
 	qtcreator? ( dev-qt/qt-creator )
 	>=dev-lang/mono-3.2.8
 	app-text/dos2unix
 "
 DEPEND="${RDEPEND}"
 
-LLVM_MAX_SLOT=4
-
-SRC_URI="https://github.com/EpicGames/UnrealEngine/archive/4.18.3-release.zip -> ${P}.zip"
+SRC_URI="https://github.com/EpicGames/UnrealEngine/archive/${PV}-release.zip -> ${P}.zip"
 
 S=${WORKDIR}/${P}-release
 
