@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -31,7 +31,7 @@ IUSE="doc llvm_targets_AArch64 llvm_targets_ARM sanitize test"
 RESTRICT="test"
 
 RDEPEND="
-	=sys-devel/clang-8.0.1:=[llvm_targets_AArch64=,llvm_targets_ARM=]
+	<sys-devel/clang-9:=[llvm_targets_AArch64=,llvm_targets_ARM=]
 	sys-libs/ncurses:0=
 	sys-libs/zlib
 	doc? ( media-fonts/freefont )
