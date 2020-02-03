@@ -1,12 +1,12 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit eutils cmake-utils wxwidgets
 
 DESCRIPTION="A tool for viewing OGRE mesh files"
 HOMEPAGE="https://www.ogre3d.org/tikiwiki/Ogre+Meshy"
-SRC_URI="https://downloads.sourceforge.net/project/${PN}/${PV}%20%28Ogre%201.9.0%29/OgreMeshy.${PV}.src.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/project/${PN}/${PV}%20%28Ogre%201.10.0%29/OgreMeshy.${PV}.src.7z"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -14,9 +14,9 @@ RESTRICT="test"
 IUSE="cg"
 
 RDEPEND="
-	dev-games/ogre[cg=]
+	=dev-games/ogre-1.10.12-r0[cg=]
 	x11-libs/libX11
-	<x11-libs/wxGTK-3.0
+	x11-libs/wxGTK:=
 "
 DEPEND="${RDEPEND}"
 
