@@ -87,6 +87,8 @@ DOCS=( CHANGES.md CREDITS.md README.md src/doc/${PN}.pdf )
 
 S="${WORKDIR}/oiio-Release-${PV}"
 
+PATCHES=( "${FILESDIR}/${P}-fix-oiiotool-location.patch" )
+
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
 }
@@ -103,6 +105,7 @@ src_prepare() {
 	done
 
 	sed -i "s/BUILDDIR :=.*/BUILDDIR := ..\/..\/..\/${P}_build/" "${S}/src/doc/Makefile"
+	sed -i "s/    OIIOTOOL :=.*/OIIOTOOL := ${BUILDDIR}\/bin/oiiotool" "${S}/src/doc/Makefile"
 }
 
 src_configure() {
