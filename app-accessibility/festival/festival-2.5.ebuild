@@ -1,8 +1,8 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="2"
-inherit eutils multilib toolchain-funcs user
+EAPI="7"
+inherit eutils multilib toolchain-funcs
 
 MY_PV="${PV}.0-release"
 MY_P=${PN}-${MY_PV}
@@ -54,17 +54,17 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86"
 IUSE=""
 
-DEPEND="~app-accessibility/speech-tools-2.5
-		>=sys-libs/ncurses-5.6-r2"
+DEPEND="
+	acct-user/festival
+	~app-accessibility/speech-tools-2.5
+	>=sys-libs/ncurses-5.6-r2
+"
+
 RDEPEND="${DEPEND}
 	media-sound/alsa-utils
 "
 
 S=${WORKDIR}/festival
-
-pkg_setup() {
-	enewuser festival -1 -1 -1 audio
-}
 
 src_prepare() {
 	# tell festival to use the speech-tools we have installed.
@@ -119,7 +119,7 @@ src_install() {
 	for ex in "${D}"/usr/share/doc/${PF}/examples/*.sh; do
 		exnoext=${ex%%.sh}
 		chmod a+x "${exnoext}"
-		dosed "s:${S}/bin/festival:/usr/bin/festival:" "${exnoext##$D}"
+		sed "s:${S}/bin/festival:/usr/bin/festival:" "${exnoext##$D}"
 	done
 
 	# Install the header files
