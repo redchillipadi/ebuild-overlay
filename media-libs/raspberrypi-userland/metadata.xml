@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>chithanh@gentoo.org</email>
+		<name>Chí-Thanh Christopher Nguyễn</name>
+	</maintainer>
+	<use>
+		<flag name="arm64">Build for arm64</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">raspberrypi/userland</remote-id>
+	</upstream>
+</pkgmetadata>

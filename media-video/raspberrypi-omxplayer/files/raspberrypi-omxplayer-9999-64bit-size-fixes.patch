@@ -1,0 +1,28 @@
+diff -Naur a/linux/PlatformDefs.h b/linux/PlatformDefs.h
+--- a/linux/PlatformDefs.h	2020-02-04 15:44:33.000000000 +0800
++++ b/linux/PlatformDefs.h	2020-02-04 15:43:22.000000000 +0800
+@@ -235,7 +235,6 @@
+ typedef long        LONG_PTR;
+ typedef unsigned long   ULONG_PTR;
+ typedef ULONG_PTR     DWORD_PTR;
+-typedef __int64     __time64_t;
+ typedef intptr_t (*FARPROC)(void);
+ 
+ #define MAXWORD   0xffff
+@@ -676,4 +675,3 @@
+ #endif //__PLATFORM_DEFS_H__
+ 
+ 
+-
+diff -Naur a/OMXAudio.cpp b/OMXAudio.cpp
+--- a/OMXAudio.cpp	2020-02-04 15:47:55.000000000 +0800
++++ b/OMXAudio.cpp	2020-02-04 15:43:22.000000000 +0800
+@@ -585,7 +585,7 @@
+     }
+ 
+     omx_buffer->nOffset = 0;
+-    omx_buffer->nFilledLen  = std::min(sizeof(m_wave_header), omx_buffer->nAllocLen);
++    omx_buffer->nFilledLen  = std::min(sizeof(m_wave_header), (std::size_t)omx_buffer->nAllocLen);
+ 
+     memset((unsigned char *)omx_buffer->pBuffer, 0x0, omx_buffer->nAllocLen);
+     memcpy((unsigned char *)omx_buffer->pBuffer, &m_wave_header, omx_buffer->nFilledLen);
