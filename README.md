@@ -35,8 +35,10 @@ A collection of ebuilds for packages not yet available in Gentoo
 * media-libs/osl-1.9.9 - Advanced shading language for production GI renderers
 * media-libs/partio-1.5.4 - Library for particle IO and manipulation
 * media-libs/ptex-2.3.2 - Per-Face Texture Mapping for Production Rendering
+* media-libs/raspberrypi-userland-9999 - Raspberry Pi userspace tools and libraries
 * media-libs/robin-map-0.6.2 - A C++ implementation of a fast hash map and hash set using robin hood hashing
 * media-tv/kodi-raspberrypi-17.6 - Kodi is a free and open source media-player and entertainment hub
+* media-video/raspberrypi-omxplayer-9999 - Command line media player for the Raspberry Pi
 * net-misc/ccminer-2.3.1 - CUDE Miner Project
 * net-misc/nheqminer-0.5c - Nicehash Equihash Miner
 * sci-physics/box2d-2.3.2 - A 2d physics library
