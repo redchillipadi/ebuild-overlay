@@ -1,0 +1,25 @@
+diff -Naur a/src/cmake/externalpackages.cmake b/src/cmake/externalpackages.cmake
+--- a/src/cmake/externalpackages.cmake	2020-02-03 09:20:30.321656201 +0800
++++ b/src/cmake/externalpackages.cmake	2020-02-03 09:22:44.673327158 +0800
+@@ -551,13 +551,14 @@
+     # locally installed in this tree.
+     if (NOT BUILD_PYBIND11_FORCE)
+         find_path (PYBIND11_INCLUDE_DIR pybind11/pybind11.h
+-               HINTS
+-                   "${PROJECT_SOURCE_DIR}/ext/pybind11/include"
+-                   "${PYBIND11_ROOT}"
+-                   ENV PYBIND11_HOME
+-                   "${PYBIND11_HOME}"
+-                   ENV PYBIND11_HOME
+-               )
++            PATHS "/usr/include/python3.8m"
++            )
++        find_path (PYBIND11_INCLUDE_DIR pybind11/pybind11.h
++            PATHS "/usr/include/python3.7m"
++            )
++        find_path (PYBIND11_INCLUDE_DIR pybind11/pybind11.h
++            PATHS "/usr/include/python3.6m"
++            )
+     endif ()
+     # Check the version -- if it's too old, download a local copy.
+     if (PYBIND11_INCLUDE_DIR)

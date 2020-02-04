@@ -14,4 +14,3 @@ KEYWORDS="~amd64 ~ppc64 ~x86"
 
 EGIT_REPO_URI="https://github.com/Tessil/${PN}"
 EGIT_COMMIT="v${PV}"
-

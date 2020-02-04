@@ -11,6 +11,19 @@
 		<flag name="field3d">Enable f3d file (write) support via <pkg>media-libs/Field3D</pkg></flag>
 		<flag name="heif"> Add support for HEIF format via <pkg>media-libs/libheif</pkg></flag>
 		<flag name="opencv">Enable OpenCV support via <pkg>media-libs/opencv</pkg></flag>
+		<flag name="openvdb"  restrict="&gt;=media-libs/openimageio-2.0">Enable OpenVDB read support via <pkg>media-libs/openvdb</pkg></flag>
+		<flag name="openvdb_abi_5" restrict="&gt;=media-libs/openimageio-2.0">
+			Support legacy ABI version 5 for
+			<pkg>media-gfx/openvdb</pkg>.
+		</flag>
+		<flag name="openvdb_abi_6" restrict="&gt;=media-libs/openimageio-2.0">
+			Support legacy ABI version 6 for
+			<pkg>media-gfx/openvdb</pkg>.
+		</flag>
+		<flag name="openvdb_abi_7" restrict="&gt;=media-libs/openimageio-2.0">
+			Support legacy ABI version 7 for
+			<pkg>media-gfx/openvdb</pkg>.
+		</flag>		
 		<flag name="ptex">Enable Ptex texture mapping system file support via <pkg>media-libs/ptex</pkg></flag>
 	</use>
 	<upstream>

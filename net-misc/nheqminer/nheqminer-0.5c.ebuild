@@ -1,8 +1,8 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit eutils cmake-utils git-r3 user
+EAPI=7
+inherit eutils cmake-utils git-r3
 
 DESCRIPTION="Nicehash Equihash Miner"
 HOMEPAGE="https://www.nicehash.com/"
@@ -12,10 +12,12 @@ LICENSE="ZLIB"
 SLOT="0"
 KEYWORDS="~amd64"
 RESTRICT="test"
-DEPEND="dev-libs/boost[static-libs]
+DEPEND="
+	acct-user/nicehash
+	dev-libs/boost[static-libs]
 	dev-lang/fasm
-	>=dev-util/nvidia-cuda-toolkit-8.0
-	<dev-util/nvidia-cuda-toolkit-9.0
+	>=dev-util/nvidia-cuda-toolkit-8
+	<dev-util/nvidia-cuda-toolkit-9
 "
 
 src_compile() {
@@ -32,8 +34,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	enewgroup nicehash
-	enewuser nicehash -1 -1 /dev/null video
 	elog
 	elog "Remember to configure the server and bitcoin address"
 	elog "as appropriate in /etc/init.d/nicehash"

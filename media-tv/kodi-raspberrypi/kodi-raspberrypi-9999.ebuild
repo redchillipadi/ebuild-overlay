@@ -1,14 +1,14 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI="7"
 
 # Does not work with py3 here
 # It might work with py:2.5 but I didn't test that
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="sqlite"
 
-inherit eutils flag-o-matic linux-info python-single-r1 multiprocessing autotools systemd toolchain-funcs user
+inherit eutils flag-o-matic linux-info python-single-r1 multiprocessing autotools systemd toolchain-funcs
 
 LIBDVDCSS_COMMIT="2f12236bc1c92f73c21e973363f79eb300de603f"
 LIBDVDREAD_COMMIT="6f3f53a63549d937e75c0db132fb1bce6b71a496"
@@ -53,6 +53,7 @@ REQUIRED_USE="
 RESTRICT="mirror"
 
 COMMON_DEPEND="${PYTHON_DEPS}
+	acct-user/kodi
 	airplay? ( app-pda/libplist )
 	alsa? ( media-libs/alsa-lib )
 	bluetooth? ( net-wireless/bluez )
@@ -145,28 +146,6 @@ ERROR_IP_MULTICAST="
 In some cases Kodi needs to access multicast addresses.
 Please consider enabling IP_MULTICAST under Networking options.
 "
-
-pkg_setup() {
-	check_extra_config
-	python-single-r1_pkg_setup
-	enewgroup kodi
-	enewuser kodi -1 -1 /home/kodi kodi
-	if ! egetent group video | grep -q kodi; then
-					local g=$(groups kodi)
-					elog "Adding user kodi to video group"
-					usermod -G video,${g// /,} kodi || die "Adding user kodi to video group failed"
-	fi
-	if ! egetent group input | grep -q kodi; then
-					local g=$(groups kodi)
-					elog "Adding user kodi to input group"
-					usermod -G input,${g// /,} kodi || die "Adding user kodi to input group failed"
-	fi
-	if ! egetent group audio | grep -q kodi; then
-					local g=$(groups kodi)
-					elog "Adding user kodi to audio group"
-					usermod -G audio,${g// /,} kodi || die "Adding user kodi to audio group failed"
-	fi
-}
 
 src_unpack() {
 	[[ ${PV} == 9999 ]] && git-r3_src_unpack || default
