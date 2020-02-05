@@ -7,7 +7,7 @@ inherit acct-user
 
 DESCRIPTION="alias user for nicehash"
 
-ACCT_USER_ID=-1
+ACCT_USER_ID=374
 ACCT_USER_GROUPS=( nicehash video )
 
 acct-user_add_deps

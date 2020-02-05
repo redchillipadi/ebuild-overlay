@@ -7,4 +7,4 @@ inherit acct-group
 
 DESCRIPTION="alias group for kodi"
 
-ACCT_GROUP_ID=-1
+ACCT_GROUP_ID=373

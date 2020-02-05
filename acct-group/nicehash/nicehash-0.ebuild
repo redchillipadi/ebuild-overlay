@@ -7,4 +7,4 @@ inherit acct-group
 
 DESCRIPTION="alias group for nicehash"
 
-ACCT_GROUP_ID=-1
+ACCT_GROUP_ID=374

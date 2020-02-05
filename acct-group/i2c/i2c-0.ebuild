@@ -7,4 +7,4 @@ inherit acct-group
 
 DESCRIPTION="group for i2c devices"
 
-ACCT_GROUP_ID=-1
+ACCT_GROUP_ID=370

@@ -7,7 +7,7 @@ inherit acct-user
 
 DESCRIPTION="alias user for festival speech engine"
 
-ACCT_USER_ID=-1
+ACCT_USER_ID=110
 ACCT_USER_GROUPS=( audio )
 
 acct-user_add_deps
