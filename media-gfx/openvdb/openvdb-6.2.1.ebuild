@@ -22,7 +22,7 @@ REQUIRED_USE="
 "
 
 RDEPEND="
-	>=dev-libs/boost-1.62:=[python?,${PYTHON_USEDEP}]
+	>=dev-libs/boost-1.62:=[python?,${PYTHON_SINGLE_USEDEP}]
 	>=dev-libs/c-blosc-1.5.0
 	dev-libs/jemalloc
 	dev-libs/log4cplus
@@ -35,7 +35,7 @@ RDEPEND="
 	x11-libs/libXrandr
 	python? (
 		${PYTHON_DEPS}
-		dev-python/numpy[${PYTHON_USEDEP}]
+		dev-python/numpy[${PYTHON_SINGLE_USEDEP}]
 	)"
 
 DEPEND="${RDEPEND}

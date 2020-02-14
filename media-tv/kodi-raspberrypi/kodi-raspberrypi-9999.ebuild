@@ -69,7 +69,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	>=dev-libs/lzo-2.04
 	dev-libs/tinyxml[stl]
 	>=dev-libs/yajl-2
-	dev-python/pillow[${PYTHON_USEDEP}]
+	dev-python/pillow[${PYTHON_SINGLE_USEDEP}]
 	dvd? ( dev-libs/libcdio[-minimal] )
 	gles? ( media-libs/mesa[gles2] )
 	libusb? ( virtual/libusb:1 )
