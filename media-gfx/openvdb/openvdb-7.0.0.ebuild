@@ -35,7 +35,9 @@ RDEPEND="
 	x11-libs/libXrandr
 	python? (
 		${PYTHON_DEPS}
-		dev-python/numpy[${PYTHON_SINGLE_USEDEP}]
+		$(python_gen_cond_dep '
+			dev-python/numpy[${PYTHON_MULTI_USEDEP}]
+		')
 	)"
 
 DEPEND="${RDEPEND}
