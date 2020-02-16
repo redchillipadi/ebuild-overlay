@@ -205,7 +205,7 @@ src_configure() {
 		-DWITH_JACK=$(usex jack)
 		-DWITH_MOD_FLUID=$(usex elbeem)
 		-DWITH_MOD_OCEANSIM=$(usex fftw)
-		-DWITH_OIDN=$(usex oidn)
+		-DWITH_OPENIMAGEDENOISE=$(usex oidn)
 		-DWITH_OPENAL=$(usex openal)
 		-DWITH_CYCLES_DEVICE_OPENCL=$(usex opencl)
 		-DWITH_OPENCOLORIO=$(usex color-management)
