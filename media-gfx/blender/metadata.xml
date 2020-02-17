@@ -126,6 +126,9 @@
 		<flag name="test" restrict="&gt;=media-gfx/blender-2.77">
 			Build the provided unit tests.
 		</flag>
+		<flag name="usd" restrict="&gt;=media-gfx/blender-2.82">
+			Enable Universal Scene Description support.
+		</flag>
 		<flag name="valgrind" restrict="&gt;=media-gfx/blender-2.77">
 			Add support for memory debugging using
 			<pkg>dev-util/valgrind</pkg>
