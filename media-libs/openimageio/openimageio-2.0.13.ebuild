@@ -66,7 +66,9 @@ RDEPEND="
 	ptex? ( media-libs/ptex:= )
 	python? (
 		${PYTHON_DEPS}
-		dev-libs/boost:=[python,${PYTHON_SINGLE_USEDEP}]
+		$(python_gen_cond_dep '
+			dev-libs/boost:=[python,${PYTHON_MULTI_USEDEP}]
+		')
 	)
 	qt5? (
 		dev-qt/qtcore:5
