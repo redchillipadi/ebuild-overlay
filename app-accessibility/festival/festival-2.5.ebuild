@@ -90,6 +90,7 @@ src_prepare() {
 
 	echo "(Parameter.set 'Audio_Command \"aplay -q -c 1 -t raw -f s16 -r \$SR \$FILE\")" >> "${S}"/lib/siteinit.scm
 	echo "(Parameter.set 'Audio_Method 'Audio_Command)" >> "${S}"/lib/siteinit.scm
+	eapply_user
 }
 
 src_configure() {
@@ -132,7 +133,7 @@ src_install() {
 	doins lib/site*
 
 	# Install the docs
-	dodoc "${S}"/{ACKNOWLEDGMENTS,NEWS,README}
+	dodoc "${S}"/{ACKNOWLEDGMENTS,NEWS,README.md}
 	doman "${S}"/doc/{festival.1,festival_client.1}
 
 	# create the directory where our log file will go.
