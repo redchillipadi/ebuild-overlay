@@ -50,11 +50,10 @@ DEPEND="
 		app-accessibility/sphinxbase
 		app-accessibility/pocketsphinx
 	)
-	festival? ( app-accessiblity/festival )
+	festival? ( app-accessibility/festival )
 	flite? ( app-accessibility/flite )
 	julius? ( app-accessibility/julius )
 "
-
 
 # semantic
 # cmuclmtk
