@@ -9,4 +9,11 @@
 	<longdescription>
 		Jasper is an open source platform for developing always-on, voice controlled applications
 	</longdescription>
+
+	<use>
+		<flag name="pocketsphinx">Use the PocketSphinx STT library.</flag>
+		<flag name="julius">Use the Julius STT library.</flag>
+		<flag name="festival">Use the Festival TTS library.</flag>
+		<flag name="flite">Use the Flite TTS library.</flag>
+	</use>
 </pkgmetadata>

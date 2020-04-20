@@ -64,6 +64,8 @@ RDEPEND="${DEPEND}
 	media-sound/alsa-utils
 "
 
+BDEPEND="${RDEPEND}"
+
 S=${WORKDIR}/festival
 
 src_prepare() {

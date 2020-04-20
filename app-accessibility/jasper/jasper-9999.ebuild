@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7,8} )
+PYTHON_COMPAT=( python3_6 )
 
 inherit git-r3 python-single-r1
 
@@ -14,7 +14,7 @@ EGIT_REPO_URI="https://github.com/jasperproject/jasper-client.git"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="pocketsphinx julius flite festival"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
@@ -42,13 +42,19 @@ DEPEND="
 		dev-python/python-mpd[${PYTHON_USEDEP}]
 		dev-python/pip[${PYTHON_USEDEP}]
 		dev-python/pyaudio[${PYTHON_USEDEP}]
-		dev-python/python-cmuclmtk[${PYTHON_USEDEP}]
+		pocketsphinx? (
+			dev-python/python-cmuclmtk[${PYTHON_USEDEP}]
+		)
 	')
-	app-accessibility/sphinxbase
-	app-accessibility/pocketsphinx
-	app-accessibility/flite
-	app-accessibility/julius
+	pocketsphinx? (
+		app-accessibility/sphinxbase
+		app-accessibility/pocketsphinx
+	)
+	festival? ( app-accessiblity/festival )
+	flite? ( app-accessibility/flite )
+	julius? ( app-accessibility/julius )
 "
+
 
 # semantic
 # cmuclmtk
@@ -59,7 +65,6 @@ BDEPEND="${RDEPEND}"
 
 src_install() {
 	python_doexe jasper.py
-	#python_moduleinto ${PN}
 	python_domodule client
 	python_optimize
 }

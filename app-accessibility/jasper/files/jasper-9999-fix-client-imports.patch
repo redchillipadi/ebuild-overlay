@@ -1,0 +1,124 @@
+diff -Naur a/client/brain.py b/client/brain.py
+--- a/client/brain.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/brain.py	2020-04-20 10:51:06.131628434 +1000
+@@ -1,7 +1,7 @@
+ # -*- coding: utf-8-*-
+ import logging
+ import pkgutil
+-import jasperpath
++from client import jasperpath
+ 
+ 
+ class Brain(object):
+diff -Naur a/client/conversation.py b/client/conversation.py
+--- a/client/conversation.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/conversation.py	2020-04-20 10:51:06.131628434 +1000
+@@ -1,7 +1,7 @@
+ # -*- coding: utf-8-*-
+ import logging
+-from notifier import Notifier
+-from brain import Brain
++from client.notifier import Notifier
++from client.brain import Brain
+ 
+ 
+ class Conversation(object):
+diff -Naur a/client/diagnose.py b/client/diagnose.py
+--- a/client/diagnose.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/diagnose.py	2020-04-20 10:51:06.131628434 +1000
+@@ -7,7 +7,7 @@
+ import pkgutil
+ import logging
+ import pip.req
+-import jasperpath
++from client import jasperpath
+ if sys.version_info < (3, 3):
+     from distutils.spawn import find_executable
+ else:
+diff -Naur a/client/g2p.py b/client/g2p.py
+--- a/client/g2p.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/g2p.py	2020-04-20 10:51:06.131628434 +1000
+@@ -7,8 +7,8 @@
+ 
+ import yaml
+ 
+-import diagnose
+-import jasperpath
++from client import diagnose
++from client import jasperpath
+ 
+ 
+ class PhonetisaurusG2P(object):
+diff -Naur a/client/mic.py b/client/mic.py
+--- a/client/mic.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/mic.py	2020-04-20 10:51:06.131628434 +1000
+@@ -7,8 +7,8 @@
+ import wave
+ import audioop
+ import pyaudio
+-import alteration
+-import jasperpath
++from client import alteration
++from client import jasperpath
+ 
+ 
+ class Mic:
+diff -Naur a/client/populate.py b/client/populate.py
+--- a/client/populate.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/populate.py	2020-04-20 10:51:06.131628434 +1000
+@@ -5,7 +5,7 @@
+ import yaml
+ from pytz import timezone
+ import feedparser
+-import jasperpath
++from client import jasperpath
+ 
+ 
+ def run():
+diff -Naur a/client/stt.py b/client/stt.py
+--- a/client/stt.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/stt.py	2020-04-20 10:51:06.131628434 +1000
+@@ -12,9 +12,9 @@
+ from abc import ABCMeta, abstractmethod
+ import requests
+ import yaml
+-import jasperpath
+-import diagnose
+-import vocabcompiler
++from client import jasperpath
++from client import diagnose
++from client import vocabcompiler
+ 
+ 
+ class AbstractSTTEngine(object):
+diff -Naur a/client/tts.py b/client/tts.py
+--- a/client/tts.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/tts.py	2020-04-20 10:51:40.830080556 +1000
+@@ -38,8 +38,8 @@
+ except ImportError:
+     pass
+ 
+-import diagnose
+-import jasperpath
++from client import diagnose
++from client import jasperpath
+ 
+ 
+ class AbstractTTSEngine(object):
+diff -Naur a/client/vocabcompiler.py b/client/vocabcompiler.py
+--- a/client/vocabcompiler.py	2020-04-20 10:50:39.912807944 +1000
++++ b/client/vocabcompiler.py	2020-04-20 10:51:06.131628434 +1000
+@@ -16,10 +16,10 @@
+ from abc import ABCMeta, abstractmethod, abstractproperty
+ import yaml
+ 
+-import brain
+-import jasperpath
++from client import brain
++from client import jasperpath
+ 
+-from g2p import PhonetisaurusG2P
++from client.g2p import PhonetisaurusG2P
+ try:
+     import cmuclmtk
+ except ImportError:
