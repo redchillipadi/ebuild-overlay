@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python{2_7,3_6,3_7,3_8} )
+PYTHON_COMPAT=( python3_{6,7,8} )
 
 inherit git-r3 python-single-r1
 
@@ -16,22 +16,50 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+PATCHES=(
+	"${FILESDIR}/${P}-use-python3.patch"
+	"${FILESDIR}/${P}-fix-urlparse-import.patch"
+	"${FILESDIR}/${P}-fix-mic-print.patch"
+	"${FILESDIR}/${P}-fix-tts-long.patch"
+	"${FILESDIR}/${P}-fix-client-imports.patch"
+	"${FILESDIR}/${P}-fix-parse-requirements.patch"
+	"${FILESDIR}/${P}-fix-queue.patch"
+)
+
 DEPEND="
-	dev-python/APScheduler
-	dev-python/mock
-	dev-python/pytz
-	dev-python/pyyaml
-	dev-python/requests
-	dev-python/beautifulsoup:4
-	dev-python/feedparser
-	dev-python/python-dateutil
-	dev-python/python-mpd
+	${PYTHON_DEPS}
+	$(python_gen_cond_dep '
+		dev-python/APScheduler[${PYTHON_USEDEP}]
+		dev-python/mock[${PYTHON_USEDEP}]
+		dev-python/pytz[${PYTHON_USEDEP}]
+		dev-python/pyyaml[${PYTHON_USEDEP}]
+		dev-python/requests[${PYTHON_USEDEP}]
+		dev-python/beautifulsoup:4[${PYTHON_USEDEP}]
+		dev-python/feedparser[${PYTHON_USEDEP}]
+		dev-python/python-dateutil[${PYTHON_USEDEP}]
+		dev-python/python-mpd[${PYTHON_USEDEP}]
+		dev-python/pip[${PYTHON_USEDEP}]
+		dev-python/pyaudio[${PYTHON_USEDEP}]
+		dev-python/python-cmuclmtk[${PYTHON_USEDEP}]
+	')
+	app-accessibility/sphinxbase
+	app-accessibility/pocketsphinx
+	app-accessibility/flite
+	app-accessibility/julius
 "
 
-# argparse
 # semantic
 # cmuclmtk
 # facebook-sdk
 
 RDEPEND="${DEPEND}"
-BDEPEND=""
+BDEPEND="${RDEPEND}"
+
+src_install() {
+	python_doexe jasper.py
+	#python_moduleinto ${PN}
+	python_domodule client
+	python_optimize
+}
