@@ -1,0 +1,12 @@
+diff -Naur a/src/include/fst/replace.h b/src/include/fst/replace.h
+--- a/src/include/fst/replace.h	2020-04-20 17:42:19.615497662 +1000
++++ b/src/include/fst/replace.h	2020-04-20 17:42:39.044315594 +1000
+@@ -1066,7 +1066,7 @@
+ 
+     // If state is already cached, use cached arcs array.
+     if (fst_.GetImpl()->HasArcs(state_)) {
+-      (fst_.GetImpl())->template CacheImpl<A>::InitArcIterator(state_,
++      (fst_.GetImpl())->InitArcIterator(state_,
+                                                                &cache_data_);
+       num_arcs_ = cache_data_.narcs;
+       arcs_ = cache_data_.arcs;      // 'arcs_' is a ptr to the cached arcs.
