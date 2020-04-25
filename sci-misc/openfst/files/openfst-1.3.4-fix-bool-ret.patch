@@ -1,0 +1,18 @@
+diff -Naur a/src/script/text-io.cc b/src/script/text-io.cc
+--- a/src/script/text-io.cc	2020-04-20 17:56:22.625333883 +1000
++++ b/src/script/text-io.cc	2020-04-20 17:57:02.272966526 +1000
+@@ -81,10 +81,12 @@
+   for (ssize_t s = 0; s < potential.size(); ++s)
+     *strm << s << "\t" << potential[s] << "\n";
+ 
+-  if (!*strm)
++  bool ret = true;
++  if (!*strm) {
+     LOG(ERROR) << "WritePotentials: Write failed: "
+                << (filename.empty() ? "standard output" : filename);
+-  bool ret = *strm;
++    ret = false;
++  }
+   if (strm != &cout)
+     delete strm;
+   return ret;

@@ -1,0 +1,12 @@
+diff -Naur a/src/include/fst/extensions/ngram/ngram-fst.h b/src/include/fst/extensions/ngram/ngram-fst.h
+--- a/src/include/fst/extensions/ngram/ngram-fst.h	2020-04-20 18:11:11.231949523 +1000
++++ b/src/include/fst/extensions/ngram/ngram-fst.h	2020-04-20 18:10:45.073526801 +1000
+@@ -130,7 +130,7 @@
+     hdr.SetNumStates(num_states_);
+     WriteHeader(strm, opts, kFileVersion, &hdr);
+     strm.write(data_, Storage(num_states_, num_futures_, num_final_));
+-    return strm;
++    return static_cast<bool>(strm);
+   }
+ 
+   StateId Start() const {

@@ -1,0 +1,69 @@
+diff -Naur a/M2MFstAlignerB.cpp b/M2MFstAlignerB.cpp
+--- a/M2MFstAlignerB.cpp	2020-04-20 16:49:52.387904890 +1000
++++ b/M2MFstAlignerB.cpp	2020-04-20 16:50:46.984605114 +1000
+@@ -228,7 +228,7 @@
+     TODO: Add an FST version and support for conditional maximization.  May be useful for languages
+      like Japanese where there is a distinct imbalance in the seq1->seq2 length correspondences.
+   */
+-  const EncodeTable<LogArc>& table = encoder->table();
++  const fst::internal::EncodeTable<LogArc>& table = encoder->table();
+ 
+   int istate=0; int ostate=0;
+   for( unsigned int i=0; i<=seq1->size(); i++ ){
+diff -Naur a/PhonetisaurusE2F.cpp b/PhonetisaurusE2F.cpp
+--- a/PhonetisaurusE2F.cpp	2020-04-20 16:49:34.308997754 +1000
++++ b/PhonetisaurusE2F.cpp	2020-04-20 16:51:43.231206447 +1000
+@@ -59,7 +59,7 @@
+ 
+ }
+ 
+-PhonetisaurusE2F::PhonetisaurusE2F( const EncodeTable<StdArc>& table, int _verbose, bool _allow_ins,
++PhonetisaurusE2F::PhonetisaurusE2F( const fst::internal::EncodeTable<StdArc>& table, int _verbose, bool _allow_ins,
+ 				    const SymbolTable* _isyms, const SymbolTable* _osyms
+ 				    ){
+   /* 
+@@ -338,20 +338,20 @@
+ }
+ */
+ 
+-void PhonetisaurusE2F::_make_loop_and_iomap( const EncodeTable<StdArc>& table ){
++void PhonetisaurusE2F::_make_loop_and_iomap( const fst::internal::EncodeTable<StdArc>& table ){
+   loop = new VectorFst<StdArc>();
+   loop->AddState();
+   loop->SetStart(0);
+   
+   if( verbose==true ){
+     for( size_t i=1; i<=table.Size(); i++ ){
+-      const EncodeTable<StdArc>::Tuple *t = table.Decode(i);
++      const fst::internal::EncodeTable<StdArc>::Tuple *t = table.Decode(i);
+       cout << "i=" << i << " in: " << isyms->Find(t->ilabel) << " out: " << osyms->Find(t->olabel) << endl;
+     }
+   }
+ 
+   for( size_t i=2; i<=table.Size(); i++ ){
+-    const EncodeTable<StdArc>::Tuple *t = table.Decode(i);
++    const fst::internal::EncodeTable<StdArc>::Tuple *t = table.Decode(i);
+ 
+     if( i2omap->find(t->ilabel)==i2omap->end() ){
+       vector<size_t> m;
+diff -Naur a/PhonetisaurusE2F.hpp b/PhonetisaurusE2F.hpp
+--- a/PhonetisaurusE2F.hpp	2020-04-20 16:49:34.308997754 +1000
++++ b/PhonetisaurusE2F.hpp	2020-04-20 16:51:09.443247968 +1000
+@@ -59,7 +59,7 @@
+         
+   PhonetisaurusE2F( );
+         
+-  PhonetisaurusE2F( const EncodeTable<StdArc>& table, int _verbose, bool _allow_ins, 
++  PhonetisaurusE2F( const fst::internal::EncodeTable<StdArc>& table, int _verbose, bool _allow_ins, 
+ 		    const SymbolTable* _isyms, const SymbolTable* _osyms
+ 		    );
+ 
+@@ -83,7 +83,7 @@
+   void _make_loop( );
+   void _make_ifilter( );
+   void _load_iclusters( );
+-  void _make_loop_and_iomap( const EncodeTable<StdArc>& table );
++  void _make_loop_and_iomap( const fst::internal::EncodeTable<StdArc>& table );
+ };
+ 
+ #endif // PHONETISAURUSE2F_H //
