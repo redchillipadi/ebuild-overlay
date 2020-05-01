@@ -14,7 +14,10 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-RDEPEND="dev-cpp/tbb"
+RDEPEND="
+	dev-cpp/tbb
+	>=dev-lang/ispc-1.12.0
+"
 DEPEND="${RDEPEND}"
 
 RESTRICT="test"
