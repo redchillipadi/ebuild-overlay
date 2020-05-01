@@ -58,7 +58,7 @@ RDEPEND="${PYTHON_DEPS}
 	virtual/jpeg:0=
 	virtual/libintl
 	virtual/opengl
-	alembic? ( media-gfx/alembic[boost(+),hdf(+)] )
+	alembic? ( >=media-gfx/alembic-1.7.12[boost(+),hdf(+)] )
 	collada? ( >=media-libs/opencollada-1.6.68:= )
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
