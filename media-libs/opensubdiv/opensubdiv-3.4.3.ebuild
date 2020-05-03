@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -45,9 +45,15 @@ S="${WORKDIR}/OpenSubdiv-${MY_PV}"
 PATCHES=(
 	"${FILESDIR}/${PN}-3.3.0-use-gnuinstalldirs.patch"
 	"${FILESDIR}/${PN}-3.3.0-add-CUDA9-compatibility.patch"
+	"${FILESDIR}/${PN}-3.4.0-0001-documentation-CMakeLists.txt-force-python2.patch"
 )
 
 pkg_pretend() {
+	if use cuda; then
+		[[ $(gcc-major-version) -gt 8 ]] && \
+		eerror "USE=cuda requires gcc < 9. Run gcc-config to switch your default compiler" && \
+		die "Need gcc version earlier than 9"
+	fi
 	[[ ${MERGE_TYPE} != binary ]] && use openmp && tc-check-openmp
 }
 
