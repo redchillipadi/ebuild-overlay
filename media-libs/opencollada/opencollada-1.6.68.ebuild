@@ -29,6 +29,7 @@ BDEPEND="
 S="${WORKDIR}/OpenCOLLADA-${PV}"
 
 PATCHES=(
+	"${FILESDIR}/${P}-fix-null-conversion.patch"
 	"${FILESDIR}/${P}-cmake-fixes.patch"
 	"${FILESDIR}/${PN}-1.6.63-pcre-fix.patch"
 )
