@@ -134,7 +134,6 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DBUILD_DOCS=$(usex doc)
-		-DINSTALL_DOCS=$(usex doc)
 		-DOIIO_BUILD_TESTS=OFF # as they are RESTRICTed
 		-DSTOP_ON_WARNING=OFF
 		-DUSE_EXTERNAL_PUGIXML=ON
@@ -166,4 +165,9 @@ src_configure() {
 
 src_compile() {
 	cmake_src_compile
+
+	if use doc; then
+		cd "${S}/src/doc"
+		make
+	fi
 }
