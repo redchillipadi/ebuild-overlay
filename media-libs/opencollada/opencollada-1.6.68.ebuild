@@ -21,7 +21,10 @@ RDEPEND="dev-libs/libpcre
 	sys-libs/zlib
 "
 DEPEND="${RDEPEND}"
-BDEPEND="virtual/pkgconfig"
+BDEPEND="
+	virtual/pkgconfig
+	app-admin/chrpath
+"
 
 S="${WORKDIR}/OpenCOLLADA-${PV}"
 
@@ -61,6 +64,10 @@ src_install() {
 
 	echo "LDPATH=/usr/$(get_libdir)/opencollada" > "${T}"/99${PN} || die "echo failed"
 	doenvd "${T}"/99${PN}
+
+	# Remove insecure DAEValidator RUNPATH and install DAEValidator library
+	dolib.so "${BUILD_DIR}/lib/libDAEValidatorLibrary.so"
+	/usr/bin/chrpath -d "${BUILD_DIR}/bin/DAEValidator"
 
 	dobin "${BUILD_DIR}/bin/DAEValidator"
 	dobin "${BUILD_DIR}/bin/OpenCOLLADAValidator"
