@@ -20,21 +20,26 @@ MY_PV="$(ver_cut 1-2)"
 SLOT="0"
 LICENSE="|| ( GPL-2 BL )"
 KEYWORDS="~amd64 ~x86"
-IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
+IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
 	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
-	osl sdl sndfile standalone test tiff usd valgrind"
+	osl sdl sndfile standalone test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
 	cuda? ( cycles )
 	cycles? ( openexr tiff openimageio )
 	draco? ( !system-python !system-numpy )
+	elbeem? ( tbb )
 	embree? ( cycles )
+	oidn? ( tbb )
 	opencl? ( cycles )
-	openvdb? ( || ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
+	openvdb? (
+		|| ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 )
+		tbb
+	)
 	openvdb_abi_4? ( openvdb )
 	openvdb_abi_5? ( openvdb )
 	openvdb_abi_6? ( openvdb )
@@ -81,7 +86,10 @@ RDEPEND="${PYTHON_DEPS}
 		dev-libs/libspnav
 	)
 	nls? ( virtual/libiconv )
-	oidn? ( media-libs/oidn )
+	oidn? (
+		media-libs/oidn
+		dev-cpp/tbb
+	)
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
 	openimageio? ( media-libs/openimageio:= )
@@ -225,7 +233,7 @@ src_configure() {
 		-DWITH_DOC_MANPAGE=$(usex man)
 		-DWITH_MEM_JEMALLOC=$(usex jemalloc)
 		-DWITH_MEM_VALGRIND=$(usex valgrind)
-		-DWITH_USD=$(usex usd)
+		-DWITH_TBB=$(usex tbb)
 	)
 	cmake-utils_src_configure
 }
