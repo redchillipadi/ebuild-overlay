@@ -123,11 +123,11 @@
 		<flag name="system-numpy">
 			Use the system numpy implementation rather than a local copy.
 		</flag>
+		<flag name="tbb">
+			Use threading building blocks library from <pkg>dev-cpp/tbb</pkg>.
+		</flag>
 		<flag name="test" restrict="&gt;=media-gfx/blender-2.77">
 			Build the provided unit tests.
-		</flag>
-		<flag name="usd" restrict="&gt;=media-gfx/blender-2.82">
-			Enable Universal Scene Description support.
 		</flag>
 		<flag name="valgrind" restrict="&gt;=media-gfx/blender-2.77">
 			Add support for memory debugging using
