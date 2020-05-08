@@ -99,7 +99,9 @@ RDEPEND="${PYTHON_DEPS}
 	sdl? ( media-libs/libsdl2[sound,joystick] )
 	sndfile? ( media-libs/libsndfile )
 	tiff? ( media-libs/tiff:0 )
-	valgrind? ( dev-util/valgrind )"
+	valgrind? ( dev-util/valgrind )
+	usd? ( media-libs/USD )
+"
 
 DEPEND="${RDEPEND}
 	dev-cpp/eigen

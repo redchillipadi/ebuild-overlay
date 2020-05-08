@@ -3,29 +3,35 @@
 
 EAPI=7
 
-inherit cmake-utils
+PYTHON_COMPAT=( python3_{7,8} )
 
-PYTHON_COMPAT=( python{ 3_{6, 7, 8} )
+inherit cmake-utils python-single-r1 flag-o-matic
 
-DESCRIPTION="Universal Scene Description library"
+DESCRIPTION="Universal Scene Description"
 HOMEPAGE="https://graphics.pixar.com/usd/docs/index.html"
-SRC_URI="https://github.com/PixarAnimationStudios/USD/archive/v${PV}.zip"
-
+SRC_URI="https://github.com/PixarAnimationStudios/${PN}/archive/v${PV}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="doc python imaging usdview glew openexr openimageio color-management osl ptex embree alembic draco test jemalloc"
+KEYWORDS="amd64"
+IUSE="doc python imaging usdview glew openexr openimageio color-management osl ptex embree alembic hdf5 draco test jemalloc"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	usdview? ( python )
 	openimageio? ( imaging )
 	color-management? ( imaging )
 	embree? ( imaging )
+	hdf5? ( alembic )
+	test? ( python )
 "
 
-DEPEND="
-	dev-libs/boost[python]
+RDEPEND="
 	dev-cpp/tbb
+	python? (
+		${PYTHON_DEPS}
+		$(python_gen_cond_dep '
+			dev-libs/boost:=[python,${PYTHON_MULTI_USEDEP}]
+		')
+	)
 	imaging? ( >=media-libs/opensubdiv-3.4.3 )
 	glew? ( >=media-libs/glew-2.0.0 )
 	openexr? ( media-libs/openexr )
@@ -35,7 +41,8 @@ DEPEND="
 	ptex? ( media-libs/ptex )
 	doc? ( app-doc/doxygen[dot] )
 	embree? ( media-libs/embree )
-	alembic? ( media-libs/alembic )
+	alembic? ( media-gfx/alembic )
+	hdf5? ( media-gfx/alembic[hdf5] )
 	draco? ( media-libs/draco )
 	jemalloc? ( dev-libs/jemalloc )
 "
@@ -45,70 +52,41 @@ DEPEND="
 #		>=dev-python/pyopengl-3.1.5[${PYTHON_USEDEP}]
 #	)
 
-RDEPEND="${DEPEND}"
-BDEPEND=""
+DEPEND="${RDEPEND}
+	virtual/pkgconfig"
 
+CMAKE_BUILD_TYPE=Release
+
+pkg_setup() {
+	use python && python-single-r1_pkg_setup
+}
 
 src_configure() {
-        local mycmakeargs=(
-		-DPXR_ENABLE_PYTHON_SUPPORT=$(usex python)
-		-DPXR_USE_PYTHON_3=ON
-		-DPXR_ENABLE_OSL_SUPPORT=$(usex osl)
-		-DPXR_BUILD_DOCUMENTATION=$(usex doc)
-		-DPXR_BUILD_IMAGING=$(usex imaging)
-		-DPXR_ENABLE_PTEX_SUPPORT=$(usex ptex)
-		-DPXR_BUILD_USD_IMAGING=$(usex usdview)
-		-DPXR_BUILD_OPENIMAGEIO_PLUGIN=$(usex openimageio)
-		-DPXR_BUILD_OPENCOLORIO_PLUGIN=$(usex color-management)
-		-DPXR_BUILD_EMBREE_PLUGIN=$(usex embree)
+	default
+	#eapply "${FILESDIR}"/usd.diff
+	local mycmakeargs=(
+		-DBUILD_SHARED_LIBS=ON
+		-DCMAKE_INSTALL_PREFIX=/opt/usd
 		-DPXR_BUILD_ALEMBIC_PLUGIN=$(usex alembic)
+		-DPXR_BUILD_DOCUMENTATION=$(usex doc)
 		-DPXR_BUILD_DRACO_PLUGIN=$(usex draco)
+		-DPXR_BUILD_EMBREE_PLUGIN=$(usex embree)
+		-DPXR_BUILD_IMAGING=$(usex imaging)
+		-DPXR_BUILD_MONOLITHIC=ON
+		-DPXR_BUILD_OPENCOLORIO_PLUGIN=$(usex color-management)
+		-DPXR_BUILD_OPENIMAGEIO_PLUGIN=$(usex openimageio)
 		-DPXR_BUILD_TESTS=$(usex test)
-		-DPXR_INSTALL_LOCATION=/opt/pxr
-		-DPXR_LIB_PREFIX=/opt/pxr/lib
+		-DPXR_BUILD_USD_IMAGING=$(usex usdview)
+		-DPXR_BUILD_USD_TOOLS=OFF
+		-DPXR_ENABLE_HDF5_SUPPORT=$(usex hdf5)
+		-DPXR_ENABLE_OSL_SUPPORT=$(usex osl)
+		-DPXR_ENABLE_PTEX_SUPPORT=$(usex ptex)
+		-DPXR_ENABLE_PYTHON_SUPPORT=$(usex python)
+		-DPXR_SET_INTERNAL_NAMESPACE=usdBlender
+		-DPXR_USE_PYTHON_3=ON
 	)
+	#-DCMAKE_DEBUG_POSTFIX=_d - not used
+
 	#-DPXR_MALLOC_LIBRARY:path=/usr/lib64/libjemalloc.so
 	cmake-utils_src_configure
 }
-
-#src_install() {
-#	#cmake-utils_src_install
-#
-#	#rm -rf "${D}/usr/cmake"
-#	#rm -rf "${D}/usr/plugin"
-#	#rm "${D}/usr/lib/*.so"
-#	#rm -rf "${D}/usr/pxrConfig.cmake"
-#
-#	doheader -r "${S}_build/include/pxr"
-#
-#	dolib.so "${S}_build/pxr/base/arch/libarch.so"
-#	dolib.so "${S}_build/pxr/base/gf/libgf.so"
-#	dolib.so "${S}_build/pxr/base/js/libjs.so"
-#	dolib.so "${S}_build/pxr/base/plug/libplug.so"
-#	dolib.so "${S}_build/pxr/base/tf/libtf.so"
-#	dolib.so "${S}_build/pxr/base/trace/libtrace.so"
-#	dolib.so "${S}_build/pxr/base/vt/libvt.so"
-#	dolib.so "${S}_build/pxr/base/work/libwork.so"
-#	dolib.so "${S}_build/pxr/usd/ar/libar.so"
-#	dolib.so "${S}_build/pxr/usd/kind/libkind.so"
-#	dolib.so "${S}_build/pxr/usd/ndr/libndr.so"
-#	dolib.so "${S}_build/pxr/usd/pcp/libpcp.so"
-#	dolib.so "${S}_build/pxr/usd/sdf/libsdf.so"
-#	dolib.so "${S}_build/pxr/usd/sdr/libsdr.so"
-#	dolib.so "${S}_build/pxr/usd/usd/libusd.so"
-#	dolib.so "${S}_build/pxr/usd/usdGeom/libusdGeom.so"
-#	dolib.so "${S}_build/pxr/usd/usdHydra/libusdHydra.so"
-#	dolib.so "${S}_build/pxr/usd/usdLux/libusdLux.so"
-#	dolib.so "${S}_build/pxr/usd/usdMedia/libusdMedia.so"
-#	dolib.so "${S}_build/pxr/usd/usdRender/libusdRender.so"
-#	dolib.so "${S}_build/pxr/usd/usdRi/libusdRi.so"
-#	dolib.so "${S}_build/pxr/usd/usdShade/libusdShade.so"
-#	dolib.so "${S}_build/pxr/usd/usdSkel/libusdSkel.so"
-#	dolib.so "${S}_build/pxr/usd/usdUI/libusdUI.so"
-#	dolib.so "${S}_build/pxr/usd/usdUtils/libusdUtils.so"
-#	dolib.so "${S}_build/pxr/usd/usdVol/libusdVol.so"
-#
-#	dobin "${S}_build/pxr/usd/bin/sdfdump/sdfdump"
-#	dobin "${S}_build/pxr/usd/bin/sdffilter/sdffilter"
-#}
-
