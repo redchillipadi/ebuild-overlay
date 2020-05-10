@@ -17,7 +17,9 @@ IUSE="doc python imaging usdview glew openexr openimageio color-management osl p
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	usdview? ( python )
-	openimageio? ( imaging )
+	openimageio? (
+		imaging
+	)
 	color-management? ( imaging )
 	embree? ( imaging )
 	hdf5? ( alembic )
@@ -40,9 +42,12 @@ RDEPEND="
 	osl? ( media-libs/osl )
 	ptex? ( media-libs/ptex )
 	doc? ( app-doc/doxygen[dot] )
-	embree? ( media-libs/embree )
+	embree? ( =media-libs/embree-2.16.4 )
 	alembic? ( media-gfx/alembic )
-	hdf5? ( media-gfx/alembic[hdf5] )
+	hdf5? (
+		media-gfx/alembic[hdf5]
+		sci-libs/hdf5[hl]
+	)
 	draco? ( media-libs/draco )
 	jemalloc? ( dev-libs/jemalloc )
 "
@@ -57,13 +62,19 @@ DEPEND="${RDEPEND}
 
 CMAKE_BUILD_TYPE=Release
 
+
+PATCHES=(
+	"${FILESDIR}/${P}-fix-cmake-openexr-multilib.patch"
+	"${FILESDIR}/${P}-fix-cmake-boost-python.patch"
+)
+
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
 }
 
 src_configure() {
 	default
-	#eapply "${FILESDIR}"/usd.diff
+
 	local mycmakeargs=(
 		-DBUILD_SHARED_LIBS=ON
 		-DCMAKE_INSTALL_PREFIX=/opt/usd
@@ -85,8 +96,10 @@ src_configure() {
 		-DPXR_SET_INTERNAL_NAMESPACE=usdBlender
 		-DPXR_USE_PYTHON_3=ON
 	)
-	#-DCMAKE_DEBUG_POSTFIX=_d - not used
 
-	#-DPXR_MALLOC_LIBRARY:path=/usr/lib64/libjemalloc.so
+	if use jemalloc; then
+		mycmakeargs+=( -DPXR_MALLOC_LIBRARY:path=/usr/lib64/libjemalloc.so )
+	fi
+
 	cmake-utils_src_configure
 }
