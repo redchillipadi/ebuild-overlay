@@ -4,7 +4,8 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{6,7} )
-inherit cmake python-single-r1
+OPENVDB_COMPAT=( 5 6 7 )
+inherit cmake python-single-r1 openvdb
 
 DESCRIPTION="A library for reading and writing images"
 HOMEPAGE="https://sites.google.com/site/openimageio/ https://github.com/OpenImageIO"
@@ -20,20 +21,18 @@ X86_CPU_FEATURES=(
 )
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
-IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
+IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}
+	${OPENVDB_USE_FLAGS}
+"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	openvdb? ( || ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
-	openvdb_abi_5? ( openvdb )
-	openvdb_abi_6? ( openvdb )
-	openvdb_abi_7? ( openvdb )
+	openvdb? ( ${OPENVDB_REQUIRED_USE} )
 "
 
 RESTRICT="test" # bug 431412
 
-BDEPEND="
-	doc? ( app-doc/doxygen[latex] )
-"
+BDEPEND="doc? ( app-doc/doxygen[latex] )"
+
 RDEPEND="
 	dev-libs/boost:=
 	dev-libs/pugixml:=
@@ -59,7 +58,7 @@ RDEPEND="
 		virtual/opengl
 	)
 	openvdb? (
-		>=media-gfx/openvdb-5.2.0:=[-openvdb_abi_3,-openvdb_abi_4,openvdb_abi_5=,openvdb_abi_6=,openvdb_abi_7=]
+		>=media-gfx/openvdb-5.2.0:=[${OPENVDB_SINGLE_USEDEP}]
 		dev-cpp/tbb
 	)
 	ptex? ( media-libs/ptex:= )
@@ -89,7 +88,10 @@ DOCS=( CHANGES.md CREDITS.md README.md src/doc/${PN}.pdf )
 
 S="${WORKDIR}/oiio-Release-${PV}"
 
-PATCHES=( "${FILESDIR}/${P}-fix-oiiotool-location.patch" )
+PATCHES=(
+	"${FILESDIR}/${P}-fix-oiiotool-location.patch"
+	"${FILESDIR}/${P}-fix-documentation.patch"
+)
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
@@ -121,19 +123,13 @@ src_configure() {
 	# If no CPU SIMDs were used, completely disable them
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
-	openvdb_version=0
-	if use openvdb_abi_5; then
-		openvdb_version=5
-	elif use openvdb_abi_6; then
-		openvdb_version=6
-	elif use openvdb_abi_7; then
-		openvdb_version=7
+	if use openvdb; then
+		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
 	fi
-	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 
 	local mycmakeargs=(
 		-DBUILD_DOCS=$(usex doc)
+		-DINSTALL_DOCS=$(usex doc)
 		-DOIIO_BUILD_TESTS=OFF # as they are RESTRICTed
 		-DSTOP_ON_WARNING=OFF
 		-DUSE_EXTERNAL_PUGIXML=ON

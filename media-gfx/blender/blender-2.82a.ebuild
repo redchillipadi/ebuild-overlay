@@ -4,9 +4,10 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_7 )
+OPENVDB_COMPAT=( 4 5 6 7 )
 
 inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
-	pax-utils python-single-r1 toolchain-funcs
+	pax-utils python-single-r1 toolchain-funcs openvdb
 
 DESCRIPTION="3D Creation/Animation/Publishing System"
 HOMEPAGE="https://www.blender.org"
@@ -24,7 +25,7 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
-	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
+	openvdb ${OPENVDB_USE_FLAGS} \
 	osl sdl sndfile standalone test tiff valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
@@ -36,14 +37,9 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	embree? ( cycles )
 	oidn? ( tbb )
 	opencl? ( cycles )
-	openvdb? (
-		|| ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 )
+	openvdb? ( ${OPENVDB_REQUIRED_USE}
 		tbb
 	)
-	openvdb_abi_4? ( openvdb )
-	openvdb_abi_5? ( openvdb )
-	openvdb_abi_6? ( openvdb )
-	openvdb_abi_7? ( openvdb )
 	osl? ( cycles llvm )
 	standalone? ( cycles )"
 
@@ -99,7 +95,7 @@ RDEPEND="${PYTHON_DEPS}
 	)
 	opensubdiv? ( >=media-libs/opensubdiv-3.4.0:=[cuda=,opencl=] )
 	openvdb? (
-		>=media-gfx/openvdb-7.0.0:=[-openvdb_abi_3,openvdb_abi_4=,openvdb_abi_5=,openvdb_abi_6=,openvdb_abi_7=]
+		>=media-gfx/openvdb-7.0.0:=[${OPENVDB_SINGLE_USEDEP}]
 		dev-cpp/tbb
 		dev-libs/c-blosc
 	)
@@ -165,19 +161,7 @@ src_configure() {
 	# shadows, see bug #276338 for reference
 	append-flags -funsigned-char
 	append-lfs-flags
-
-	openvdb_version=0
-	if use openvdb_abi_4; then
-		openvdb_version=4
-	elif use openvdb_abi_5; then
-		openvdb_version=5
-	elif use openvdb_abi_6; then
-		openvdb_version=6
-	elif use openvdb_abi_7; then
-		openvdb_version=7
-	fi
-	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
 
 	local mycmakeargs=(
 		-DPYTHON_VERSION="${EPYTHON/python/}"
