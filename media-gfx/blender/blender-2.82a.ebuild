@@ -26,7 +26,7 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
 	openvdb ${OPENVDB_USE_FLAGS} \
-	osl sdl sndfile standalone test tiff valgrind"
+	osl sdl sndfile standalone test tiff valgrind usd"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
@@ -218,6 +218,7 @@ src_configure() {
 		-DWITH_MEM_JEMALLOC=$(usex jemalloc)
 		-DWITH_MEM_VALGRIND=$(usex valgrind)
 		-DWITH_TBB=$(usex tbb)
+		-DWITH_USD=$(usex usd)
 	)
 	cmake-utils_src_configure
 }

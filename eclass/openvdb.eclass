@@ -183,14 +183,12 @@ _openvdb_set_globals() {
 	local flags=()
 	local required=()
 	for i in "${_OPENVDB_ALL_ABI[@]}"; do
-		if has "${i}" "${OPENVDB_COMPAT[@]}"; then
-			if [ "${i}" = "${OPENVDB_ABI_VERSION[0]}" ]; then
-				flags+=( "+openvdb_abi_${i}" )
-			else
-				flags+=( "-openvdb_abi_${i}" )
-			fi
-			required+=( "openvdb_abi_${i}" )
+		if [ "${i}" = "${OPENVDB_ABI_VERSION[0]}" ]; then
+			flags+=( "+openvdb_abi_${i}" )
+		else
+			flags+=( "-openvdb_abi_${i}" )
 		fi
+		required+=( "openvdb_abi_${i}" )
 	done
 
 	OPENVDB_USE_FLAGS="${flags[*]}"
