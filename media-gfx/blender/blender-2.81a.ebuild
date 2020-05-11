@@ -22,7 +22,7 @@ LICENSE="|| ( GPL-2 BL )"
 KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
 	alembic collada color-management cuda cycles debug doc \
-	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
+	draco embree ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
 	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
 	osl sdl sndfile standalone test tiff valgrind"
@@ -65,7 +65,6 @@ RDEPEND="${PYTHON_DEPS}
 	draco? ( media-libs/draco )
 	embree? ( media-libs/embree[static-libs,raymask,-tbb] )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
-	libav? ( media-video/libav:=[x264,mp3,encode,theora,jpeg2k?] )
 	fftw? ( sci-libs/fftw:3.0= )
 	!headless? (
 		x11-libs/libX11
