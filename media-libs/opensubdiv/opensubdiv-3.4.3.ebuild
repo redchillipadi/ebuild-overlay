@@ -18,7 +18,7 @@ SRC_URI="https://github.com/PixarAnimationStudios/OpenSubdiv/archive/v${MY_PV}.t
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cuda doc opencl openmp ptex tbb"
+IUSE="cuda doc examples opencl openmp ptex tbb test tutorials"
 
 RDEPEND="
 	${PYTHON_DEPENDS}
@@ -46,6 +46,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-3.3.0-use-gnuinstalldirs.patch"
 	"${FILESDIR}/${PN}-3.3.0-add-CUDA9-compatibility.patch"
 	"${FILESDIR}/${PN}-3.4.0-0001-documentation-CMakeLists.txt-force-python2.patch"
+	"${FILESDIR}/${P}-install-tutorials-into-bin.patch"
 )
 
 pkg_pretend() {
@@ -62,21 +63,22 @@ pkg_setup() {
 }
 
 src_configure() {
+	# GLTESTS are disabled as portage is unable to open a display during test phase
 	local mycmakeargs=(
 		-DGLEW_LOCATION="${EPREFIX}/usr/$(get_libdir)"
 		-DGLFW_LOCATION="${EPREFIX}/usr/$(get_libdir)"
 		-DNO_CLEW=ON
 		-DNO_CUDA=$(usex !cuda)
 		-DNO_DOC=$(usex !doc)
-		-DNO_EXAMPLES=ON # FIXME: add a USE flag to install them?
-		-DNO_GLTESTS=ON # FIXME: test and allow this
+		-DNO_EXAMPLES=$(usex !examples)
+		-DNO_GLTESTS=ON
 		-DNO_OMP=$(usex !openmp)
 		-DNO_OPENCL=$(usex !opencl)
 		-DNO_PTEX=$(usex !ptex)
-		-DNO_REGRESSION=ON # FIXME: They don't work with certain settings
+		-DNO_REGRESSION=$(usex !test)
 		-DNO_TBB=$(usex !tbb)
-		-DNO_TESTS=ON # FIXME: test and allow this
-		-DNO_TUTORIALS=ON # FIXME: They install illegally. Need to find a better solution.
+		-DNO_TESTS=$(usex !test)
+		-DNO_TUTORIALS=$(usex !tutorials)
 	)
 
 	# fails with building cuda kernels when using multiple jobs
