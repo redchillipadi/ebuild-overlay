@@ -25,8 +25,13 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
+<<<<<<< HEAD
+	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
+	osl sdl sndfile standalone test tiff valgrind"
+=======
 	openvdb ${OPENVDB_USE_FLAGS} \
 	osl sdl sndfile standalone test tiff valgrind usd"
+>>>>>>> eclass
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
@@ -37,9 +42,20 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	embree? ( cycles )
 	oidn? ( tbb )
 	opencl? ( cycles )
+<<<<<<< HEAD
+	openvdb? (
+		|| ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 )
+		tbb
+	)
+	openvdb_abi_4? ( openvdb )
+	openvdb_abi_5? ( openvdb )
+	openvdb_abi_6? ( openvdb )
+	openvdb_abi_7? ( openvdb )
+=======
 	openvdb? ( ${OPENVDB_REQUIRED_USE}
 		tbb
 	)
+>>>>>>> eclass
 	osl? ( cycles llvm )
 	standalone? ( cycles )"
 
@@ -217,7 +233,10 @@ src_configure() {
 		-DWITH_MEM_JEMALLOC=$(usex jemalloc)
 		-DWITH_MEM_VALGRIND=$(usex valgrind)
 		-DWITH_TBB=$(usex tbb)
+<<<<<<< HEAD
+=======
 		-DWITH_USD=$(usex usd)
+>>>>>>> eclass
 	)
 	cmake-utils_src_configure
 }

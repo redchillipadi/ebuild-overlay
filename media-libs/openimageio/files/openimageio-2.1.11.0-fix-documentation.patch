@@ -1,0 +1,18 @@
+diff -Naur a/src/doc/Makefile b/src/doc/Makefile
+--- a/src/doc/Makefile	2020-05-09 09:26:32.286431098 +1000
++++ b/src/doc/Makefile	2020-05-09 09:28:15.486736918 +1000
+@@ -1,4 +1,4 @@
+-.PHONY: figures
++.PHONY: figures index
+ 
+ include ../make/detectplatform.mk
+ BUILDDIR := ../../build/${platform}
+@@ -18,7 +18,7 @@
+ 
+ 
+ # document making rule: use pdflatex
+-openimageio.pdf: *.tex *.aux figures.turd
++openimageio.pdf: *.tex index figures.turd
+ 	${PDFLATEX} openimageio.tex
+ 
+ 

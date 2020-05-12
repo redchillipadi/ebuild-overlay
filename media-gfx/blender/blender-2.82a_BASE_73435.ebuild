@@ -4,10 +4,9 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_7 )
-OPENVDB_COMPAT=( 4 5 6 7 )
 
 inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
-	pax-utils python-single-r1 toolchain-funcs openvdb
+	pax-utils python-single-r1 toolchain-funcs
 
 DESCRIPTION="3D Creation/Animation/Publishing System"
 HOMEPAGE="https://www.blender.org"
@@ -21,25 +20,25 @@ MY_PV="$(ver_cut 1-2)"
 SLOT="0"
 LICENSE="|| ( GPL-2 BL )"
 KEYWORDS="~amd64 ~x86"
-IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
+IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy \
 	alembic collada color-management cuda cycles debug doc \
-	draco embree ffmpeg fftw headless jack jemalloc jpeg2k llvm \
+	draco embree ffmpeg fftw headless jack jemalloc jpeg2k libav llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
-	openvdb ${OPENVDB_USE_FLAGS} \
-	osl sdl sndfile standalone test tiff valgrind usd"
+	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
+	osl sdl sndfile standalone test tiff usd valgrind"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
 	cuda? ( cycles )
 	cycles? ( openexr tiff openimageio )
 	draco? ( !system-python !system-numpy )
-	elbeem? ( tbb )
 	embree? ( cycles )
-	oidn? ( tbb )
 	opencl? ( cycles )
-	openvdb? ( ${OPENVDB_REQUIRED_USE}
-		tbb
-	)
+	openvdb? ( || ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
+	openvdb_abi_4? ( openvdb )
+	openvdb_abi_5? ( openvdb )
+	openvdb_abi_6? ( openvdb )
+	openvdb_abi_7? ( openvdb )
 	osl? ( cycles llvm )
 	standalone? ( cycles )"
 
@@ -66,6 +65,7 @@ RDEPEND="${PYTHON_DEPS}
 	draco? ( media-libs/draco )
 	embree? ( media-libs/embree[static-libs,raymask,-tbb] )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
+	libav? ( media-video/libav:=[x264,mp3,encode,theora,jpeg2k?] )
 	fftw? ( sci-libs/fftw:3.0= )
 	!headless? (
 		x11-libs/libX11
@@ -81,10 +81,7 @@ RDEPEND="${PYTHON_DEPS}
 		dev-libs/libspnav
 	)
 	nls? ( virtual/libiconv )
-	oidn? (
-		media-libs/oidn
-		dev-cpp/tbb
-	)
+	oidn? ( media-libs/oidn )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
 	openimageio? ( media-libs/openimageio:= )
@@ -94,7 +91,7 @@ RDEPEND="${PYTHON_DEPS}
 	)
 	opensubdiv? ( >=media-libs/opensubdiv-3.4.0:=[cuda=,opencl=] )
 	openvdb? (
-		>=media-gfx/openvdb-7.0.0:=[${OPENVDB_SINGLE_USEDEP}]
+		>=media-gfx/openvdb-7.0.0:=[-openvdb_abi_3,openvdb_abi_4=,openvdb_abi_5=,openvdb_abi_6=,openvdb_abi_7=]
 		dev-cpp/tbb
 		dev-libs/c-blosc
 	)
@@ -102,9 +99,7 @@ RDEPEND="${PYTHON_DEPS}
 	sdl? ( media-libs/libsdl2[sound,joystick] )
 	sndfile? ( media-libs/libsndfile )
 	tiff? ( media-libs/tiff:0 )
-	valgrind? ( dev-util/valgrind )
-	usd? ( media-libs/USD )
-"
+	valgrind? ( dev-util/valgrind )"
 
 DEPEND="${RDEPEND}
 	dev-cpp/eigen
@@ -160,7 +155,19 @@ src_configure() {
 	# shadows, see bug #276338 for reference
 	append-flags -funsigned-char
 	append-lfs-flags
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
+
+	openvdb_version=0
+	if use openvdb_abi_4; then
+		openvdb_version=4
+	elif use openvdb_abi_5; then
+		openvdb_version=5
+	elif use openvdb_abi_6; then
+		openvdb_version=6
+	elif use openvdb_abi_7; then
+		openvdb_version=7
+	fi
+	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
 
 	local mycmakeargs=(
 		-DPYTHON_VERSION="${EPYTHON/python/}"
@@ -216,7 +223,6 @@ src_configure() {
 		-DWITH_DOC_MANPAGE=$(usex man)
 		-DWITH_MEM_JEMALLOC=$(usex jemalloc)
 		-DWITH_MEM_VALGRIND=$(usex valgrind)
-		-DWITH_TBB=$(usex tbb)
 		-DWITH_USD=$(usex usd)
 	)
 	cmake-utils_src_configure

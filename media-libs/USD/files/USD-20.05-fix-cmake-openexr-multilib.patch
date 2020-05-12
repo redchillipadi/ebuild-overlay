@@ -1,0 +1,65 @@
+diff -Naur a/cmake/modules/FindOpenEXR.cmake b/cmake/modules/FindOpenEXR.cmake
+--- a/cmake/modules/FindOpenEXR.cmake	2020-05-10 15:06:52.961746671 +1000
++++ b/cmake/modules/FindOpenEXR.cmake	2020-05-10 15:08:48.422048555 +1000
+@@ -23,6 +23,15 @@
+ #
+ 
+ find_path(OPENEXR_INCLUDE_DIR
++    OpenEXR/OpenEXRConfig.h
++PATHS
++    "/usr/include/x86_64-pc-linux-gnu"
++DOC
++    "OpenEXR headers path"
++NO_DEFAULT_PATH
++)
++
++find_path(OPENEXR_INCLUDE_DIR
+     OpenEXR/half.h
+ HINTS
+     "${OPENEXR_LOCATION}"
+@@ -33,13 +41,16 @@
+     "OpenEXR headers path"
+ )
+ 
++message(STATUS "Include dir is ${OPENEXR_INCLUDE_DIR}")
+ if(OPENEXR_INCLUDE_DIR)
+   set(openexr_config_file "${OPENEXR_INCLUDE_DIR}/OpenEXR/OpenEXRConfig.h")
+   if(EXISTS ${openexr_config_file})
++      message(STATUS "Config file is ${openexr_config_file}")
+       file(STRINGS
+            ${openexr_config_file}
+            TMP
+            REGEX "#define OPENEXR_VERSION_STRING.*$")
++      message(STATUS "TMP is ${TMP}")
+       string(REGEX MATCHALL "[0-9.]+" OPENEXR_VERSION ${TMP})
+ 
+       file(STRINGS
+@@ -56,6 +67,17 @@
+   endif()
+ endif()
+ 
++find_path(OPENEXR_MAIN_INCLUDE_DIR
++    OpenEXR/half.h
++HINTS
++    "${OPENEXR_LOCATION}"
++    "$ENV{OPENEXR_LOCATION}"
++PATH_SUFFIXES
++    include/
++DOC
++    "OpenEXR headers path"
++)
++
+ foreach(OPENEXR_LIB
+     Half
+     Iex
+@@ -85,8 +107,8 @@
+ endforeach(OPENEXR_LIB)
+ 
+ # So #include <half.h> works
+-list(APPEND OPENEXR_INCLUDE_DIRS ${OPENEXR_INCLUDE_DIR})
+-list(APPEND OPENEXR_INCLUDE_DIRS ${OPENEXR_INCLUDE_DIR}/OpenEXR)
++list(APPEND OPENEXR_INCLUDE_DIRS ${OPENEXR_MAIN_INCLUDE_DIR})
++list(APPEND OPENEXR_INCLUDE_DIRS ${OPENEXR_MAIN_INCLUDE_DIR}/OpenEXR)
+ 
+ include(FindPackageHandleStandardArgs)
+ find_package_handle_standard_args(OpenEXR
