@@ -37,7 +37,7 @@ RDEPEND="
 	imaging? ( >=media-libs/opensubdiv-3.4.3 )
 	glew? ( >=media-libs/glew-2.0.0 )
 	openexr? ( media-libs/openexr )
-	openimageio? ( media-libs/openimageio )
+	openimageio? ( media-libs/openimageio:= )
 	color-management? ( media-libs/opencolorio )
 	osl? ( media-libs/osl )
 	ptex? ( media-libs/ptex )

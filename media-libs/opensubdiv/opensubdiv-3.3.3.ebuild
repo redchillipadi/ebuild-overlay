@@ -2,8 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+PYTHON_COMPAT=( python2_7 )
 
-inherit cmake-utils toolchain-funcs eapi7-ver
+inherit cmake-utils toolchain-funcs eapi7-ver python-utils-r1
 
 MY_PV="$(ver_rs "1-3" '_')"
 DESCRIPTION="An Open-Source subdivision surface library"
