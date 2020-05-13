@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -6,7 +6,7 @@ EAPI=7
 CMAKE_MAKEFILE_GENERATOR=emake
 PYTHON_COMPAT=( python2_7 )
 
-inherit cmake-utils python-utils-r1 toolchain-funcs
+inherit cmake python-utils-r1 toolchain-funcs
 
 MY_PV="$(ver_rs "1-3" '_')"
 DESCRIPTION="An Open-Source subdivision surface library"
@@ -27,6 +27,7 @@ RDEPEND="
 	cuda? ( dev-util/nvidia-cuda-toolkit:* )
 	opencl? ( virtual/opencl )
 	ptex? ( media-libs/ptex )
+	x11-libs/libXinerama
 "
 DEPEND="
 	${RDEPEND}
