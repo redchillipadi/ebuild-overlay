@@ -6,7 +6,7 @@ EAPI=7
 CMAKE_MAKEFILE_GENERATOR=emake
 PYTHON_COMPAT=( python2_7 )
 
-inherit cmake-utils python-utils-r1 toolchain-funcs
+inherit cmake python-utils-r1 toolchain-funcs
 
 MY_PV="$(ver_rs "1-3" '_')"
 DESCRIPTION="An Open-Source subdivision surface library"
@@ -17,7 +17,7 @@ SRC_URI="https://github.com/PixarAnimationStudios/OpenSubdiv/archive/v${MY_PV}.t
 # See for example CMakeLists.txt for details.
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 ~x86"
 IUSE="cuda doc examples opencl openmp ptex tbb test tutorials"
 
 RDEPEND="
@@ -86,5 +86,5 @@ src_configure() {
 
 	# fails with building cuda kernels when using multiple jobs
 	export MAKEOPTS="-j1"
-	cmake-utils_src_configure
+	cmake_src_configure
 }
