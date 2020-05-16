@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python{2_7,3_5,3_6,3_7} )
 OPENVDB_COMPAT=( 5 6 7 )
 CMAKE_MAKEFILE_GENERATOR="emake"
 
-inherit cmake-utils flag-o-matic python-single-r1 openvdb
+inherit cmake flag-o-matic python-single-r1 openvdb
 
 DESCRIPTION="Libs for the efficient manipulation of volumetric data"
 HOMEPAGE="http://www.openvdb.org"
@@ -78,5 +78,5 @@ src_configure() {
 	use python && mycmakeargs+=( -DPYOPENVDB_INSTALL_DIRECTORY="$(python_get_sitedir)" )
 	use test && mycmakeargs+=( -DCPPUNIT_LOCATION="${myprefix}" )
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
