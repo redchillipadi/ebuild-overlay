@@ -63,7 +63,7 @@
 # - inherit this eclass.
 # - list the ABI supported by the package in OPENVDB_COMPAT.
 # - include OPENVDB_SINGLE_USEDEP in RDEPEND
-# - pass the openvdb abi version to the package build system
+# - pass the OPENVDB_ABI_VERSION to the package build system
 #
 # @CODE
 # inherit openvdb
@@ -72,7 +72,7 @@
 # RDEPEND="openvdb? ( media-gfx/openvdb[${OPENVDB_SINGLE_USEDEP}] )"
 #
 # src_configure() {
-#   append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI}"
+#   append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
 #   ...
 #   cmake-utils_src_configure
 # }
@@ -124,7 +124,7 @@ EXPORT_FUNCTIONS pkg_setup
 # by adding it to REQUIRED_USE. It is not required in the client
 # packages
 #
-# Example use (in the openvdb ebuild):
+# Example use:
 # @CODE
 # REQUIRED_USE="${OPENVDB_REQUIRED_USE}"
 # @CODE
@@ -132,6 +132,25 @@ EXPORT_FUNCTIONS pkg_setup
 # Example value:
 # @CODE
 # ^^ ( openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7)
+# @CODE
+
+# @ECLASS-VARIABLE: OPENVDB_ABI_VERSION
+# @DESCRIPTION:
+# This is an eclass generated variable which returns the ABI version
+# selected in OPENVDB_ABI, allowing it to be passed to the build system
+#
+# Example use:
+# @CODE
+# src_configure() {
+#   append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
+#   ...
+#   cmake-utils_src_configure
+# }
+# @CODE
+#
+# Example value (when OPENVDB_ABI="5"):
+# @CODE
+# 5
 # @CODE
 
 # @ECLASS-VARIABLE: _OPENVDB_ALL_ABI
@@ -158,17 +177,36 @@ _openvdb_set_globals() {
 		die "OPENVDB_ABI must be set to a single ABI version from ${_OPENVDB_ALL_ABI[*]}"
 	fi
 
-	if ! has "${OPENVDB_ABI[0]}" "${_OPENVDB_ALL_ABI[@]}"; then
-		die "OPENVDB_ABI ${OPENVDB_ABI[0]} is not one of ${_OPENVDB_ALL_ABI[*]}"
+	unset openvdb_version
+	openvdb_version=5
+	#for i in "${_OPENVDB_ABI[@]}"; do
+	#	if has "openvdb_abi_${i}" "${USE}"; then
+	#		if [[ ${openvdb_version} ]]; then
+	#			die "More than one openvdb_abi_X USE flag set."
+	#		fi
+	#	fi
+	#done
+	if [[ ! ${openvdb_version} ]]; then
+		die "No OpenVDB ABI Version selected for the system. Please set OPENVDB_ABI."
 	fi
 
-	if ! has "${OPENVDB_ABI[0]}" "${OPENVDB_COMPAT[@]}"; then
-		die "This package does not support OpenVDB ABI ${OPENVDB_ABI[0]} in OPENVDB_COMPAT"
+	if ! has "${openvdb_version}" "${_OPENVDB_ALL_ABI[@]}"; then
+		die "OPENVDB_ABI ${openvdb_version} is not one of ${_OPENVDB_ALL_ABI[*]}"
 	fi
 
-	OPENVDB_REQUIRED_USE="^^ ( ${_OPENVDB_ALL_ABI[*]} )"
-	OPENVDB_SINGLE_USEDEP="openvdb_abi_${OPENVDB_ABI[0]}(+)"
-	readonly OPENVDB_REQUIRED_USE OPENVDB_SINGLE_USEDEP
+	if ! has "${openvdb_version}" "${OPENVDB_COMPAT[@]}"; then
+		die "This package does not support OpenVDB ABI ${openvdb_version} in OPENVDB_COMPAT"
+	fi
+
+	local required=()
+	for i in "${_OPENVDB_ABI[@]}"; do
+		required+="openvdb_abi_${i}"
+	done
+
+	OPENVDB_REQUIRED_USE="^^ ( ${required[*]} )"
+	OPENVDB_SINGLE_USEDEP="openvdb_abi_${openvdb_version}(+)"
+	OPENVDB_ABI_VERSION="${openvdb_version}"
+	readonly OPENVDB_REQUIRED_USE OPENVDB_SINGLE_USEDEP OPENVDB_ABI_VERSION
 }
 _openvdb_set_globals
 unset -f _openvdb_set_globals
@@ -180,6 +218,8 @@ if [[ ! ${_OPENVDB} ]]; then
 # Ensure one and only one OpenVDB ABI version is selected
 openvdb_setup() {
 	debug-print-function ${FUNCNAME} "${@}"
+
+	eerror "Setup: OPENVDB_ABI is ${OPENVDB_ABI}"
 
 	unset EOPENVDB
 
@@ -193,7 +233,6 @@ openvdb_setup() {
 				die "More than one ABI in OPENVDB_ABI."
 			fi
 		fi
-
 		einfo "Using OpenVDB ABI ${EOPENVDB} to build"
 	done
 
