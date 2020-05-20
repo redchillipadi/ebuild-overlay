@@ -25,8 +25,7 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
-	openvdb ${OPENVDB_USE_FLAGS} \
-	osl sdl sndfile standalone test tiff valgrind usd"
+	openvdb osl sdl sndfile standalone test tiff valgrind usd"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
@@ -160,7 +159,7 @@ src_configure() {
 	# shadows, see bug #276338 for reference
 	append-flags -funsigned-char
 	append-lfs-flags
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=${OPENVDB_ABI}
 
 	local mycmakeargs=(
 		-DPYTHON_VERSION="${EPYTHON/python/}"

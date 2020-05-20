@@ -21,9 +21,8 @@ X86_CPU_FEATURES=(
 )
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
-IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}
-	${OPENVDB_USE_FLAGS}
-"
+IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
+
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
 	openvdb? ( ${OPENVDB_REQUIRED_USE} )
@@ -124,7 +123,7 @@ src_configure() {
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
 	if use openvdb; then
-		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
+		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI}"
 	fi
 
 	local mycmakeargs=(
