@@ -169,44 +169,34 @@ _openvdb_set_globals() {
 	if ! declare -p OPENVDB_COMPAT &>/dev/null; then
 		die 'OPENVDB_COMPAT not declared.'
 	fi
+
 	if [[ $(declare -p OPENVDB_COMPAT) != "declare -a"* ]]; then
 		die 'OPENVDB_COMPAT must be an array.'
 	fi
 
-	if [[ ${#OPENVDB_ABI[@]} -ne 1 ]]; then
-		die "OPENVDB_ABI must be set to a single ABI version from ${_OPENVDB_ALL_ABI[*]}"
+	local flags=()
+        for i in "${_OPENVDB_ALL_ABI[@]}"; do
+		if has "${i}" "${OPENVDB_COMPAT[@]}"; then
+			flags+=( "openvdb_abi_${i}" )
+		fi
+        done
+
+	if [[ ${#supp[@]} -eq 1 ]]; then
+		IUSE="+${flags[0]}"
+	else
+		IUSE="${flags[*]}"
 	fi
 
-	unset openvdb_version
-	openvdb_version=5
-	#for i in "${_OPENVDB_ABI[@]}"; do
-	#	if has "openvdb_abi_${i}" "${USE}"; then
-	#		if [[ ${openvdb_version} ]]; then
-	#			die "More than one openvdb_abi_X USE flag set."
-	#		fi
-	#	fi
-	#done
-	if [[ ! ${openvdb_version} ]]; then
-		die "No OpenVDB ABI Version selected for the system. Please set OPENVDB_ABI."
+	if [[ ! ${#flags[@]} ]]; then
+		die "No supported OpenVDB ABI in OPENVDB_COMPAT."
 	fi
 
-	if ! has "${openvdb_version}" "${_OPENVDB_ALL_ABI[@]}"; then
-		die "OPENVDB_ABI ${openvdb_version} is not one of ${_OPENVDB_ALL_ABI[*]}"
-	fi
+	local single_flags="${flags[@]/%/(-)?}"
+	local single_usedep=${single_flags// /,}
 
-	if ! has "${openvdb_version}" "${OPENVDB_COMPAT[@]}"; then
-		die "This package does not support OpenVDB ABI ${openvdb_version} in OPENVDB_COMPAT"
-	fi
-
-	local required=()
-	for i in "${_OPENVDB_ABI[@]}"; do
-		required+="openvdb_abi_${i}"
-	done
-
-	OPENVDB_REQUIRED_USE="^^ ( ${required[*]} )"
-	OPENVDB_SINGLE_USEDEP="openvdb_abi_${openvdb_version}(+)"
-	OPENVDB_ABI_VERSION="${openvdb_version}"
-	readonly OPENVDB_REQUIRED_USE OPENVDB_SINGLE_USEDEP OPENVDB_ABI_VERSION
+	OPENVDB_REQUIRED_USE="^^ ( ${flags[*]} )"
+	OPENVDB_SINGLE_USEDEP="${single_usedep}"
+	readonly OPENVDB_REQUIRED_USE OPENVDB_SINGLE_USEDEP
 }
 _openvdb_set_globals
 unset -f _openvdb_set_globals
@@ -219,24 +209,27 @@ if [[ ! ${_OPENVDB} ]]; then
 openvdb_setup() {
 	debug-print-function ${FUNCNAME} "${@}"
 
-	eerror "Setup: OPENVDB_ABI is ${OPENVDB_ABI}"
+	echo "Setup: OPENVDB_ABI is ${OPENVDB_ABI}"
 
-	unset EOPENVDB
+	unset OPENVDB_ABI_VERSION
 
 	local i
 	for i in "${_OPENVDB_ABI[@]}"; do
 		if use "openvdb_abi_${i}"; then
-			if [[ ${EOPENVDB} ]]; then
+			if [[ ${OPENVDB_ABI_VERSION} ]]; then
 				eerror "Your OPENVDB_ABI setting lists more than a single OpenVDB"
 				eerror "ABI version. Please set it to just one value."
 				echo
 				die "More than one ABI in OPENVDB_ABI."
 			fi
 		fi
-		einfo "Using OpenVDB ABI ${EOPENVDB} to build"
+
+		export OPENVDB_ABI_VERSION="${i}"
+		readonly OPENVDB_ABI_VERSION
+		echo "Using OpenVDB ABI ${OPENVDB_ABI_VERSION} to build"
 	done
 
-	if [[ ! ${EOPENVDB} ]]; then
+	if [[ ! ${OPENVDB_ABI_VERSION} ]]; then
 		eerror "No OpenVDB ABI Version selected for the system. Please set"
 		eerror "the OPENVDB_ABI variable in your make.conf to one"
 		eerror "of the values contained in all of:"
