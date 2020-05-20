@@ -4,6 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
+LLVM_MAX_SLOT=9
 
 inherit cmake-utils llvm python-any-r1
 
@@ -31,7 +32,7 @@ IUSE="doc llvm_targets_AArch64 llvm_targets_ARM sanitize test"
 RESTRICT="test"
 
 RDEPEND="
-	sys-devel/clang:=[llvm_targets_AArch64=,llvm_targets_ARM=]
+	<sys-devel/clang-10:=[llvm_targets_AArch64=,llvm_targets_ARM=]
 	sys-libs/ncurses:0=
 	sys-libs/zlib
 	doc? ( media-fonts/freefont )
