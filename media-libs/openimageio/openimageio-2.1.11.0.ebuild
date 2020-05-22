@@ -21,7 +21,7 @@ X86_CPU_FEATURES=(
 )
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
-IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
+IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k opencv opengl openvdb ptex python qt5 raw +truetype ${CPU_FEATURES[@]%:*}"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
@@ -30,8 +30,12 @@ REQUIRED_USE="
 
 RESTRICT="test" # bug 431412
 
-BDEPEND="doc? ( app-doc/doxygen[latex] )"
+BDEPEND="doc? ( app-doc/doxygen[latex(+)] )"
 
+#	ssl? (
+#		!libressl? ( dev-libs/openssl:0= )
+#		libressl? ( dev-libs/libressl:0= )
+#	)
 RDEPEND="
 	dev-libs/boost:=
 	dev-libs/pugixml:=
@@ -75,15 +79,11 @@ RDEPEND="
 		opengl? ( dev-qt/qtopengl:5 )
 	)
 	raw? ( media-libs/libraw:= )
-	ssl? (
-		!libressl? ( dev-libs/openssl:0= )
-		libressl? ( dev-libs/libressl:0= )
-	)
 	truetype? ( media-libs/freetype:2= )
 "
 DEPEND="${RDEPEND}"
 
-DOCS=( CHANGES.md CREDITS.md README.md src/doc/${PN}.pdf )
+DOCS=( CHANGES.md CREDITS.md README.md )
 
 S="${WORKDIR}/oiio-Release-${PV}"
 
@@ -104,11 +104,11 @@ src_prepare() {
 	local abiver=$(cd "/usr/include"; echo python*)
 	for python in ${abiver}
 	do
-		sed -i "/find_path (PYBIND11_INCLUDE_DIR pybind11\/pybind11.h/a           HINTS \"/usr/include/${python}\"" "${S}/src/cmake/modules/FindPybind11.cmake"
+		sed -i "/find_path (PYBIND11_INCLUDE_DIR pybind11\/pybind11.h/a           HINTS \"/usr/include/${python}\"" "${S}/src/cmake/modules/FindPybind11.cmake" || die
 	done
 
-	sed -i "s/BUILDDIR :=.*/BUILDDIR := ..\/..\/..\/${P}_build/" "${S}/src/doc/Makefile"
-	sed -i "s/    OIIOTOOL :=.*/OIIOTOOL := ${BUILDDIR}\/bin/oiiotool" "${S}/src/doc/Makefile"
+	sed -i "s/BUILDDIR :=.*/BUILDDIR := ..\/..\/..\/${P}_build/" "${S}/src/doc/Makefile" || die
+	sed -i "s/    OIIOTOOL :=.*/    OIIOTOOL := \"\${BUILDDIR}\/bin\/oiiotool\"/" "${S}/src/doc/Makefile" || die
 }
 
 src_configure() {
@@ -135,7 +135,7 @@ src_configure() {
 		-DUSE_JPEGTURBO=ON
 		-DUSE_NUKE=NO # Missing in Gentoo
 		-DUSE_NUKE=OFF
-		-DUSE_OCIO=$(usex color-management)
+		-DUSE_OpenColorIO=$(usex color-management)
 		-DUSE_DICOM=$(usex dicom)
 		-DUSE_FFMPEG=$(usex ffmpeg)
 		-DUSE_FIELD3D=$(usex field3d)
@@ -149,7 +149,7 @@ src_configure() {
 		-DUSE_PYBIND11=$(usex python)
 		-DUSE_QT=$(usex qt5)
 		-DUSE_LIBRAW=$(usex raw)
-		-DUSE_OPENSSL=$(usex ssl)
+#		-DUSE_OPENSSL=$(usex ssl)
 		-DUSE_OPENVDB=$(usex openvdb)
 		-DUSE_FREETYPE=$(usex truetype)
 		-DUSE_SIMD=$(local IFS=','; echo "${mysimd[*]}")
@@ -164,5 +164,6 @@ src_compile() {
 	if use doc; then
 		cd "${S}/src/doc"
 		make
+		DOCS+=( "${S}/src/doc/${PN}.pdf" )
 	fi
 }
