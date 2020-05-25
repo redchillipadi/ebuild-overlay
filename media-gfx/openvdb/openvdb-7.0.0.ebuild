@@ -3,27 +3,30 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python{2_7,3_5,3_6,3_7} )
 OPENVDB_COMPAT=( 5 6 7 )
 CMAKE_MAKEFILE_GENERATOR="emake"
+PYTHON_COMPAT=( python3_{6,7} )
 
 inherit cmake flag-o-matic python-single-r1 openvdb
 
-DESCRIPTION="Libs for the efficient manipulation of volumetric data"
+DESCRIPTION="Library for efficient manipulation of volumetric data"
 HOMEPAGE="http://www.openvdb.org"
 SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="doc python test"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils"
+RESTRICT="test"
+
 REQUIRED_USE="
-	python? ( ${PYTHON_REQUIRED_USE} )
+	numpy? ( python )
 	${OPENVDB_REQUIRED_USE}
+	python? ( ${PYTHON_REQUIRED_USE} )
 "
 
 RDEPEND="
-	>=dev-libs/c-blosc-1.5.0
+	dev-libs/c-blosc
 	dev-libs/jemalloc
 	dev-libs/log4cplus
 	media-libs/glfw:=
@@ -36,23 +39,25 @@ RDEPEND="
 	python? (
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
-			>=dev-libs/boost-1.62:=[python?,${PYTHON_MULTI_USEDEP}]
-			dev-python/numpy[${PYTHON_MULTI_USEDEP}]
+			dev-libs/boost:=[numpy?,python?,${PYTHON_MULTI_USEDEP}]
+			numpy? ( dev-python/numpy[${PYTHON_MULTI_USEDEP}] )
 		')
-	)"
+	)
+"
 
-DEPEND="${RDEPEND}
-	>=dev-util/cmake-3.16.2-r1
+DEPEND="
+	${RDEPEND}
 	dev-cpp/tbb
+	>=dev-util/cmake-3.16.2-r1
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen[latex] )
-	test? ( dev-util/cppunit )"
+	test? ( dev-util/cppunit )
+"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-6.2.1-fix-multilib-header-source.patch"
-	"${FILESDIR}/${PN}-6.2.1-find-boost_python.patch"
+	"${FILESDIR}/${P}-0001-Fix-multilib-header-source.patch"
+	"${FILESDIR}/${P}-0002-Fix-doc-install-dir.patch"
 )
-#"${FILESDIR}/${PN}-6.2.1-use-gnuinstalldirs.patch"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
@@ -62,21 +67,35 @@ src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
 	local mycmakeargs=(
-		-DBLOSC_LOCATION="${myprefix}"
-		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
-		-DGLFW3_LOCATION="${myprefix}"
+		-DCHOST="${CHOST}"
+		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}/"
+		-DCPPUNIT_LOCATION="${myprefix}"
 		-DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
+		-DOPENVDB_BUILD_VDB_LOD=$(usex !utils)
+		-DOPENVDB_BUILD_VDB_RENDER=$(usex !utils)
+		-DOPENVDB_BUILD_VDB_VIEW=$(usex !utils)
+		-DOPENVDB_CORE_SHARED=ON
+		-DOPENVDB_CORE_STATIC=$(usex static-libs)
 		-DOPENVDB_ENABLE_RPATH=OFF
-		-DTBB_LOCATION="${myprefix}"
+		-DUSE_CCACHE=OFF
+		-DUSE_COLORED_OUTPUT=ON
+		-DUSE_EXR=ON
 		-DUSE_GLFW3=ON
-		-DCHOST="${CHOST}"
+		-DUSE_LOG4CPLUS=ON
+		-DUSE_NUMPY=$(usex numpy)
+		-DPYOPENVDB_INSTALL_DIRECTORY="${python_get_sitedir}"
+		-DPython_EXECUTABLE="${PYTHON}"
+		-DTBB_LOCATION="${myprefix}"
 	)
 
-	use python && mycmakeargs+=( -DPYOPENVDB_INSTALL_DIRECTORY="$(python_get_sitedir)" )
-	use test && mycmakeargs+=( -DCPPUNIT_LOCATION="${myprefix}" )
+	if use cpu_flags_x86_avx; then
+		mycmakeargs+=( -DOPENVDB_SIMD=AVX )
+	elif use cpu_flags_x86_sse4_2; then
+		mycmakeargs+=( -DOPENVDB_SIMD=SSE42 )
+	fi
 
 	cmake_src_configure
 }
