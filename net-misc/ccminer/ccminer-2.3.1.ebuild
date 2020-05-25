@@ -1,10 +1,10 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit git-r3
 
-DESCRIPTION="CUDE Miner Project"
+DESCRIPTION="CUDA Miner Project"
 HOMEPAGE="https://bitcointalk.org/?topic=770064"
 EGIT_REPO_URI="https://github.com/tpruvot/ccminer.git"
 EGIT_TAG="2.3.1-tpruvot"
@@ -12,7 +12,10 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 RESTRICT="test"
-DEPEND="dev-libs/openssl
+DEPEND="
+	acct-group/nicehash
+	acct-user/nicehash
+	dev-libs/openssl
 	net-misc/curl
 	>=dev-util/nvidia-cuda-toolkit-9.1
 "
@@ -43,8 +46,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	enewgroup nicehash
-	enewuser nicehash -1 -1 /dev/null video
 	elog
 	elog "Remember to configure the algorithm, server and bitcoin address"
 	elog "as appropriate in /etc/init.d/ccminer"

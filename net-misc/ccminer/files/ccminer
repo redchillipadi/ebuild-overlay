@@ -1,12 +1,12 @@
 #!/sbin/openrc-run
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 description='Start/stop ccminer miner in daemon mode'
 
 pidfile="/var/run/ccminer.pid"
 command="/usr/bin/ccminer"
-command_args="--algo=lyra2v2 --url=stratum+tcp://lyra2rev2.usa.nicehash.com:3347 -u 33GfR9cLNKHJ37mX2zeN4omXFJvkChsWDF"
+command_args="--algo=lyra2v3 --url=stratum+tcp://lyra2rev3.usa.nicehash.com:3373 -u 3CvnYJPA5vhMqDYVR2D36BScH9Fso5JSoB"
 
 depend() {
 	need net
