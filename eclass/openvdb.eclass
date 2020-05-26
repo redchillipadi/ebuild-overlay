@@ -10,60 +10,65 @@
 # @SUPPORTED_EAPIS: 5 6 7
 # @BLURB: An eclass for OpenVDB to control which ABI version is compiled
 # @DESCRIPTION:
-# The OpenVDB package is a library for sotring and manipulating sparse
+# The OpenVDB package is a library for sorting and manipulating sparse
 # data structures with dynamic topology as required for use in volume
 # rendering for computer graphics.
 #
 # Each major version of OpenVDB provides an updated ABI, as well as
-# the ability to support legacy versions of the ABI. For example
+# the ability to compile using a legacy version of the ABI.
 # Openvdb 7 can be compiled to support version 5, 6 or 7 of the ABI.
 #
 # However the user needs to choose at compile time which version to
-# build. It is not possible to support multiple versions concurrently.
-# If it were possible to provide mutliple SLOTS for OpenVDB then
-# this eclass may not be required.
+# build by passing OPENVDB_ABI_VERSION_NUMBER="5" to cmake.
+# It is not possible to support multiple versions concurrently
+# as the library only produces one set of functions suffixed with 7abi5
+# to provide legacy support and the cmake find modules call
+# /usr/bin/vdb_print -version to determine which ABI is present on the
+# system. The python library at pyopenvdb.so would also need slotting.
+# If it were possible to provide mutliple SLOTS for OpenVDB then this
+# eclass may not be required.
 #
-# Currently OpenVDB and all packages depending upon it must be
-# built for the same ABI version. This currently means blender, but
-# will soon include OpenImageIO and USD. Houdini also has strict
-# requirements, should an ebuild be introduced for it.
+# So OpenVDB and all packages depending upon it must be built for the
+# same ABI version. This currently means blender and openvdb, and
+# will also include >=openimageio-2.0 once it is updated
 #
 # The client packages have differing requirements for the ABI support.
-# For example, Houdini-17 only supports ABI 5, and Houdini-18 only
-# supports ABI 6. Blender supports ABI 4-7.
+# For example,
+# Openvdb-7 supports 5-7 (older version provide ABI 3 and 4 support)
+# Blender supports ABI 4-7
+# Openimageio-2.0 supports ABI 5-7.
 #
-# This eclass allows the user to specify which ABI of OpenVDB to
-# compile on the system by an OPENVDB_ABI variable.
+# To use this eclass, the user should first select which ABI to build
+# and set OPENVDB_ABI USE_EXPAND variable in make.conf.
 #
-# Each client package can specify the version of the ABI it supports
-# in a list in the OPENVDB_COMPAT variable.
-#
-# When the client package includes OpenVDB as a dependency, it can use
-# the OPENVDB_SINGLE_USEDEP variable that this package exports to
-# enforce the correct version of OpenVDB to be compiled
+# When the client package inherits this eclass, it can use the
+# OPENVDB_COMPAT variable in the ebuild to specify which ABI it
+# supports, and then use the OPENVDB_SINGLE_USEDEP variable that the
+# eclass produces to force the package to link using ABI selected in
+# OPENVDB_ABI
 # eg. openvdb? ( media-gfx/openvdb[${OPENVDB_SINGLE_USEDEP}] )
-# The variable evaluates to openvdb_abi_X when OPENVDB_ABI="X"
+# When OPENVDB_COMPAT="X Y" the variable evaluates to
+# openvdb_abi_X(-)? openvdb_abi_Y(-)?
 #
-# It can specify to the build system the ABI version as follows:
+# The client can pass the ABI version to the build system as follows:
 # append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI}"
 #
-# The package includes pkg_setup which ensures that the package will
-# only compile if OPENVDB_ABI matches one in OPENVDB_COMPAT
+# This eclass includes pkg_setup which ensures that the package will
+# only compile if only one openvdb_abi_X USE flag is set
 #
 # @EXAMPLE:
 # The user needs to choose which version of the ABI supports all packages
 # they plan to install. This is then stored in a variable in make.conf
 # eg. OPENVDB_ABI="5" in /etc/portage/make.conf
 #
-# The OpenVDB package has USE flags for openvdb_abi_X for each version
-# it supports. It allows only one to be selected by making use of
-# OPENVDB_REQUIRED_USE
-#
 # The client packages need to:
 # - inherit this eclass.
 # - list the ABI supported by the package in OPENVDB_COMPAT.
-# - include OPENVDB_SINGLE_USEDEP in RDEPEND
-# - pass the OPENVDB_ABI_VERSION to the package build system
+# - use OPENVDB_REQUIRED_USE to ensure that only one of the
+#   compatible ABI can be selected by the ebuild.
+# - include OPENVDB_SINGLE_USEDEP in RDEPEND to ensure any
+#   dependencies build against a similar ABI.
+# - pass the OPENVDB_ABI version to the package build system
 #
 # @CODE
 # inherit openvdb
@@ -120,10 +125,6 @@ EXPORT_FUNCTIONS pkg_setup
 # This is an eclass-generated required use expression which ensures
 # that exactly one openvdb_use_X value has been enabled.
 #
-# The expression should be utilized by media-gfx/openvdb ebuild only
-# by adding it to REQUIRED_USE. It is not required in the client
-# packages
-#
 # Example use:
 # @CODE
 # REQUIRED_USE="${OPENVDB_REQUIRED_USE}"
@@ -132,25 +133,6 @@ EXPORT_FUNCTIONS pkg_setup
 # Example value:
 # @CODE
 # ^^ ( openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7)
-# @CODE
-
-# @ECLASS-VARIABLE: OPENVDB_ABI_VERSION
-# @DESCRIPTION:
-# This is an eclass generated variable which returns the ABI version
-# selected in OPENVDB_ABI, allowing it to be passed to the build system
-#
-# Example use:
-# @CODE
-# src_configure() {
-#   append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI_VERSION}"
-#   ...
-#   cmake-utils_src_configure
-# }
-# @CODE
-#
-# Example value (when OPENVDB_ABI="5"):
-# @CODE
-# 5
 # @CODE
 
 # @ECLASS-VARIABLE: _OPENVDB_ALL_ABI
@@ -163,6 +145,12 @@ _OPENVDB_ALL_ABI=(
 )
 readonly _OPENVDB_ALL_ABI
 
+# @FUNCTION: _openvdb_set_globals
+# @INTERNAL
+# @DESCRIPTION:
+# Ensure that OPENVDB_COMPAT is valid and generate the
+# OPENVDB_REQUIRED_USE and OPENVDB_SINGLE_USEDEP global variables for
+# use by the inheriting ebuild
 _openvdb_set_globals() {
 	local i
 
@@ -209,14 +197,10 @@ if [[ ! ${_OPENVDB} ]]; then
 openvdb_setup() {
 	debug-print-function ${FUNCNAME} "${@}"
 
-	echo "Setup: OPENVDB_ABI is ${OPENVDB_ABI}"
-
-	unset OPENVDB_ABI_VERSION
-
-	local i
+	local i, version
 	for i in "${_OPENVDB_ABI[@]}"; do
 		if use "openvdb_abi_${i}"; then
-			if [[ ${OPENVDB_ABI_VERSION} ]]; then
+			if [[ ${version} ]]; then
 				eerror "Your OPENVDB_ABI setting lists more than a single OpenVDB"
 				eerror "ABI version. Please set it to just one value."
 				echo
@@ -224,12 +208,11 @@ openvdb_setup() {
 			fi
 		fi
 
-		export OPENVDB_ABI_VERSION="${i}"
-		readonly OPENVDB_ABI_VERSION
-		echo "Using OpenVDB ABI ${OPENVDB_ABI_VERSION} to build"
+		version="${i}"
+		echo "Using OpenVDB ABI ${version} to build"
 	done
 
-	if [[ ! ${OPENVDB_ABI_VERSION} ]]; then
+	if [[ ! ${version} ]]; then
 		eerror "No OpenVDB ABI Version selected for the system. Please set"
 		eerror "the OPENVDB_ABI variable in your make.conf to one"
 		eerror "of the values contained in all of:"
