@@ -32,6 +32,10 @@ RDEPEND="
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
 			dev-libs/boost:=[python,${PYTHON_MULTI_USEDEP}]
+			usdview? (
+				dev-python/pyside2[${PYTHON_MULTI_USEDEP}]
+				>=dev-python/pyopengl-3.1.5[${PYTHON_MULTI_USEDEP}]
+			)
 		')
 	)
 	imaging? ( >=media-libs/opensubdiv-3.4.3 )
@@ -51,11 +55,6 @@ RDEPEND="
 	draco? ( media-libs/draco )
 	jemalloc? ( dev-libs/jemalloc )
 "
-
-#	usdview? (
-#		( || ( pyslide-1.2.2, pyslide2-2.0.0-alpha0 / 5.14.1 ) )
-#		>=dev-python/pyopengl-3.1.5[${PYTHON_USEDEP}]
-#	)
 
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
