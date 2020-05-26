@@ -36,7 +36,9 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
-	doc? ( dev-python/sphinx[${PYTHON_SINGLE_USEDEP}] )
+	$(python_gen_cond_dep '
+		doc? ( dev-python/sphinx[${PYTHON_USEDEP}] )
+	')
 "
 
 # Restricting tests, bugs #439790 and #447908
