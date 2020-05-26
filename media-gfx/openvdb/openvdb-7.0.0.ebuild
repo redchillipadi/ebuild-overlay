@@ -50,7 +50,7 @@ DEPEND="
 	dev-cpp/tbb
 	>=dev-util/cmake-3.16.2-r1
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen[latex] )
+	doc? ( app-doc/doxygen[latex(+)] )
 	test? ( dev-util/cppunit )
 "
 
