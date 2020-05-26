@@ -63,6 +63,7 @@ RDEPEND="
 	openvdb? (
 		>=media-gfx/openvdb-5.2.0:=[${OPENVDB_SINGLE_USEDEP}]
 		dev-cpp/tbb
+		!dev-libs/jemalloc[lazy-lock]
 	)
 	ptex? ( media-libs/ptex:= )
 	python? (
