@@ -27,7 +27,7 @@ REQUIRED_USE="
 
 RDEPEND="
 	dev-libs/c-blosc
-	dev-libs/jemalloc
+	dev-libs/jemalloc[-lazy-lock]
 	dev-libs/log4cplus
 	media-libs/glfw:=
 	media-libs/openexr:=
