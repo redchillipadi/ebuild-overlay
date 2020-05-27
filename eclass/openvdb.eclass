@@ -21,14 +21,7 @@
 # However the user needs to choose at compile time which version to
 # build by passing OPENVDB_ABI_VERSION_NUMBER="5" to cmake.
 # It is not possible to support multiple versions concurrently
-# as the library only produces one set of functions suffixed with 7abi5
-# to provide legacy support and the cmake find modules call
-# /usr/bin/vdb_print -version to determine which ABI is present on the
-# system. The python library at pyopenvdb.so would also need slotting.
-# If it were possible to provide mutliple SLOTS for OpenVDB then this
-# eclass may not be required.
-#
-# So OpenVDB and all packages depending upon it must be built for the
+# so OpenVDB and all packages depending upon it must be built for the
 # same ABI version. This currently means blender and openvdb, and
 # will also include >=openimageio-2.0 once it is updated
 #
@@ -118,6 +111,11 @@ EXPORT_FUNCTIONS pkg_setup
 # Example use:
 # @CODE
 # RDEPEND="openvdb? ( media-gfx/openvdb[${OPENVDB_SINGLE_USEDEP}] )"
+# @CODE
+#
+# Example value:
+# @CODE
+# openvdb_abi_3(-)?,openvdb_abi_4(-)?,openvdb_abi_5(-)?...
 # @CODE
 
 # @ECLASS-VARIABLE: OPENVDB_REQUIRED_USE
