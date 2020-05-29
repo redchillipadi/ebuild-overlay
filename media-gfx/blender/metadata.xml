@@ -92,6 +92,18 @@
 		<flag name="openvdb">
 			Add GPU preview rendering. Only works with nVidia cards.
 		</flag>
+                <flag name="openvdb_abi_5">
+                        Support legacy ABI version 5 for
+                        <pkg>media-gfx/openvdb</pkg>.
+                </flag>
+                <flag name="openvdb_abi_6">
+                        Support legacy ABI version 6 for
+                        <pkg>media-gfx/openvdb</pkg>.
+                </flag>
+                <flag name="openvdb_abi_7">
+                        Support legacy ABI version 7 for
+                        <pkg>media-gfx/openvdb</pkg>.
+                </flag>
 		<flag name="osl" restrict="&gt;=media-gfx/blender-2.79">
 			Add support for OpenShadingLanguage scripting.
 		</flag>

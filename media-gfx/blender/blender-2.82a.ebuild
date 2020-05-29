@@ -4,10 +4,9 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_7 )
-OPENVDB_COMPAT=( 4 5 6 7 )
 
 inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
-	pax-utils python-single-r1 toolchain-funcs openvdb
+	pax-utils python-single-r1 toolchain-funcs
 
 DESCRIPTION="3D Creation/Animation/Publishing System"
 HOMEPAGE="https://www.blender.org"
@@ -25,7 +24,8 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	alembic collada color-management cuda cycles debug doc \
 	draco embree ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
-	openvdb osl sdl sndfile standalone test tiff valgrind usd"
+	openvdb openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 \
+	osl sdl sndfile standalone test tiff valgrind usd"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	alembic? ( openexr )
@@ -36,7 +36,8 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	embree? ( cycles )
 	oidn? ( tbb )
 	opencl? ( cycles )
-	openvdb? ( ${OPENVDB_REQUIRED_USE}
+	openvdb? (
+		^^ ( openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 )
 		tbb
 	)
 	osl? ( cycles llvm )
@@ -93,7 +94,7 @@ RDEPEND="${PYTHON_DEPS}
 	)
 	opensubdiv? ( >=media-libs/opensubdiv-3.4.0:=[cuda=,opencl=] )
 	openvdb? (
-		>=media-gfx/openvdb-7.0.0:=[${OPENVDB_SINGLE_USEDEP}]
+		>=media-gfx/openvdb-7.0.0:=[openvdb_abi_4(-)?,openvdb_abi_5(-)?,openvdb_abi_6(-)?,openvdb_abi_7(-)?]
 		dev-cpp/tbb
 		dev-libs/c-blosc
 	)
@@ -159,7 +160,20 @@ src_configure() {
 	# shadows, see bug #276338 for reference
 	append-flags -funsigned-char
 	append-lfs-flags
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=${OPENVDB_ABI}
+
+	local version
+	if use openvdb_abi_4; then
+		version=4;
+	elif use openvdb_abi_5; then
+		version=5;
+	elif use openvdb_abi_6; then
+		version=6;
+	elif use openvdb_abi_7; then
+		version=7;
+	else
+		die "Openvdb abi version not compatible"
+	fi
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=${version}
 
 	local mycmakeargs=(
 		-DPYTHON_VERSION="${EPYTHON/python/}"

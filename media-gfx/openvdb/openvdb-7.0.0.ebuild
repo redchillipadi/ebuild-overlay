@@ -3,11 +3,10 @@
 
 EAPI=7
 
-OPENVDB_COMPAT=( 5 6 7 )
 CMAKE_MAKEFILE_GENERATOR="emake"
 PYTHON_COMPAT=( python3_{6,7} )
 
-inherit cmake flag-o-matic python-single-r1 openvdb
+inherit cmake flag-o-matic python-single-r1
 
 DESCRIPTION="Library for efficient manipulation of volumetric data"
 HOMEPAGE="http://www.openvdb.org"
@@ -16,12 +15,12 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils openvdb_abi_5 openvdb_abi_6 openvdb_abi_7"
 RESTRICT="test"
 
 REQUIRED_USE="
 	numpy? ( python )
-	${OPENVDB_REQUIRED_USE}
+	^^ ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 )
 	python? ( ${PYTHON_REQUIRED_USE} )
 "
 
@@ -66,11 +65,22 @@ pkg_setup() {
 src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
+	local version;
+	if use openvdb_abi_5; then
+		version=5
+	elif use openvdb_abi_6; then
+		version=6
+	elif use openvdb_abi_7; then
+		version=7
+	else
+		die "Openvdb abi version is not compatible"
+	fi
+
 	local mycmakeargs=(
 		-DCHOST="${CHOST}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}/"
 		-DCPPUNIT_LOCATION="${myprefix}"
-		-DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI}"
+		-DOPENVDB_ABI_VERSION_NUMBER="${version}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)

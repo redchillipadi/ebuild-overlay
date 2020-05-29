@@ -4,8 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{6,7} )
-OPENVDB_COMPAT=( 5 6 7 )
-inherit cmake python-single-r1 openvdb
+inherit cmake python-single-r1
 
 DESCRIPTION="A library for reading and writing images"
 HOMEPAGE="https://sites.google.com/site/openimageio/ https://github.com/OpenImageIO"
@@ -21,11 +20,13 @@ X86_CPU_FEATURES=(
 )
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
-IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k opencv opengl openvdb ptex python qt5 raw +truetype ${CPU_FEATURES[@]%:*}"
+IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k opencv opengl openvdb
+	openvdb_abi_5 openvdb_abi_6 openvdb_abi_7
+	ptex python qt5 raw +truetype ${CPU_FEATURES[@]%:*}"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	openvdb? ( ${OPENVDB_REQUIRED_USE} )
+	openvdb? ( ^^ ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
 "
 
 RESTRICT="test" # bug 431412
@@ -61,7 +62,7 @@ RDEPEND="
 		virtual/opengl
 	)
 	openvdb? (
-		>=media-gfx/openvdb-5.2.0:=[${OPENVDB_SINGLE_USEDEP}]
+		>=media-gfx/openvdb-5.2.0:=[openvdb_abi_5(-)?,openvdb_abi_6(-)?,openvdb_abi_7(-)?]
 		dev-cpp/tbb
 		!dev-libs/jemalloc[lazy-lock]
 	)
@@ -123,8 +124,19 @@ src_configure() {
 	# If no CPU SIMDs were used, completely disable them
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
+	local version
+	if use openvdb_abi_5; then
+		version=5
+	elif use openvdb_abi_6; then
+		version=6
+	elif use openvdb_abi_7; then
+		version=7
+	else
+		die "Openvdb ABI version not compatible"
+	fi
+
 	if use openvdb; then
-		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${OPENVDB_ABI}"
+		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${version}"
 	fi
 
 	local mycmakeargs=(
