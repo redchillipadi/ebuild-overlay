@@ -1,11 +1,11 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 CMAKE_REMOVE_MODULES="yes"
 CMAKE_REMOVE_MODULES_LIST="FindFreetype FindDoxygen FindZLIB"
-inherit cmake-utils
+inherit cmake
 
 DESCRIPTION="Object-oriented Graphics Rendering Engine"
 HOMEPAGE="https://www.ogre3d.org/"
@@ -66,7 +66,7 @@ src_prepare() {
 		CMake/Utils/OgreConfigTargets.cmake || die
 
 	# Fix some path issues
-	cmake-utils_src_prepare
+	cmake_src_prepare
 }
 
 src_configure() {
@@ -101,11 +101,11 @@ src_configure() {
 		-DOGRE_USE_STD11=yes
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 
 	CONFIGDIR=/etc/OGRE
 	SHAREDIR=/usr/share/OGRE
