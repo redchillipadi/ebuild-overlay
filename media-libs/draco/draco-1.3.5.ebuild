@@ -15,7 +15,7 @@
 
 EAPI=7
 
-inherit cmake-utils
+inherit cmake
 
 DESCRIPTION="Library for compressing and decompressing 3D geometric objects"
 HOMEPAGE="https://google.github.io/draco/"
@@ -68,11 +68,6 @@ src_configure() {
 		-DIGNORE_EMPTY_BUILD_TYPE=OFF # default (FIXME?)
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
-#src_compile() {
-#}
-
-#src_install() {
-#}
