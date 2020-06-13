@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python{3_5,3_6,3_7} )
 
-inherit check-reqs cmake-utils xdg-utils flag-o-matic xdg-utils \
+inherit check-reqs cmake xdg-utils flag-o-matic xdg-utils \
 	pax-utils python-single-r1 toolchain-funcs
 
 DESCRIPTION="3D Creation/Animation/Publishing System"
@@ -129,7 +129,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	cmake-utils_src_prepare
+	cmake_src_prepare
 
 	# we don't want static glew, but it's scattered across
 	# multiple files that differ from version to version
@@ -218,11 +218,11 @@ src_configure() {
 		-DWITH_MEM_JEMALLOC=$(usex jemalloc)
 		-DWITH_MEM_VALGRIND=$(usex valgrind)
 	)
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_compile() {
-	cmake-utils_src_compile
+	cmake_src_compile
 
 	if use doc; then
 		# Workaround for binary drivers.
@@ -271,7 +271,7 @@ src_install() {
 		dodoc -r "${CMAKE_USE_DIR}"/doc/doxygen/html/.
 	fi
 
-	cmake-utils_src_install
+	cmake_src_install
 
 	# fix doc installdir
 	docinto "html"
