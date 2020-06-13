@@ -19,13 +19,12 @@ RDEPEND="
 	x11-libs/wxGTK:=
 "
 DEPEND="${RDEPEND}"
-BDEPEND="app-arch/p7zip"
+BDEPEND="
+	app-arch/p7zip
+	=dev-games/ogre-1.10.12-r0[cg=]
+"
 
-S="${WORKDIR}/OgreMeshy"
-
-PATCHES=(
-	"${FILESDIR}/${P}-add-x11-library.patch"
-)
+S="${WORKDIR}"
 
 # Note that the plugin libraries may be prestripped, as they are copies of those created by Ogre
 
