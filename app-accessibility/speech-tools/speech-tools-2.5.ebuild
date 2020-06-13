@@ -34,17 +34,17 @@ S="${WORKDIR}/speech_tools"
 
 src_prepare() {
 	# Old patchset, unrolled.
-	epatch "${FILESDIR}"/${P}-all-gcc42.patch
-	epatch "${FILESDIR}"/${P}-all-GentooLinux.patch
-	epatch "${FILESDIR}"/${P}-all-sharedlib.patch
-	epatch "${FILESDIR}"/${P}-all-gcc43-include.patch
-	epatch "${FILESDIR}"/${P}-all-remove-shared-refs.patch
-	epatch "${FILESDIR}"/${P}-all-base_class.patch
-	epatch "${FILESDIR}"/${P}-all-etcpath.patch
-	epatch "${FILESDIR}"/${P}-all-gentoo-config.patch
-	epatch "${FILESDIR}"/${P}-all-ldflags-fix.patch
-	epatch "${FILESDIR}"/${P}-all-mixed-cxxflag-cflag-fix.patch
-	epatch "${FILESDIR}"/${P}-all-ncurses-tinfo.patch
+	eapply "${FILESDIR}"/${P}-all-gcc42.patch
+	eapply "${FILESDIR}"/${P}-all-GentooLinux.patch
+	eapply "${FILESDIR}"/${P}-all-sharedlib.patch
+	eapply "${FILESDIR}"/${P}-all-gcc43-include.patch
+	eapply "${FILESDIR}"/${P}-all-remove-shared-refs.patch
+	eapply "${FILESDIR}"/${P}-all-base_class.patch
+	eapply "${FILESDIR}"/${P}-all-etcpath.patch
+	eapply "${FILESDIR}"/${P}-all-gentoo-config.patch
+	eapply "${FILESDIR}"/${P}-all-ldflags-fix.patch
+	eapply "${FILESDIR}"/${P}-all-mixed-cxxflag-cflag-fix.patch
+	eapply "${FILESDIR}"/${P}-all-ncurses-tinfo.patch
 
 	sed -i -e 's,{{HORRIBLELIBARCHKLUDGE}},"/usr/$(get_libdir)",' \
 		main/siod_main.cc || die
@@ -54,7 +54,9 @@ src_prepare() {
 		"${S}"/config/systems/sparc_SunOS5.mak || die
 
 	# Fix underlinking, bug #493204
-	epatch "${FILESDIR}"/${PN}-2.1-underlinking.patch
+	eapply "${FILESDIR}"/${PN}-2.1-underlinking.patch
+
+	eapply_user
 }
 
 src_configure() {
