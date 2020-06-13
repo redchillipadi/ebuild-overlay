@@ -20,7 +20,6 @@ A collection of ebuilds for packages not yet available in Gentoo
 * dev-libs/sfgui-0.4.0 - Simple and Fast Graphical User Interface
 * dev-libs/stp-9999 - An extension library for SFML2 designed to read the Tiled map format
 * dev-util/entityx-1.3.0 - A fast, type-safe c++ entity component system
-* games-engines/box2d-2.3.2 - A 2d physics library
 * games-engines/UnrealEngine-4.24.2 - A suite of integrated tools for game developers to design and build games
 * games-engines/adventuregamestudio-3.4.3.1 - Play hundreds of adventure games made with Adventure Game Studio
 * media-gfx/blender-2.81a - 3D Creation/Animation/Publishing System
