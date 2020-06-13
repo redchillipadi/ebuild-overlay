@@ -111,13 +111,13 @@ src_install() {
 
 	# plugins and resources are the main configuration
 	insinto "${CONFIGDIR}"
-	doins "${CMAKE_BUILD_DIR}"/bin/plugins.cfg
-	doins "${CMAKE_BUILD_DIR}"/bin/resources.cfg
+	doins "${BUILD_DIR}"/bin/plugins.cfg
+	doins "${BUILD_DIR}"/bin/resources.cfg
 	dosym "${CONFIGDIR}"/plugins.cfg "${SHAREDIR}"/plugins.cfg
 	dosym "${CONFIGDIR}"/resources.cfg "${SHAREDIR}"/resources.cfg
 
 	# These are only for the sample browser
 	insinto "${SHAREDIR}"
-	doins "${CMAKE_BUILD_DIR}"/bin/quakemap.cfg
-	doins "${CMAKE_BUILD_DIR}"/bin/samples.cfg
+	doins "${BUILD_DIR}"/bin/quakemap.cfg
+	doins "${BUILD_DIR}"/bin/samples.cfg
 }
