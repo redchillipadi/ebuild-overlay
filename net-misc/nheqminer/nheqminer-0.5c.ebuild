@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit eutils cmake-utils git-r3
+inherit eutils cmake git-r3
 
 DESCRIPTION="Nicehash Equihash Miner"
 HOMEPAGE="https://www.nicehash.com/"
@@ -24,11 +24,11 @@ src_compile() {
 	sed -e "s|../${PN}/|../${P}/|" -i "${S}/CMakeLists.txt"
 	fasm -m 1280000 "${S}/cpu_xenoncat/asm_linux/equihash_avx1.asm"
 	fasm -m 1280000 "${S}/cpu_xenoncat/asm_linux/equihash_avx2.asm"
-	cmake-utils_src_compile
+	cmake_src_compile
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 	dobin "${S}_build/nheqminer"
 	doinitd "${FILESDIR}/nicehash"
 }
