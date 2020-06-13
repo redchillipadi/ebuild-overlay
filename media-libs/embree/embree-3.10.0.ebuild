@@ -20,12 +20,12 @@ fi
 LICENSE="Apache-2.0"
 SLOT="0"
 
-#X86_CPU_FLAGS=(
-#	sse2:sse2 sse4_2:sse4_2 avx:avx avx2:avx2
-#)
-#CPU_FLAGS=( ${X86_CPU_FLAGS[@]/#/cpu_flags_x86_} )
+X86_CPU_FLAGS=(
+	sse2:sse2 sse4_2:sse4_2 avx:avx avx2:avx2
+)
+CPU_FLAGS=( ${X86_CPU_FLAGS[@]/#/cpu_flags_x86_} )
 
-IUSE="clang ispc raymask static-libs +tbb tutorial" # ${CPU_FLAGS[@]%:*}
+IUSE="clang ispc raymask static-libs +tbb tutorial ${CPU_FLAGS[@]%:*}"
 
 REQUIRED_USE="clang? ( !tutorial )"
 
