@@ -99,10 +99,10 @@ src_configure() {
 		-DEMBREE_GEOMETRY_TRIANGLE=ON			# default
 		-DEMBREE_GEOMETRY_USER=ON				# default
 		-DEMBREE_IGNORE_INVALID_RAYS=OFF		# default
-		-DEMBRRE_ISA_SSE2=$(usex cpu_flags_x86_sse2)
-		-DEMBRRE_ISA_SSE42=$(usex cpu_flags_x86_sse4_2)
-		-DEMBRRE_ISA_AVX=$(usex cpu_flags_x86_avx)
-		-DEMBRRE_ISA_AVX2=$(usex cpu_flags_x86_avx2)
+		-DEMBREE_ISA_SSE2=$(usex cpu_flags_x86_sse2)
+		-DEMBREE_ISA_SSE42=$(usex cpu_flags_x86_sse4_2)
+		-DEMBREE_ISA_AVX=$(usex cpu_flags_x86_avx)
+		-DEMBREE_ISA_AVX2=$(usex cpu_flags_x86_avx2)
 		-DEMBREE_ISPC_SUPPORT=$(usex ispc)
 		-DEMBREE_MAX_ISA=NONE
 		-DEMBREE_RAY_MASK=$(usex raymask)
