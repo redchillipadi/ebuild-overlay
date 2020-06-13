@@ -19,6 +19,7 @@ RDEPEND="
 	x11-libs/wxGTK:=
 "
 DEPEND="${RDEPEND}"
+BDEPEND="app-arch/p7zip"
 
 S="${WORKDIR}/OgreMeshy"
 
