@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit cmake-utils llvm toolchain-funcs
+inherit cmake llvm toolchain-funcs
 
 # check this on updates
 LLVM_MAX_SLOT=8
@@ -84,5 +84,5 @@ src_configure() {
 		-DUSE_SIMD="$(IFS=","; echo "${mysimd[*]}")"
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
