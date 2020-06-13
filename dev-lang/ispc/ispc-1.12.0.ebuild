@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python2_7 )
 LLVM_MAX_SLOT=9
 
-inherit cmake-utils llvm python-any-r1
+inherit cmake llvm python-any-r1
 
 DESCRIPTION="Intel SPMD Program Compiler"
 HOMEPAGE="https://ispc.github.com/"
@@ -63,7 +63,7 @@ src_prepare() {
 		sed -e 's|/usr/local/bin/dot|/usr/bin/dot|' -i "${S}"/doxygen.cfg || die
 	fi
 
-	cmake-utils_src_prepare
+	cmake_src_prepare
 }
 
 src_configure() {
@@ -79,11 +79,11 @@ src_configure() {
 		-DISPC_STATIC_LINK=OFF
 		-DISPC_USE_ASAN=$(usex sanitize)
 	)
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_compile() {
-	cmake-utils_src_compile
+	cmake_src_compile
 
 	if use doc; then
 		pushd "${S}" >/dev/null || die
@@ -94,7 +94,7 @@ src_compile() {
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 
 	if use doc; then
 		local HTML_DOCS=( docs/doxygen/html/. )
