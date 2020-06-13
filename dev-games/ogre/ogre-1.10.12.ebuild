@@ -3,7 +3,6 @@
 
 EAPI=7
 
-CMAKE_REMOVE_MODULES="yes"
 CMAKE_REMOVE_MODULES_LIST="FindFreetype FindDoxygen FindZLIB"
 inherit cmake
 
