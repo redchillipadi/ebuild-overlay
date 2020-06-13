@@ -21,5 +21,5 @@ src_compile() {
 
 src_install() {
 	dobin "${S}/source/Linux/fasm"
-	newbin "${S}/source/Linux/x64/fasm fasm.x64"
+	newbin "${S}/source/Linux/x64/fasm" "fasm.x64"
 }
