@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8} )
 
-inherit cmake-utils python-single-r1 flag-o-matic
+inherit cmake python-single-r1 flag-o-matic
 
 DESCRIPTION="Universal Scene Description"
 HOMEPAGE="https://graphics.pixar.com/usd/docs/index.html"
@@ -100,5 +100,5 @@ src_configure() {
 		mycmakeargs+=( -DPXR_MALLOC_LIBRARY:path=/usr/lib64/libjemalloc.so )
 	fi
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }

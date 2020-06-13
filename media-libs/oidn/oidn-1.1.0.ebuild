@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit cmake-utils git-r3
+inherit cmake git-r3
 
 DESCRIPTION="Intel Open Image Denoise Library"
 HOMEPAGE="http://www.openimagedenoise.org/"
@@ -26,5 +26,5 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_BUILD_TYPE="Release"
 	)
-	cmake-utils_src_configure
+	cmake_src_configure
 }

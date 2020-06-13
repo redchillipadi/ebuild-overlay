@@ -1,8 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
-inherit cmake-utils flag-o-matic git-r3
+EAPI=7
+inherit cmake flag-o-matic git-r3
 
 DESCRIPTION="Raspberry Pi userspace tools and libraries"
 HOMEPAGE="https://github.com/raspberrypi/userland"
@@ -28,11 +28,11 @@ src_configure() {
 		-DARM64=$(usex arm64)
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 
 	insinto /lib/udev/rules.d
 	doins "${FILESDIR}"/92-local-vchiq-permissions.rules
