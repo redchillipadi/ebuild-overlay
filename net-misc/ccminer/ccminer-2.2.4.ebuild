@@ -4,7 +4,7 @@
 EAPI=6
 inherit git-r3
 
-DESCRIPTION="CUDE Miner Project"
+DESCRIPTION="CUDA Miner Project"
 HOMEPAGE="https://bitcointalk.org/?topic=770064"
 EGIT_REPO_URI="https://github.com/tpruvot/ccminer.git"
 EGIT_TAG="2.2.4-tpruvot"
