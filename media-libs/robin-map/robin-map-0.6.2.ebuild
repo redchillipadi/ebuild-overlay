@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit git-r3 cmake-utils
+inherit git-r3 cmake
 
 DESCRIPTION="A C++ implementation of a fast hash map and hash set using robin hood hashing"
 HOMEPAGE="https://github.com/Tessil/robin-map"

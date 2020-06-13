@@ -103,6 +103,8 @@ src_configure() {
 		-DEMBREE_ISA_SSE42=$(usex cpu_flags_x86_sse4_2)
 		-DEMBREE_ISA_AVX=$(usex cpu_flags_x86_avx)
 		-DEMBREE_ISA_AVX2=$(usex cpu_flags_x86_avx2)
+		-DEMBREE_ISA_AVX512KNL=ON		# Needed by blender
+		-DEMBREE_ISA_AVX512SKX=ON		# Needed by blender
 		-DEMBREE_ISPC_SUPPORT=$(usex ispc)
 		-DEMBREE_MAX_ISA=NONE
 		-DEMBREE_RAY_MASK=$(usex raymask)
