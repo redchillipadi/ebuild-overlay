@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit eutils cmake-utils wxwidgets
+inherit eutils cmake wxwidgets
 
 DESCRIPTION="A tool for viewing OGRE mesh files"
 HOMEPAGE="https://www.ogre3d.org/tikiwiki/Ogre+Meshy"
@@ -50,7 +50,7 @@ src_configure() {
 	cp "${S}/bin/Release/{Readme,ChangeLog}.txt" "${S}/bin/Release_Linux/"
 
 	CMAKE_USE_DIR="${S}"
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_install() {
