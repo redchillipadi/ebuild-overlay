@@ -1,8 +1,8 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit eutils cmake-utils git-r3
+EAPI=7
+inherit eutils cmake git-r3
 
 DESCRIPTION="A fast, type-safe c++ entity component system"
 HOMEPAGE="https://github.com/alecthomas/entityx"
@@ -15,5 +15,5 @@ RESTRICT="test"
 
 src_configure() {
 	CMAKE_USE_DIR="${S}"
-	cmake-utils_src_configure
+	cmake_src_configure
 }
