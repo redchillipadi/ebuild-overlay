@@ -1,8 +1,8 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit eutils cmake-utils git-r3
+EAPI=7
+inherit eutils cmake git-r3
 
 DESCRIPTION="An extension library for SFML2 designed to read the Tiled map format"
 HOMEPAGE="https://edoren.github.io/STP"
@@ -30,7 +30,7 @@ src_configure() {
 		-DSTP_BUILD_DOC=$(usex doc ON OFF)
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_install() {
