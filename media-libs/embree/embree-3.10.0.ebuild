@@ -30,12 +30,12 @@ IUSE="clang ispc raymask static-libs +tbb tutorial" # ${CPU_FLAGS[@]%:*}
 REQUIRED_USE="clang? ( !tutorial )"
 
 RDEPEND="
-	>=media-libs/glfw-3.2.1
+	media-libs/glfw
 	virtual/opengl
 	ispc? ( dev-lang/ispc )
 	tbb? ( dev-cpp/tbb )
 	tutorial? (
-		>=media-libs/libpng-1.6.34:0=
+		media-libs/libpng
 		>=media-libs/openimageio-2.0:=
 		virtual/jpeg:0
 	)
