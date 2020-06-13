@@ -20,12 +20,7 @@ fi
 LICENSE="Apache-2.0"
 SLOT="0"
 
-X86_CPU_FLAGS=(
-	sse2:sse2 sse4_2:sse4_2 avx:avx avx2:avx2
-)
-CPU_FLAGS=( ${X86_CPU_FLAGS[@]/#/cpu_flags_x86_} )
-
-IUSE="clang ispc raymask static-libs +tbb tutorial ${CPU_FLAGS[@]%:*}"
+IUSE="clang ispc raymask static-libs +tbb tutorial"
 
 REQUIRED_USE="clang? ( !tutorial )"
 
@@ -99,14 +94,7 @@ src_configure() {
 		-DEMBREE_GEOMETRY_TRIANGLE=ON			# default
 		-DEMBREE_GEOMETRY_USER=ON				# default
 		-DEMBREE_IGNORE_INVALID_RAYS=OFF		# default
-		-DEMBREE_ISA_SSE2=$(usex cpu_flags_x86_sse2)
-		-DEMBREE_ISA_SSE42=$(usex cpu_flags_x86_sse4_2)
-		-DEMBREE_ISA_AVX=$(usex cpu_flags_x86_avx)
-		-DEMBREE_ISA_AVX2=$(usex cpu_flags_x86_avx2)
-		-DEMBREE_ISA_AVX512KNL=ON		# Needed by blender
-		-DEMBREE_ISA_AVX512SKX=ON		# Needed by blender
 		-DEMBREE_ISPC_SUPPORT=$(usex ispc)
-		-DEMBREE_MAX_ISA=NONE
 		-DEMBREE_RAY_MASK=$(usex raymask)
 		-DEMBREE_RAY_PACKETS=ON					# default
 		-DEMBREE_STACK_PROTECTOR=OFF			# default
