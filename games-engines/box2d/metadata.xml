@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer restrict="&gt;=sci-physics/box2d-2.3.2" type="person">
+		<email>agrigo2001@yahoo.com.au</email>
+		<name>Adrian Grigo</name>
+		<description>Proxy maintainer</description>
+	</maintainer>
+
+	<longdescription>
+		Box2D is a 2D physics engine for games.
+	</longdescription>
+</pkgmetadata>
