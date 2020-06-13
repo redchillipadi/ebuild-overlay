@@ -1,11 +1,11 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI=7
 
 PYTHON_COMPAT=( python2_7 python3_4 )
 
-inherit cmake-utils eutils linux-info python-single-r1
+inherit cmake eutils linux-info python-single-r1
 
 MY_PN="libcec"
 MY_P="${MY_PN}-${PV}"
@@ -47,16 +47,16 @@ src_prepare() {
 		-e '/DESTINATION/s:lib/python${PYTHON_VERSION}/dist-packages:${PYTHON_SITEDIR}:' \
 		src/libcec/cmake/CheckPlatformSupport.cmake || die
 
-	cmake-utils_src_prepare
+	cmake_src_prepare
 	use python || comment_add_subdirectory "src/pyCecClient"
 }
 
 src_configure() {
 	local mycmakeargs=(
-		$(cmake-utils_useno python SKIP_PYTHON_WRAPPER)
-		$(cmake-utils_use_has exynos EXYNOS_API)
-		$(cmake-utils_use_has cubox TDA955X_API)
-		$(cmake-utils_use_has raspberry-pi RPI_API)
+		$(cmake_useno python SKIP_PYTHON_WRAPPER)
+		$(cmake_use_has exynos EXYNOS_API)
+		$(cmake_use_has cubox TDA955X_API)
+		$(cmake_use_has raspberry-pi RPI_API)
 	)
 	use python && mycmakeargs+=( -DPYTHON_SITEDIR="$(python_get_sitedir)" )
 
@@ -66,5 +66,5 @@ src_configure() {
 			-DRPI_LIB_DIR=/opt/vc/lib )
 	fi
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
