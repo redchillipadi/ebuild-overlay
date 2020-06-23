@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>agrigo2001@yahoo.com.au</email>
+		<name>Adrian Grigo</name>
+	</maintainer>
+
+	<longdescription>
+		High performance open source miner for RandomX, CryptoNight, AstroBWT and Argon2
+	</longdescription>
+
+	<use>
+		<flag name="hwloc">
+			Enable hwloc support.
+		</flag>
+		<flag name="opencl">
+			Enable OpenCL support.
+		</flag>
+		<flag name="cuda">
+			Enable CUDA support.
+		</flag>
+	</use>
+</pkgmetadata>
