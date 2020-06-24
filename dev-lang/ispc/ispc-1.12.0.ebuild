@@ -62,6 +62,9 @@ src_prepare() {
 	if use doc; then
 		sed -e 's|/usr/local/bin/dot|/usr/bin/dot|' -i "${S}"/doxygen.cfg || die
 	fi
+	local llvm_prefix="$(get_llvm_prefix ${LLVM_MAX_SLOT})"
+	local llvm_version="${llvm_prefix##*/}"
+	sed -i "s/find_package(LLVM REQUIRED CONFIG)/find_package(LLVM ${llvm_version} REQUIRED CONFIG)/" "${S}"/cmake/LLVMConfig.cmake
 
 	cmake_src_prepare
 }
