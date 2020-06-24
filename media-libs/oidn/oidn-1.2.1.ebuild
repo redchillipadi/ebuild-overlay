@@ -25,6 +25,7 @@ RESTRICT="test"
 src_unpack() {
 	git-r3_src_unpack
 	tar xf "${FILESDIR}/${P}-weights.tar.xz"
+	cmake_src_unpack
 }
 
 src_configure() {
