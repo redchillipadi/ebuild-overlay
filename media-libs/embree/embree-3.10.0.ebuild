@@ -102,6 +102,7 @@ src_configure() {
 		-DEMBREE_STAT_COUNTERS=OFF
 		-DEMBREE_TASKING_SYSTEM:STRING=$(usex tbb "TBB" "INTERNAL")
 		-DEMBREE_TUTORIALS=$(usex tutorial)
+		-DEMBREE_MAX_ISA:STRING=AVX2
 	)
 
 	if use tutorial; then
