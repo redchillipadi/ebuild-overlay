@@ -15,12 +15,12 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="amd64 ~x86"
-IUSE="abi3-compat abi4-compat doc python test"
+IUSE="abi3-compat abi4-compat -abi5-compat -abi6-compat -abi7-compat doc python test"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	^^ ( abi3-compat abi4-compat )
+	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat )
 "
 
 RDEPEND="
@@ -72,6 +72,15 @@ src_configure() {
 	# To stay in sync with Boost
 	append-cxxflags -std=c++14
 
+	local version;
+	if use abi3-compat; then
+		version=3;
+	elif use abi4-compat; then
+		version=4;
+	else
+		die "Openvdb abi version is not compatible"
+	fi
+
 	local mycmakeargs=(
 		-DBLOSC_LOCATION="${myprefix}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
@@ -79,7 +88,7 @@ src_configure() {
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
-		-DOPENVDB_ENABLE_3_ABI_COMPATIBLE=$(usex openvdb_abi_3)
+		-DOPENVDB_ENABLE_3_ABI_COMPATIBLE=$(usex abi3-compat)
 		-DOPENVDB_ENABLE_RPATH=OFF
 		-DTBB_LOCATION="${myprefix}"
 		-DUSE_GLFW3=ON

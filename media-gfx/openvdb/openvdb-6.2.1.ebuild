@@ -15,10 +15,10 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="abi3-compat abi4-compat abi5-compat abi6-compat doc python test"
+IUSE="abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat doc python test"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	|| ( abi3-compat abi4-compat abi5-compat abi6-compat )
+	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat )
 "
 RESTRICT="!test? ( test )"
 
@@ -70,13 +70,13 @@ src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
 	local version;
-	if use openvdb_abi_3; then
+	if use abi3-compat; then
 		version=3
-	elif use openvdb_abi_4; then
+	elif use abi4-compat; then
 		version=4
-	elif use openvdb_abi_5; then
+	elif use abi5-compat; then
 		version=5
-	elif use openvdb_abi_6; then
+	elif use abi6-compat; then
 		version=6
 	else
 		die "Openvdb ABI version not specified"

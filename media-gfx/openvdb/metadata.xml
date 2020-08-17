@@ -20,13 +20,13 @@
 		<flag name="abi4-compat">
 			Disables newer features to maintain compatibility with ABI4.
 		</flag>
-		<flag restrict="&gt;=media-gfx/openvdb-5.0.0" name="abi5-compat">
+		<flag name="abi5-compat">
 			Disables newer features to maintain compatibility with ABI5.
 		</flag>
-		<flag restrict="&gt;=media-gfx/openvdb-6.0.0" name="abi6-compat">
+		<flag name="abi6-compat">
 			Disables newer features to maintain compatibility with ABI6.
 		</flag>
-		<flag restrict="&gt;=media-gfx/openvdb-7.0.0" name="abi7-compat">
+		<flag name="abi7-compat">
 			Disables newer features to maintain compatibility with ABI7.
 		</flag>
 		<flag name="utils">

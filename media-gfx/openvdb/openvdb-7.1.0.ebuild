@@ -4,7 +4,7 @@
 EAPI=7
 
 CMAKE_MAKEFILE_GENERATOR="emake"
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_{7,8} )
 
 inherit cmake flag-o-matic python-single-r1
 
@@ -15,12 +15,12 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils abi5-compat abi6-compat abi7-compat"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	numpy? ( python )
-	^^ ( abi5-compat abi6-compat abi7-compat )
+	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat )
 	python? ( ${PYTHON_REQUIRED_USE} )
 "
 
