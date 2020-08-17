@@ -20,7 +20,7 @@ RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	^^ ( openvdb_abi_3 openvdb_abi_4 )
+	^^ ( abi3-compat abi4-compat )
 "
 
 RDEPEND="
@@ -37,7 +37,7 @@ RDEPEND="
 	python? (
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
-			>=dev-libs/boost-1.62:=[python?,${PYTHON_MULTI_USEDEP}]
+			dev-libs/boost:=[python?,${PYTHON_MULTI_USEDEP}]
 			dev-python/numpy[${PYTHON_MULTI_USEDEP}]
 		')
 	)"

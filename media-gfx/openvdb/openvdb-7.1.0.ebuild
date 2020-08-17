@@ -15,12 +15,12 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils openvdb_abi_5 openvdb_abi_6 openvdb_abi_7"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils abi5-compat abi6-compat abi7-compat"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	numpy? ( python )
-	^^ ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 )
+	^^ ( abi5-compat abi6-compat abi7-compat )
 	python? ( ${PYTHON_REQUIRED_USE} )
 "
 
@@ -73,11 +73,11 @@ src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
 	local version;
-	if use openvdb_abi_5; then
+	if use abi5-compat; then
 		version=5
-	elif use openvdb_abi_6; then
+	elif use abi6-compat; then
 		version=6
-	elif use openvdb_abi_7; then
+	elif use abi7-compat; then
 		version=7
 	else
 		die "Openvdb abi version is not compatible"
