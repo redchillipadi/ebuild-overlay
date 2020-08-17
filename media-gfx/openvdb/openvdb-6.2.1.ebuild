@@ -3,26 +3,27 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python{2_7,3_5,3_6,3_7} )
+PYTHON_COMPAT=( python3_{7,8} )
 CMAKE_MAKEFILE_GENERATOR="emake"
 
 inherit cmake flag-o-matic python-single-r1
 
-DESCRIPTION="Libs for the efficient manipulation of volumetric data"
+DESCRIPTION="Library for the efficient manipulation of volumetric data"
 HOMEPAGE="http://www.openvdb.org"
 SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 doc python test"
+IUSE="abi3-compat abi4-compat abi5-compat abi6-compat doc python test"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	|| ( openvdb_abi_3 openvdb_abi_4 openvdb_abi_5 openvdb_abi_6 )
+	|| ( abi3-compat abi4-compat abi5-compat abi6-compat )
 "
+RESTRICT="!test? ( test )"
 
 RDEPEND="
-	>=dev-libs/c-blosc-1.5.0
+	dev-libs/c-blosc
 	dev-libs/jemalloc
 	dev-libs/log4cplus
 	media-libs/glfw:=
@@ -35,7 +36,7 @@ RDEPEND="
 	python? (
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
-			>=dev-libs/boost-1.62:=[python?,${PYTHON_MULTI_USEDEP}]
+			dev-libs/boost:=[python?,${PYTHON_MULTI_USEDEP}]
 			dev-python/numpy[${PYTHON_MULTI_USEDEP}]
 		')
 	)"
@@ -44,7 +45,14 @@ DEPEND="${RDEPEND}
 	>=dev-util/cmake-3.16.2-r1
 	dev-cpp/tbb
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen[latex] )
+	doc? (
+		app-doc/doxygen
+		dev-texlive/texlive-bibtexextra
+		dev-texlive/texlive-fontsextra
+		dev-texlive/texlive-fontutils
+		dev-texlive/texlive-latex
+		dev-texlive/texlive-latexextra
+	)
 	test? ( dev-util/cppunit )"
 
 PATCHES=(
@@ -61,14 +69,15 @@ pkg_setup() {
 src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
+	local version;
 	if use openvdb_abi_3; then
-		local openvdb_version=3
+		version=3
 	elif use openvdb_abi_4; then
-		local openvdb_version=4
+		version=4
 	elif use openvdb_abi_5; then
-		local openvdb_version=5
+		version=5
 	elif use openvdb_abi_6; then
-		local openvdb_version=6
+		version=6
 	else
 		die "Openvdb ABI version not specified"
 	fi
@@ -77,7 +86,7 @@ src_configure() {
 		#-DBLOSC_LOCATION="${myprefix}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
 		#-DGLFW3_LOCATION="${myprefix}"
-		-DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
+		-DOPENVDB_ABI_VERSION_NUMBER="${version}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)

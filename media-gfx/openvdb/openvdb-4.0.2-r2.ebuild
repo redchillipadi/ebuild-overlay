@@ -3,11 +3,11 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python{2_7,3_5,3_6} )
+PYTHON_COMPAT=( python3_{7,8} )
 
 inherit cmake flag-o-matic python-single-r1
 
-DESCRIPTION="Libs for the efficient manipulation of volumetric data"
+DESCRIPTION="Library for the efficient manipulation of volumetric data"
 HOMEPAGE="https://www.openvdb.org"
 SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	https://dev.gentoo.org/~dracwyrm/patches/${P}-patchset-02.tar.xz"
@@ -15,14 +15,16 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="amd64 ~x86"
-IUSE="openvdb_abi_3 +openvdb_abi_4 doc python test"
+IUSE="abi3-compat abi4-compat doc python test"
+RESTRICT="!test? ( test )"
+
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	|| ( openvdb_abi_3 openvdb_abi_4 )
+	^^ ( openvdb_abi_3 openvdb_abi_4 )
 "
 
 RDEPEND="
-	>=dev-libs/c-blosc-1.5.0
+	dev-libs/c-blosc
 	dev-libs/jemalloc
 	dev-libs/log4cplus
 	media-libs/glfw:=
@@ -43,7 +45,14 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	dev-cpp/tbb
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen[latex] )
+	doc? (
+		app-doc/doxygen
+		dev-texlive/texlive-bibtexextra
+		dev-texlive/texlive-fontsextra
+		dev-texlive/texlive-fontutils
+		dev-texlive/texlive-latex
+		dev-texlive/texlive-latexextra
+	)
 	test? ( dev-util/cppunit )"
 
 PATCHES=(

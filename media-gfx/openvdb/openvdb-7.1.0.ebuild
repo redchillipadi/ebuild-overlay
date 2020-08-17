@@ -16,7 +16,7 @@ LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils openvdb_abi_5 openvdb_abi_6 openvdb_abi_7"
-RESTRICT="test"
+RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	numpy? ( python )
@@ -49,7 +49,14 @@ DEPEND="
 	dev-cpp/tbb
 	>=dev-util/cmake-3.16.2-r1
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen[latex(+)] )
+	doc? (
+		app-doc/doxygen
+		dev-texlive/texlive-bibtexextra
+		dev-texlive/texlive-fontsextra
+		dev-texlive/texlive-fontutils
+		dev-texlive/texlive-latex
+		dev-texlive/texlive-latexextra
+	)
 	test? ( dev-util/cppunit )
 "
 
