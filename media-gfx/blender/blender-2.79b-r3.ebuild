@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python{3_5,3_6,3_7} )
+PYTHON_COMPAT=( python{3_5,3_6} )
 
 inherit check-reqs cmake xdg-utils flag-o-matic xdg-utils \
 	pax-utils python-single-r1 toolchain-funcs
@@ -23,18 +23,19 @@ KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +game-engine +openexr collada color-management \
 	alembic cuda cycles debug doc ffmpeg fftw headless jack jemalloc \
 	jpeg2k llvm man ndof nls openal opencl openimageio openmp \
-	opensubdiv openvdb openvdb_abi_4 openvdb_abi_5 osl \
+	opensubdiv openvdb abi4-compat abi5-compat osl \
 	player sdl sndfile standalone test tiff valgrind"
+RESTRICT="!test? ( test )"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
+	abi4-compat? ( openvdb )
+	abi5-compat? ( openvdb )
 	alembic? ( openexr )
 	cuda? ( cycles )
 	cycles? ( openexr tiff openimageio )
 	opencl? ( cycles )
 	osl? ( cycles llvm )
-	openvdb? ( || ( openvdb_abi_4 openvdb_abi_5 ) )
-	openvdb_abi_4? ( openvdb )
-	openvdb_abi_5? ( openvdb )
+	openvdb? ( ^^ ( abi4-compat abi5-compat ) )
 	player? ( game-engine !headless )
 	standalone? ( cycles )"
 
@@ -85,7 +86,7 @@ RDEPEND="${PYTHON_DEPS}
 	)
 	opensubdiv? ( media-libs/opensubdiv:=[cuda=,opencl=] )
 	openvdb? (
-		media-gfx/openvdb:=[-openvdb_abi_3,openvdb_abi_4=,openvdb_abi_5=]
+		media-gfx/openvdb:=[abi4-compat(-)?,abi5-compat(-)?]
 		dev-cpp/tbb
 		dev-libs/c-blosc
 	)
@@ -99,8 +100,13 @@ DEPEND="${RDEPEND}
 	>=dev-cpp/eigen-3.2.8:3
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen[-nodot(-),dot(+),latex]
+		app-doc/doxygen[dot]
 		dev-python/sphinx[latex]
+		dev-texlive/texlive-bibtexextra
+		dev-texlive/texlive-fontsextra
+		dev-texlive/texlive-fontutils
+		dev-texlive/texlive-latex
+		dev-texlive/texlive-latexextra
 	)
 	nls? ( sys-devel/gettext )"
 
@@ -152,9 +158,9 @@ src_configure() {
 	append-lfs-flags
 
 	# Blender 2.79b-r1 does not support Openvdb ABI 3 as it lacks copyGridWithNewTree
-	if use openvdb_abi_4; then
+	if use abi4-compat; then
 		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=4
-	elif use openvdb_abi_5; then
+	elif use abi5-compat; then
 		append-cppflags -DOPENVDB_ABI_VERSION_NUMBER=5
 	elif use openvdb; then
 		die "Openvdb ABI version not specified"
