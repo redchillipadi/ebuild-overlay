@@ -8,23 +8,24 @@ PYTHON_COMPAT=( python3_{7,8} )
 
 inherit cmake flag-o-matic python-single-r1
 
-DESCRIPTION="Library for efficient manipulation of volumetric data"
-HOMEPAGE="http://www.openvdb.org"
+DESCRIPTION="Library for the efficient manipulation of volumetric data"
+HOMEPAGE="https://www.openvdb.org"
 SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_sse4_2 doc numpy python static-libs test utils abi6-compat abi7-compat"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	numpy? ( python )
-	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat )
+	^^ ( abi6-compat abi7-compat )
 	python? ( ${PYTHON_REQUIRED_USE} )
 "
 
 RDEPEND="
+	dev-libs/boost:=
 	dev-libs/c-blosc
 	dev-libs/jemalloc
 	dev-libs/log4cplus
@@ -72,10 +73,8 @@ pkg_setup() {
 src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
-	local version;
-	if use abi5-compat; then
-		version=5
-	elif use abi6-compat; then
+	local version
+	if use abi6-compat; then
 		version=6
 	elif use abi7-compat; then
 		version=7

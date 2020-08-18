@@ -4,7 +4,6 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8} )
-CMAKE_MAKEFILE_GENERATOR="emake"
 
 inherit cmake flag-o-matic python-single-r1
 
@@ -17,7 +16,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="abi3-compat abi4-compat abi5-compat doc python test"
 RESTRICT="!test? ( test )"
-
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
 	^^ ( abi3-compat abi4-compat abi5-compat )
@@ -58,7 +56,6 @@ DEPEND="${RDEPEND}
 
 PATCHES=( "${FILESDIR}/${P}-use-gnuinstalldirs.patch"
 	"${FILESDIR}/${P}-use-pkgconfig-for-ilmbase-and-openexr.patch"
-	"${FILESDIR}/${P}-find-boost_python.patch"
 	"${FILESDIR}/${PN}-4.0.2-fix-const-correctness-for-unittest.patch"
 	"${FILESDIR}/${PN}-4.0.2-fix-build-docs.patch"
 )

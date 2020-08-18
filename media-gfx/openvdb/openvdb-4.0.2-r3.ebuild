@@ -15,15 +15,16 @@ SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.g
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="amd64 ~x86"
-IUSE="abi3-compat abi4-compat -abi5-compat -abi6-compat -abi7-compat doc python test"
+IUSE="abi3-compat abi4-compat doc python test"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat )
+	^^ ( abi3-compat abi4-compat )
 "
 
 RDEPEND="
+	dev-libs/boost:=
 	dev-libs/c-blosc
 	dev-libs/jemalloc
 	dev-libs/log4cplus
@@ -60,6 +61,8 @@ PATCHES=(
 	"${WORKDIR}/${P}-patchset-02/0002-use-pkgconfig-for-ilmbase-and-openexr.patch"
 	"${WORKDIR}/${P}-patchset-02/0003-boost-1.65-numpy-support.patch"
 	"${FILESDIR}/${P}-findboost-fix.patch"
+	"${FILESDIR}/${P}-fix-const-correctness-for-unittest.patch"
+	"${FILESDIR}/${P}-fix-build-docs.patch"
 )
 
 pkg_setup() {
@@ -72,11 +75,11 @@ src_configure() {
 	# To stay in sync with Boost
 	append-cxxflags -std=c++14
 
-	local version;
+	local version
 	if use abi3-compat; then
-		version=3;
+		version=3
 	elif use abi4-compat; then
-		version=4;
+		version=4
 	else
 		die "Openvdb abi version is not compatible"
 	fi

@@ -9,20 +9,22 @@ CMAKE_MAKEFILE_GENERATOR="emake"
 inherit cmake flag-o-matic python-single-r1
 
 DESCRIPTION="Library for the efficient manipulation of volumetric data"
-HOMEPAGE="http://www.openvdb.org"
+HOMEPAGE="https://www.openvdb.org"
 SRC_URI="https://github.com/AcademySoftwareFoundation/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat doc python test"
-REQUIRED_USE="
-	python? ( ${PYTHON_REQUIRED_USE} )
-	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat abi7-compat )
-"
+IUSE="abi3-compat abi4-compat abi5-compat abi6-compat doc python test"
 RESTRICT="!test? ( test )"
 
+REQUIRED_USE="
+	python? ( ${PYTHON_REQUIRED_USE} )
+	^^ ( abi3-compat abi4-compat abi5-compat abi6-compat )
+"
+
 RDEPEND="
+	dev-libs/boost:=
 	dev-libs/c-blosc
 	dev-libs/jemalloc
 	dev-libs/log4cplus
@@ -57,8 +59,7 @@ DEPEND="${RDEPEND}
 
 PATCHES=(
 	"${FILESDIR}/${P}-fix-multilib-header-source.patch"
-	"${FILESDIR}/${P}-find-boost_python.patch"
-	"${FILESDIR}/${PN}-5.2.0-const-correctness-for-unittest.patch"
+	"${FILESDIR}/${PN}-4.0.2-fix-const-correctness-for-unittest.patch"
 	"${FILESDIR}/${P}-use-gnuinstalldirs.patch"
 )
 
@@ -69,7 +70,7 @@ pkg_setup() {
 src_configure() {
 	local myprefix="${EPREFIX}/usr/"
 
-	local version;
+	local version
 	if use abi3-compat; then
 		version=3
 	elif use abi4-compat; then
@@ -83,16 +84,12 @@ src_configure() {
 	fi
 
 	local mycmakeargs=(
-		#-DBLOSC_LOCATION="${myprefix}"
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
-		#-DGLFW3_LOCATION="${myprefix}"
 		-DOPENVDB_ABI_VERSION_NUMBER="${version}"
 		-DOPENVDB_BUILD_DOCS=$(usex doc)
 		-DOPENVDB_BUILD_PYTHON_MODULE=$(usex python)
 		-DOPENVDB_BUILD_UNITTESTS=$(usex test)
 		-DOPENVDB_ENABLE_RPATH=OFF
-		#-DTBB_LOCATION="${myprefix}"
-		#-DUSE_GLFW3=ON
 		-DCHOST="${CHOST}"
 	)
 
