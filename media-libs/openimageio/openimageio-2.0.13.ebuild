@@ -20,13 +20,13 @@ X86_CPU_FEATURES=(
 )
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
-IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
+IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k libressl opencv opengl openvdb abi5-compat abi6-compat abi7-compat ptex python qt5 raw ssl +truetype ${CPU_FEATURES[@]%:*}"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	openvdb? ( || ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
-	openvdb_abi_5? ( openvdb )
-	openvdb_abi_6? ( openvdb )
-	openvdb_abi_7? ( openvdb )
+	openvdb? ( ^^ ( abi5-compat abi6-compat abi7-compat ) )
+	abi5-compat? ( openvdb )
+	abi6-compat? ( openvdb )
+	abi7-compat? ( openvdb )
 "
 
 RESTRICT="test" # bug 431412
@@ -60,7 +60,7 @@ RDEPEND="
 		virtual/opengl
 	)
 	openvdb? (
-		>=media-gfx/openvdb-5.2.0:=[-openvdb_abi_3,-openvdb_abi_4,openvdb_abi_5=,openvdb_abi_6=,openvdb_abi_7=]
+		>=media-gfx/openvdb-5.2.0:=[abi5-compat(-)?,abi6-compat(-)?,abi7-compat(-)?]
 		dev-cpp/tbb
 	)
 	ptex? ( media-libs/ptex:= )
@@ -120,16 +120,17 @@ src_configure() {
 	# If no CPU SIMDs were used, completely disable them
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
-	openvdb_version=0
-	if use openvdb_abi_5; then
-		openvdb_version=5
-	elif use openvdb_abi_6; then
-		openvdb_version=6
-	elif use openvdb_abi_7; then
-		openvdb_version=7
+	local version
+	if use abi5-compat; then
+		version=5
+	elif use abi6-compat; then
+		version=6
+	elif use abi7-compat; then
+		version=7
+	else
+		die "Openvdb ABI version not supported"
 	fi
-	[ openvdb_version > 0 ] || die "Openvdb ABI version not specified"
-	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${openvdb_version}"
+	append-cppflags -DOPENVDB_ABI_VERSION_NUMBER="${version}"
 
 	local mycmakeargs=(
 		-DBUILD_DOCS=$(usex doc)

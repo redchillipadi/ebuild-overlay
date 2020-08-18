@@ -21,12 +21,12 @@ X86_CPU_FEATURES=(
 CPU_FEATURES=( ${X86_CPU_FEATURES[@]/#/cpu_flags_x86_} )
 
 IUSE="color-management dicom doc ffmpeg field3d gif heif jpeg2k opencv opengl openvdb
-	openvdb_abi_5 openvdb_abi_6 openvdb_abi_7
+	abi5-compat abi6-compat abi7-compat
 	ptex python qt5 raw +truetype ${CPU_FEATURES[@]%:*}"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	openvdb? ( ^^ ( openvdb_abi_5 openvdb_abi_6 openvdb_abi_7 ) )
+	openvdb? ( ^^ ( abi5-compat abi6-compat abi7-compat ) )
 "
 
 RESTRICT="test" # bug 431412
@@ -62,7 +62,7 @@ RDEPEND="
 		virtual/opengl
 	)
 	openvdb? (
-		>=media-gfx/openvdb-5.2.0:=[openvdb_abi_5(-)?,openvdb_abi_6(-)?,openvdb_abi_7(-)?]
+		>=media-gfx/openvdb-5.2.0:=[abi5-compat(-)?,abi6-compat(-)?,abi7-compat(-)?]
 		dev-cpp/tbb
 		!dev-libs/jemalloc[lazy-lock]
 	)
@@ -125,11 +125,11 @@ src_configure() {
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
 	local version
-	if use openvdb_abi_5; then
+	if use abi5-compat; then
 		version=5
-	elif use openvdb_abi_6; then
+	elif use abi6-compat; then
 		version=6
-	elif use openvdb_abi_7; then
+	elif use abi7-compat; then
 		version=7
 	else
 		die "Openvdb ABI version not compatible"

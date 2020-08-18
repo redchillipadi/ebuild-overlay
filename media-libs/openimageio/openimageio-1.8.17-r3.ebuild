@@ -43,7 +43,7 @@ RDEPEND="
 	ffmpeg? ( media-video/ffmpeg:= )
 	field3d? ( media-libs/Field3D:= )
 	gif? ( media-libs/giflib:0= )
-	jpeg2k? ( >=media-libs/openjpeg-1.5:0= )
+	jpeg2k? ( media-libs/openjpeg:= )
 	opencv? ( media-libs/opencv:= )
 	opengl? (
 		media-libs/glew:=
