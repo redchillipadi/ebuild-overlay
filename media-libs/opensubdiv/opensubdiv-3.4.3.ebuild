@@ -21,13 +21,13 @@ KEYWORDS="~amd64 ~x86"
 IUSE="cuda doc examples opencl openmp ptex tbb test tutorials"
 
 RDEPEND="
-	${PYTHON_DEPENDS}
+	${PYTHON_DEPS}
 	media-libs/glew:=
 	media-libs/glfw:=
+	x11-libs/libXinerama
 	cuda? ( dev-util/nvidia-cuda-toolkit:* )
 	opencl? ( virtual/opencl )
 	ptex? ( media-libs/ptex )
-	x11-libs/libXinerama
 "
 DEPEND="
 	${RDEPEND}
@@ -35,10 +35,10 @@ DEPEND="
 "
 BDEPEND="
 	doc? (
-		dev-python/docutils
 		app-doc/doxygen
+		dev-python/docutils
 	)
-	cuda? ( <sys-devel/gcc-9[cxx] )
+	cuda? ( <sys-devel/gcc-10[cxx] )
 "
 
 S="${WORKDIR}/OpenSubdiv-${MY_PV}"
@@ -46,6 +46,7 @@ S="${WORKDIR}/OpenSubdiv-${MY_PV}"
 PATCHES=(
 	"${FILESDIR}/${PN}-3.3.0-use-gnuinstalldirs.patch"
 	"${FILESDIR}/${PN}-3.3.0-add-CUDA9-compatibility.patch"
+	"${FILESDIR}/${PN}-3.4.3-add-CUDA11-compatibility.patch"
 	"${FILESDIR}/${PN}-3.4.0-0001-documentation-CMakeLists.txt-force-python2.patch"
 	"${FILESDIR}/${P}-install-tutorials-into-bin.patch"
 )
@@ -54,9 +55,9 @@ RESTRICT="!test? ( test )"
 
 pkg_pretend() {
 	if use cuda; then
-		[[ $(gcc-major-version) -gt 8 ]] && \
-		eerror "USE=cuda requires gcc < 9. Run gcc-config to switch your default compiler" && \
-		die "Need gcc version earlier than 9"
+		[[ $(gcc-major-version) -gt 9 ]] && \
+		eerror "USE=cuda requires gcc < 10. Run gcc-config to switch your default compiler" && \
+		die "Need gcc version earlier than 10"
 	fi
 	[[ ${MERGE_TYPE} != binary ]] && use openmp && tc-check-openmp
 }
