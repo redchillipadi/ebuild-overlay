@@ -187,6 +187,7 @@ src_configure() {
 		-DWITH_CYCLES_OSL=$(usex osl)
 		-DWITH_DOC_MANPAGE=$(usex man)
 		-DWITH_FFTW3=$(usex fftw)
+		-DWITH_GHOST_X11=$(usex !headless)
 		-DWITH_GTESTS=$(usex test)
 		-DWITH_HEADLESS=$(usex headless)
 		-DWITH_INSTALL_PORTABLE=OFF
