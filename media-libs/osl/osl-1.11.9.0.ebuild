@@ -12,7 +12,7 @@ HOMEPAGE="http://opensource.imageworks.com/?p=osl https://github.com/imageworks/
 SRC_URI="https://github.com/imageworks/OpenShadingLanguage/archive/Release-${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
-SLOT="0"
+SLOT="0/11"
 KEYWORDS="~amd64 ~x86"
 
 X86_CPU_FEATURES=(
