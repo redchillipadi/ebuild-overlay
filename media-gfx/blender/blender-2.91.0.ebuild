@@ -42,11 +42,15 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 
 RDEPEND="${PYTHON_DEPS}
 	dev-libs/boost:=[nls?,threads(+)]
+	dev-libs/gmp
+	dev-libs/libpugixml
 	dev-libs/lzo:2=
 	$(python_gen_cond_dep '
 		dev-python/numpy[${PYTHON_USEDEP}]
 		dev-python/requests[${PYTHON_USEDEP}]
 	')
+	media-gfx/potrace
+	media-libs/fontconfig:=
 	media-libs/freetype:=
 	media-libs/glew:*
 	media-libs/libpng:=
@@ -78,7 +82,7 @@ RDEPEND="${PYTHON_DEPS}
 	nls? ( virtual/libiconv )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
-	openimageio? ( media-libs/openimageio:= )
+	openimageio? ( media-libs/openimageio )
 	openexr? (
 		media-libs/ilmbase:=
 		media-libs/openexr:=
@@ -104,7 +108,7 @@ BDEPEND="
 	virtual/pkgconfig
 	doc? (
 		app-doc/doxygen[dot]
-		dev-python/sphinx[latex]
+		<dev-python/sphinx-3[latex]
 		dev-texlive/texlive-bibtexextra
 		dev-texlive/texlive-fontsextra
 		dev-texlive/texlive-fontutils
