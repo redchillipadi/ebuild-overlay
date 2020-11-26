@@ -43,7 +43,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 RDEPEND="${PYTHON_DEPS}
 	dev-libs/boost:=[nls?,threads(+)]
 	dev-libs/gmp
-	dev-libs/libpugixml
+	dev-libs/pugixml
 	dev-libs/lzo:2=
 	$(python_gen_cond_dep '
 		dev-python/numpy[${PYTHON_USEDEP}]
