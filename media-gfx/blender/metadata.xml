@@ -42,6 +42,9 @@
 		<flag name="dds">
 			Adds DDS textures support to Blender.
 		</flag>
+		<flag name="draco">
+			Add support for compression using <pkg>media-libs/draco</pkg>.
+		</flag>
 		<flag name="elbeem">
 			Adds surface fluid simulation to Blender using El'Beem library.
 		</flag>

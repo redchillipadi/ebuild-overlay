@@ -22,7 +22,7 @@ LICENSE="|| ( GPL-2 BL )"
 KEYWORDS="~amd64 ~x86"
 IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	abi6-compat abi7-compat alembic collada color-management cuda cycles \
-	debug doc ffmpeg fftw headless jack jemalloc jpeg2k llvm \
+	debug doc draco ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls openal opencl openimageio openmp opensubdiv \
 	openvdb osl sdl sndfile standalone test tiff valgrind"
 RESTRICT="!test? ( test )"
@@ -60,6 +60,7 @@ RDEPEND="${PYTHON_DEPS}
 	collada? ( >=media-libs/opencollada-1.6.68 )
 	color-management? ( media-libs/opencolorio )
 	cuda? ( dev-util/nvidia-cuda-toolkit:= )
+	draco? ( media-libs/draco[gltf] )
 	ffmpeg? ( media-video/ffmpeg:=[x264,mp3,encode,theora,jpeg2k?] )
 	fftw? ( sci-libs/fftw:3.0= )
 	!headless? (
@@ -188,6 +189,7 @@ src_configure() {
 		-DWITH_CYCLES_STANDALONE_GUI=$(usex standalone)
 		-DWITH_CYCLES_OSL=$(usex osl)
 		-DWITH_DOC_MANPAGE=$(usex man)
+		-DWITH_DRACO=$(usex draco)
 		-DWITH_FFTW3=$(usex fftw)
 		-DWITH_GHOST_X11=$(usex !headless)
 		-DWITH_GTESTS=$(usex test)
