@@ -5,7 +5,7 @@ EAPI=7
 inherit cmake llvm toolchain-funcs
 
 # check this on updates
-LLVM_MAX_SLOT=11
+LLVM_MAX_SLOT=10
 
 DESCRIPTION="Advanced shading language for production GI renderers"
 HOMEPAGE="http://opensource.imageworks.com/?p=osl https://github.com/imageworks/OpenShadingLanguage"
@@ -28,7 +28,7 @@ RDEPEND="
 	dev-libs/pugixml
 	media-libs/openexr:=
 	media-libs/openimageio:=
-	<sys-devel/clang-12:=
+	<sys-devel/clang-11:=
 	sys-libs/zlib
 	partio? ( media-libs/partio )
 	qt5? (
@@ -73,7 +73,7 @@ src_configure() {
 	[[ -z ${mysimd} ]] && mysimd=("0")
 
 	local gcc=$(tc-getCC)
-	# LLVM needs CPP11. Do not disable.
+	# LLVM10+ needs CPP14+
 	local mycmakeargs=(
 		-DCMAKE_CXX_STANDARD=14
 		-DCMAKE_INSTALL_DOCDIR="share/doc/${PF}"
