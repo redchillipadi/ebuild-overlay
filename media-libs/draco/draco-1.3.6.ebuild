@@ -17,7 +17,7 @@ IUSE="+compat +gltf"
 RESTRICT="test"
 
 PATCHES=(
-	"${FILESDIR}/${P}-0001-CMakeLists.txt-respect-library-dirs.patch"
+	"${FILESDIR}/${PN}-1.3.5-0001-CMakeLists.txt-respect-library-dirs.patch"
 )
 
 DOCS=( AUTHORS CONTRIBUTING.md README.md )
