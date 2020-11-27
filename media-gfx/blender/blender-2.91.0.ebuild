@@ -82,7 +82,7 @@ RDEPEND="${PYTHON_DEPS}
 	nls? ( virtual/libiconv )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
-	openimageio? ( media-libs/openimageio )
+	openimageio? ( media-libs/openimageio:= )
 	openexr? (
 		media-libs/ilmbase:=
 		media-libs/openexr:=
@@ -108,7 +108,7 @@ BDEPEND="
 	virtual/pkgconfig
 	doc? (
 		app-doc/doxygen[dot]
-		<dev-python/sphinx-3[latex]
+		dev-python/sphinx[latex]
 		dev-texlive/texlive-bibtexextra
 		dev-texlive/texlive-fontsextra
 		dev-texlive/texlive-fontutils
