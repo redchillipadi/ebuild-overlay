@@ -61,11 +61,10 @@ DEPEND="${RDEPEND}
 
 CMAKE_BUILD_TYPE=Release
 
-
-PATCHES=(
-	"${FILESDIR}/${P}-fix-cmake-openexr-multilib.patch"
-	"${FILESDIR}/${P}-fix-cmake-boost-python.patch"
-)
+#PATCHES=(
+#	"${FILESDIR}/${P}-fix-cmake-openexr-multilib.patch"
+#	"${FILESDIR}/${P}-fix-cmake-boost-python.patch"
+#)
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
