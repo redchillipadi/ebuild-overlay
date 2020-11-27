@@ -24,7 +24,7 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	abi6-compat abi7-compat alembic collada color-management cuda cycles \
 	debug doc ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls openal opencl openimageio openmp opensubdiv \
-	openvdb osl sdl sndfile standalone test tiff valgrind"
+	openvdb optix osl sdl sndfile standalone test tiff valgrind"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
@@ -37,6 +37,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 		^^ ( abi6-compat abi7-compat )
 		tbb
 	)
+	optix? ( cycles )
 	osl? ( cycles llvm )
 	standalone? ( cycles )"
 
@@ -84,6 +85,7 @@ RDEPEND="${PYTHON_DEPS}
 		media-libs/openexr:=
 	)
 	opensubdiv? ( >=media-libs/opensubdiv-3.4.0[cuda=,opencl=] )
+	optix? ( <dev-libs/optix-7.1 )
 	openvdb? (
 		~media-gfx/openvdb-7.0.0[abi6-compat(-)?,abi7-compat(-)?]
 		dev-libs/c-blosc:=
@@ -170,6 +172,7 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF
+		-DOPTIX_INCLUDE_DIR="/opt/optix/include"
 		-DPYTHON_INCLUDE_DIR="$(python_get_includedir)"
 		-DPYTHON_LIBRARY="$(python_get_library_path)"
 		-DPYTHON_VERSION="${EPYTHON/python/}"
@@ -181,6 +184,7 @@ src_configure() {
 		-DWITH_CODEC_SNDFILE=$(usex sndfile)
 		-DWITH_CXX_GUARDEDALLOC=$(usex debug)
 		-DWITH_CYCLES_DEVICE_CUDA=$(usex cuda TRUE FALSE)
+		-DWITH_CYCLES_DEVICE_OPTIX=$(usex optix TRUE FALSE)
 		-DWITH_CYCLES=$(usex cycles)
 		-DWITH_CYCLES_DEVICE_OPENCL=$(usex opencl)
 		-DWITH_CYCLES_STANDALONE=$(usex standalone)

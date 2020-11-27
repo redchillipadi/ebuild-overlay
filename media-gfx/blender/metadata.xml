@@ -68,6 +68,9 @@
 		<flag name="openvdb">
 			Add GPU preview rendering. Only works with nVidia cards.
 		</flag>
+		<flag name="optix">
+			Use the Optix denoise provided by <pkg>dev-libs/optix</pkg>.
+		</flag>
 		<flag name="osl">
 			Add support for OpenShadingLanguage scripting.
 		</flag>
