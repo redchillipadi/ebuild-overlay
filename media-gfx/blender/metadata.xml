@@ -63,6 +63,9 @@
 		<flag name="ndof">
 			Enable NDOF input devices (SpaceNavigator and friends).
 		</flag>
+		<flag name="oidn">
+			Use denoising filters from <pkg>media-libs/oidn</pkg>.
+		</flag>
 		<flag name="opencl">
 			Allow OpenCL Graphics Acceleration. This may
 			require extra graphics card drivers.</flag>

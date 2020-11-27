@@ -23,7 +23,7 @@ KEYWORDS="amd64 ~x86"
 IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	abi6-compat abi7-compat alembic collada color-management cuda cycles \
 	debug draco doc embree ffmpeg fftw headless jack jemalloc jpeg2k llvm \
-	man ndof nls openal opencl openimageio openmp opensubdiv \
+	man ndof nls oidn openal opencl openimageio openmp opensubdiv \
 	openvdb osl sdl sndfile standalone test tiff valgrind"
 RESTRICT="!test? ( test )"
 
@@ -78,6 +78,7 @@ RDEPEND="${PYTHON_DEPS}
 		dev-libs/libspnav
 	)
 	nls? ( virtual/libiconv )
+	oidn? ( media-libs/oidn )
 	openal? ( media-libs/openal )
 	opencl? ( virtual/opencl )
 	openimageio? ( media-libs/openimageio:= )
@@ -210,6 +211,7 @@ src_configure() {
 		-DWITH_OPENAL=$(usex openal)
 		-DWITH_OPENCOLLADA=$(usex collada)
 		-DWITH_OPENCOLORIO=$(usex color-management)
+		-DWITH_OPENIMAGEDENOISE=$(usex oidn)
 		-DWITH_OPENIMAGEIO=$(usex openimageio)
 		-DWITH_OPENMP=$(usex openmp)
 		-DWITH_OPENSUBDIV=$(usex opensubdiv)
