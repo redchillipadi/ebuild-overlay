@@ -118,9 +118,10 @@ BDEPEND="
 	nls? ( sys-devel/gettext )
 "
 
-PATCHES=(
-	"${FILESDIR}/${P}-define-data-end.patch"
-)
+# Prevent cmake from overriding the build type as blender requires it to be set
+# to None, Debug, Release, RelWithDebInfo or MinSizeRel. This ensures that
+# one and only one of DEBUG or NDEBUG is set, otherwise asserts fail to compile
+CMAKE_BUILD_TYPE="Release"
 
 blender_check_requirements() {
 	[[ ${MERGE_TYPE} != binary ]] && use openmp && tc-check-openmp
