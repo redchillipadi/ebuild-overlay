@@ -1,21 +1,7 @@
-From 50cbc28c0ea83f5ad10eae2646a4da948bef8cbb Mon Sep 17 00:00:00 2001
-From: Bernd Waibel <waebbl@gmail.com>
-Date: Sat, 3 Aug 2019 15:00:49 +0200
-Subject: [PATCH] CMakeLists.txt: respect library dirs
-
-This, Gentoo specific patch respects the library names lib vs. lib64
-for different platforms.
-
-Signed-off-by: Bernd Waibel <waebbl@gmail.com>
----
- CMakeLists.txt | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 62fe812..44d2407 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -1094,14 +1094,14 @@ else ()
+diff -Naur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2020-11-27 19:10:34.953594132 +1100
++++ b/CMakeLists.txt	2020-11-27 19:15:50.763046476 +1100
+@@ -1030,14 +1030,14 @@
      file(WRITE "${pkgconfig_file}" "# draco pkg-config.\n")
      file(APPEND "${pkgconfig_file}" "prefix=${prefix}\n")
      file(APPEND "${pkgconfig_file}" "exec_prefix=${prefix}/bin\n")
@@ -30,33 +16,32 @@ index 62fe812..44d2407 100644
 -    file(APPEND "${pkgconfig_file}" "Libs: -L${prefix}/lib -ldraco\n")
 +    file(APPEND "${pkgconfig_file}" "Libs: -L${prefix}/lib${LIB_SUFFIX} -ldraco\n")
      file(APPEND "${pkgconfig_file}" "Cflags: -I${prefix}/include -std=c++11\n")
-   endif ()
+   endif()
  
-@@ -1134,19 +1134,19 @@ else ()
-   if (NOT MSVC)
+@@ -1069,18 +1069,18 @@
+   if(NOT MSVC)
      # Install our pkg-config file.
      install(FILES "${draco_build_dir}/draco.pc"
 -            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 +            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig")
-   endif ()
+   endif()
  
    # Add install rules for lib and executable targets.
-   install(TARGETS dracodec dracoenc draco
--          DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-+          DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
-   if (BUILD_UNITY_PLUGIN)
-     install(TARGETS dracodec_unity
--            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-+            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
-   endif ()
-   if (BUILD_MAYA_PLUGIN)
-     install(TARGETS draco_maya_wrapper
--            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-+            DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
-   endif ()
+   install(TARGETS dracodec dracoenc draco DESTINATION
+-                  "${CMAKE_INSTALL_PREFIX}/lib")
++                  "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+   if(BUILD_UNITY_PLUGIN)
+-    install(TARGETS dracodec_unity DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
++    install(TARGETS dracodec_unity DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+   endif()
+   if(BUILD_MAYA_PLUGIN)
+     install(
+-      TARGETS draco_maya_wrapper DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
++      TARGETS draco_maya_wrapper DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+   endif()
  
    install(TARGETS draco_decoder draco_encoder DESTINATION
-@@ -1154,9 +1154,9 @@ else ()
+@@ -1088,9 +1088,9 @@
  
    # Generate a CMake config file.
    set(draco_include_install_dir "include/draco")
@@ -64,19 +49,16 @@ index 62fe812..44d2407 100644
 +  set(draco_lib_install_dir "lib${LIB_SUFFIX}")
    set(draco_script_install_dir
 -      "${CMAKE_INSTALL_PREFIX}/${draco_lib_install_dir}/draco/cmake")
-+      "${CMAKE_INSTALL_PREFIX}/${draco_lib_install_dir}/cmake/drako")
++      "${CMAKE_INSTALL_PREFIX}/${draco_lib_install_dir}/cmake/draco")
    set(draco_config_in_file "${draco_root}/cmake/DracoConfig.cmake")
    set(draco_config_out_file "${draco_build_dir}/DracoConfig.cmake")
  
-@@ -1164,7 +1164,7 @@ else ()
-       "${draco_config_in_file}"
-       "${draco_config_out_file}"
-       NO_CHECK_REQUIRED_COMPONENTS_MACRO
--      INSTALL_DESTINATION "${draco_lib_install_dir}/draco/cmake"
-+      INSTALL_DESTINATION "${draco_lib_install_dir}/cmake/drako"
-       PATH_VARS draco_include_install_dir draco_lib_install_dir)
-   write_basic_package_version_file(
-       "${draco_build_dir}/DracoConfigVersion.cmake"
--- 
-2.22.0
-
+@@ -1098,7 +1098,7 @@
+                                 "${draco_config_out_file}"
+                                 NO_CHECK_REQUIRED_COMPONENTS_MACRO
+                                 INSTALL_DESTINATION
+-                                "${draco_lib_install_dir}/draco/cmake" PATH_VARS
++                                "${draco_lib_install_dir}/cmake/draco" PATH_VARS
+                                 draco_include_install_dir draco_lib_install_dir)
+   write_basic_package_version_file("${draco_build_dir}/DracoConfigVersion.cmake"
+                                    VERSION ${draco_version}

@@ -16,9 +16,9 @@ KEYWORDS="~amd64 ~x86"
 IUSE="+compat +gltf"
 RESTRICT="test"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-1.3.5-0001-CMakeLists.txt-respect-library-dirs.patch"
-)
+#PATCHES=(
+#	"${FILESDIR}/${PN}-1.3.5-0001-CMakeLists.txt-respect-library-dirs.patch"
+#)
 
 DOCS=( AUTHORS CONTRIBUTING.md README.md )
 
