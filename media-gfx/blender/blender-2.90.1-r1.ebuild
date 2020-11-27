@@ -24,7 +24,7 @@ IUSE="+bullet +dds +elbeem +openexr +system-python +system-numpy +tbb \
 	abi6-compat abi7-compat alembic collada color-management cuda cycles \
 	debug doc ffmpeg fftw headless jack jemalloc jpeg2k llvm \
 	man ndof nls openal opencl openimageio openmp opensubdiv \
-	openvdb osl sdl sndfile standalone test tiff valgrind"
+	openvdb openxr osl sdl sndfile standalone test tiff valgrind"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
@@ -88,6 +88,7 @@ RDEPEND="${PYTHON_DEPS}
 		~media-gfx/openvdb-7.0.0[abi6-compat(-)?,abi7-compat(-)?]
 		dev-libs/c-blosc:=
 	)
+	openxr? ( media-libs/OpenXR-SDK )
 	osl? ( media-libs/osl:= )
 	sdl? ( media-libs/libsdl2[sound,joystick] )
 	sndfile? ( media-libs/libsndfile )
@@ -221,6 +222,7 @@ src_configure() {
 		-DWITH_SYSTEM_GLEW=ON
 		-DWITH_SYSTEM_LZO=ON
 		-DWITH_TBB=$(usex tbb)
+		-DWITH_XR_OPENXR=$(usex openxr)
 	)
 	cmake_src_configure
 }

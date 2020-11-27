@@ -68,6 +68,9 @@
 		<flag name="openvdb">
 			Add GPU preview rendering. Only works with nVidia cards.
 		</flag>
+		<flag name="openxr">
+			Add support for AR and VR using <pkg>media-libs/OpenXR-SDK</pkg>.
+		</flag>
 		<flag name="osl">
 			Add support for OpenShadingLanguage scripting.
 		</flag>
