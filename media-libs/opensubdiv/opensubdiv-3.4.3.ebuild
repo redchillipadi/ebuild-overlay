@@ -58,6 +58,12 @@ pkg_setup() {
 	[[ ${MERGE_TYPE} != binary ]] && use openmp && tc-check-openmp
 }
 
+src_prepare() {
+	eapply_user
+	cmake_src_prepare
+	use cuda && cuda_add_sandbox
+}
+
 src_configure() {
 	# GLTESTS are disabled as portage is unable to open a display during test phase
 	local mycmakeargs=(
@@ -79,26 +85,29 @@ src_configure() {
 
 	if use cuda; then
 		if [[ *$(gcc-version)* != $(cuda-config -s) ]]; then
-			ewarn "Opensubdiv is being built with Nvidia CUDA support. Your default compiler"
-			ewarn "version is not supported by the currently installed CUDA. Opensubdiv will"
-			ewarn "instead be compiled using: $(cuda-gccdir)/$(tc-getCC)"
+			ewarn "Opensubdiv is being built with Nvidia CUDA support."
+			ewarn "Your default compiler version $(gcc-version) is not supported by the currently installed CUDA."
+			ewarn ""
+			ewarn "Your CUDA version supports $(cuda_gccdir)/$(tc-getCC)"
 			ewarn ""
 			ewarn "If the build fails try changing the compiler version using gcc-config"
 			ewarn "or overriding PATH, CC and CXX for this package using package.env"
 		fi
 
-		if [[ -z OSD_CUDA_COMPUTE_CAPABILITIES ]]; then
+		if [[ -z "${OSD_CUDA_COMPUTE_CAPABILITIES}" ]]; then
 			ewarn "Opensubdiv is being built with CUDA 2.0 support, which was deprecated in"
 			ewarn "nvidia-cuda-utils-9. This may also not be optimal for your GPU."
 			ewarn ""
 			ewarn "To select the optimal CUDA support for your GPU,"
 			ewarn "set OSD_CUDA_COMPUTE_CAPABILITIES in your make.conf and re-emerge opensubdiv"
-			ewarn "For example, to use CUDA capability 3.5, add OSD_CUDA_COMPUTE_CAPABILITIES=compute_35"
+			ewarn "For example, to use CUDA capability 3.5, add OSD_CUDA_COMPUTE_CAPABILITIES=sm_35"
+			ewarn "or to use JIT compilation, add OSD_CUDA_COMPUTE_CAPABILITIES=compute_35"
 			ewarn ""
 			ewarn "You can look up your GPU's CUDA compute capability at https://developer.nvidia.com/cuda-gpus"
 			ewarn "or by running /opt/cuda/extras/demo_suite/deviceQuery | grep 'CUDA Capability'"
+			mycmakeargs+=( -DOSD_CUDA_NVCC_FLAGS="--gpu-architecture;compute_20" )
 		else
-			mycmakeargs+=( -DOSD_CUDA_NVCC_FLAGS="--gpu-architecture ${OSD_CUDA_COMPUTE_CAPABILITIES}" )
+			mycmakeargs+=( -DOSD_CUDA_NVCC_FLAGS="--gpu-architecture;${OSD_CUDA_COMPUTE_CAPABILITIES}" )
 		fi
 	fi
 
