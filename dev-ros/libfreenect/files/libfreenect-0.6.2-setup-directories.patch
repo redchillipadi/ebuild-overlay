@@ -1,0 +1,19 @@
+diff -Naur a/cmake_modules/SetupDirectories.cmake b/cmake_modules/SetupDirectories.cmake
+--- a/cmake_modules/SetupDirectories.cmake	2021-07-23 15:09:20.377103846 +1000
++++ b/cmake_modules/SetupDirectories.cmake	2021-07-23 15:11:17.747644021 +1000
+@@ -2,13 +2,13 @@
+ IF (PROJECT_OS_WIN)
+     SET (CMAKE_INSTALL_PREFIX "C:\\Program Files\\libfreenect" CACHE PATH "Installation directory")
+ ELSE (PROJECT_OS_WIN)
+-    SET (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "Installation directory")
++    SET (CMAKE_INSTALL_PREFIX "/usr" CACHE PATH "Installation directory")
+ ENDIF (PROJECT_OS_WIN)
+ 
+ STRING (TOLOWER ${PROJECT_NAME} projectNameLower)
+ SET (PROJECT_INCLUDE_INSTALL_DIR "include/${projectNameLower}")
+ SET (PROJECT_MANPAGE_INSTALL_DIR "share/man")
+-SET (PROJECT_LIBRARY_INSTALL_DIR "lib")
++SET (PROJECT_LIBRARY_INSTALL_DIR "lib64")
+ 
+ MESSAGE (STATUS "${PROJECT_NAME} will be installed to ${CMAKE_INSTALL_PREFIX}")
+ MESSAGE (STATUS "Headers will be installed to ${CMAKE_INSTALL_PREFIX}/${PROJECT_INCLUDE_INSTALL_DIR}")
